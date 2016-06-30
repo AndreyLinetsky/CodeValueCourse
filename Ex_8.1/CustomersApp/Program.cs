@@ -25,7 +25,7 @@ namespace CustomersApp
             return newCustomers;
         }
 
-        public static bool FilterFirstHalf(Customer customer)
+        public bool FilterFirstHalf(Customer customer)
         {
             if ((customer.Name[0] >= 'A' &&
                 customer.Name[0] <= 'K') ||
@@ -52,7 +52,8 @@ namespace CustomersApp
             {
                 Console.WriteLine("Customer name is {0}, customer id is {1} and customer address is {2}", cust.Name, cust.Id, cust.Address);
             }
-            Customer[] newCustomerArray = GetCustomers(customerArray.ToList<Customer>(), new CustomerFilter(FilterFirstHalf)).ToArray();
+            Program prog = new Program();
+            Customer[] newCustomerArray = GetCustomers(customerArray.ToList<Customer>(), new CustomerFilter(prog.FilterFirstHalf)).ToArray();
             Console.WriteLine("Filtered A-K array");
             foreach (Customer cust in newCustomerArray)
             {
