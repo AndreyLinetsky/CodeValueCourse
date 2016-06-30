@@ -27,10 +27,11 @@ namespace CustomersApp
 
         public bool FilterFirstHalf(Customer customer)
         {
-            if ((customer.Name[0] >= 'A' &&
+            if (customer.Name != null &&
+                ((customer.Name[0] >= 'A' &&
                 customer.Name[0] <= 'K') ||
                 (customer.Name[0] >= 'a' &&
-                customer.Name[0] <= 'k'))
+                customer.Name[0] <= 'k')))
             {
                 return true;
             }
@@ -62,10 +63,11 @@ namespace CustomersApp
             // Anonymous
             newCustomerArray = GetCustomers(customerArray.ToList<Customer>(), delegate (Customer customer)
             {
-                if ((customer.Name[0] >= 'L' &&
+                if (customer.Name != null &&
+                ((customer.Name[0] >= 'L' &&
                 customer.Name[0] <= 'Z') ||
                 (customer.Name[0] >= 'l' &&
-                customer.Name[0] <= 'z'))
+                customer.Name[0] <= 'z')))
                 {
                     return true;
                 }
