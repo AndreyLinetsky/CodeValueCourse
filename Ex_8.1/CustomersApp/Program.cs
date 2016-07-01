@@ -27,7 +27,7 @@ namespace CustomersApp
 
         public bool FilterFirstHalf(Customer customer)
         {
-            if (customer.Name != null &&
+            if (!String.IsNullOrWhiteSpace(customer.Name) &&
                 ((customer.Name[0] >= 'A' &&
                 customer.Name[0] <= 'K') ||
                 (customer.Name[0] >= 'a' &&
@@ -46,7 +46,7 @@ namespace CustomersApp
             customerArray[0] = new Customer("Zill", 22, "Jerusalem");
             customerArray[1] = new Customer("Aerek", 99, "Tel aviv");
             customerArray[2] = new Customer("Yoav", 100, "Haifa");
-            customerArray[3] = new Customer("Lill", 222, "Haifa");
+            customerArray[3] = new Customer("lill", 222, "Haifa");
             customerArray[4] = new Customer("2en", 3, "Eilat");
             customerArray[5] = new Customer("ken", -1, "Eilat");
             foreach (Customer cust in customerArray)
@@ -63,7 +63,7 @@ namespace CustomersApp
             // Anonymous
             newCustomerArray = GetCustomers(customerArray.ToList<Customer>(), delegate (Customer customer)
             {
-                if (customer.Name != null &&
+                if (!String.IsNullOrWhiteSpace(customer.Name) &&
                 ((customer.Name[0] >= 'L' &&
                 customer.Name[0] <= 'Z') ||
                 (customer.Name[0] >= 'l' &&
