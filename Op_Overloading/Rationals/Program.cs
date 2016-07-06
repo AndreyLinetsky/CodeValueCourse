@@ -52,11 +52,16 @@ namespace Rationals
             public Rational Add(Rational firstNumber)
             {
                 Rational secondNumber = this;
-                int firstDenominator = firstNumber.denominator;
-                firstNumber.denominator = firstNumber.denominator * secondNumber.denominator;
-                firstNumber.numerator = firstNumber.numerator * secondNumber.denominator;
-                secondNumber.denominator = secondNumber.denominator * firstDenominator;
-                secondNumber.numerator = secondNumber.numerator * firstDenominator;
+                firstNumber.Reduce();
+                secondNumber.Reduce();
+                if (firstNumber.Denominator != secondNumber.Denominator)
+                {
+                    int firstDenominator = firstNumber.denominator;
+                    firstNumber.denominator = firstNumber.denominator * secondNumber.denominator;
+                    firstNumber.numerator = firstNumber.numerator * secondNumber.denominator;
+                    secondNumber.denominator = secondNumber.denominator * firstDenominator;
+                    secondNumber.numerator = secondNumber.numerator * firstDenominator;
+                }
                 Rational newRational = new Rational(firstNumber.numerator + secondNumber.numerator, firstNumber.denominator);
                 return newRational;
             }
@@ -146,8 +151,7 @@ namespace Rationals
             {
                 firstNumber.Reduce();
                 secondNumber.Reduce();
-                Rational revRational = new Rational(secondNumber.Denominator, secondNumber.Numerator);
-                Rational newRational = firstNumber.Mul(revRational);
+                Rational newRational = new Rational(firstNumber.numerator * secondNumber.denominator, firstNumber.denominator * secondNumber.numerator);
                 return newRational;
             }
 
