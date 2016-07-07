@@ -76,7 +76,6 @@ namespace Rationals
             {
                 this.numerator = this.numerator / numerator;
                 this.denominator = this.denominator / numerator;
-
             }
         }
         public override string ToString()
