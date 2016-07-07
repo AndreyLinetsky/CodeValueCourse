@@ -24,7 +24,7 @@ namespace Personnel
             }
             else
             {
-                Console.WriteLine("File {0} does not exists", path);
+                Console.WriteLine("File {0} does not exist", path);
             }
         }
     }

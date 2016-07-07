@@ -9,12 +9,10 @@ namespace Personnel
 {
     public class FileReader
     {
-        private List<String> stringList;
         private bool isPathExists = false;
         private string path;
         public FileReader(string inputPath)
         {
-            stringList = new List<string>();
             path = inputPath;
             if (File.Exists(path))
             {
@@ -32,6 +30,7 @@ namespace Personnel
 
         public List<string> ReadFromFile()
         {
+            List<String> stringList = new List<string>();
             string currString;
             StreamReader reader = null;
             try
