@@ -28,6 +28,17 @@ namespace BackgammonLogic
                 return color;
             }
         }
+        public bool IsPlayerWon(Board currBoard)
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                if (currBoard[i].Color == color)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public bool CheckBearOffStage(Board currBoard)
         {
             for (int i = startPos + 1; i < homePos; i++)
@@ -45,20 +56,20 @@ namespace BackgammonLogic
             {
                 if (currBoard[startPos + Move].Color == CheckerColor.Empty)
                 {
-                    currBoard.DecreaseFirstPlayerBar();
+                    currBoard.DecreaseSecondPlayerBar();
                     currBoard[startPos + Move].AddChecker(color);
                     return true;
                 }
                 else if (currBoard[startPos + Move].Color == color)
                 {
-                    currBoard.DecreaseFirstPlayerBar();
+                    currBoard.DecreaseSecondPlayerBar();
                     currBoard[startPos + Move].AddChecker();
                     return true;
                 }
                 else
                 {
-                    currBoard.DecreaseFirstPlayerBar();
-                    currBoard.IncreaseSecondPlayerBar();
+                    currBoard.DecreaseSecondPlayerBar();
+                    currBoard.IncreaseFirstPlayerBar();
                     currBoard[startPos + Move].RemoveChecker();
                     currBoard[startPos + Move].AddChecker(color);
                     return true;
@@ -92,7 +103,7 @@ namespace BackgammonLogic
                 else
                 {
                     currBoard[currentIndex].RemoveChecker();
-                    currBoard.IncreaseSecondPlayerBar();
+                    currBoard.IncreaseFirstPlayerBar();
                     currBoard[currentIndex + Move].RemoveChecker();
                     currBoard[currentIndex + Move].AddChecker(color);
                     return true;
@@ -128,7 +139,7 @@ namespace BackgammonLogic
                 else
                 {
                     currBoard[currentIndex].RemoveChecker();
-                    currBoard.IncreaseSecondPlayerBar();
+                    currBoard.IncreaseFirstPlayerBar();
                     currBoard[currentIndex + Move].RemoveChecker();
                     currBoard[currentIndex + Move].AddChecker(color);
                     return true;

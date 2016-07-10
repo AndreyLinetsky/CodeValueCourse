@@ -28,11 +28,24 @@ namespace BackgammonLogic
                 return color;
             }
         }
+
         public bool CheckBearOffStage(Board currBoard)
         {
             for (int i = homePos + 1; i < startPos; i++)
             {
                 if (currBoard[i].Color == color)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public bool IsPlayerWon(Board currBoard)
+        {
+            for (int i = 0; i < 24; i++)
+            {
+                if(currBoard[i].Color == color)
                 {
                     return false;
                 }
@@ -139,64 +152,51 @@ namespace BackgammonLogic
                 return false;
             }
         }
-    
-    public bool CheckLegalBarMoves(Dice currDice, Board currBoard)
-    {
-        if (currBoard[startPos - currDice.FirstDice].IsAvailable(color))
+
+        public bool CheckLegalBarMoves(Dice currDice, Board currBoard)
         {
-            return true;
-        }
-        if (!currDice.IsDouble)
-        {
-            if (currBoard[startPos - currDice.SecondDice].IsAvailable(color))
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    public bool CheckLegalMoves(Dice currDice, Board currBoard)
-    {
-        for (int i = 0; i < startPos; i++)
-        {
-            if (i - currDice.FirstDice >= 0)
-            {
-                if (currBoard[i - currDice.FirstDice].IsAvailable(color))
-                {
-                    return true;
-                }
-            }
-            if (i - currDice.SecondDice >= 0 &&
-                !currDice.IsDouble)
-            {
-                if (currBoard[i - currDice.SecondDice].IsAvailable(color))
-                {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-    public bool CheckLegalBearOffMoves(Dice currDice, Board currBoard)
-    {
-        for (int i = 0; i <= homePos; i++)
-        {
-            if (i - currDice.FirstDice >= 0)
-            {
-                if (currBoard[i - currDice.FirstDice].IsAvailable(color))
-                {
-                    return true;
-                }
-            }
-            else
+            if (currBoard[startPos - currDice.FirstDice].IsAvailable(color))
             {
                 return true;
             }
             if (!currDice.IsDouble)
             {
-                if (i - currDice.SecondDice >= 0)
+                if (currBoard[startPos - currDice.SecondDice].IsAvailable(color))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public bool CheckLegalMoves(Dice currDice, Board currBoard)
+        {
+            for (int i = 0; i < startPos; i++)
+            {
+                if (i - currDice.FirstDice >= 0)
+                {
+                    if (currBoard[i - currDice.FirstDice].IsAvailable(color))
+                    {
+                        return true;
+                    }
+                }
+                if (i - currDice.SecondDice >= 0 &&
+                    !currDice.IsDouble)
                 {
                     if (currBoard[i - currDice.SecondDice].IsAvailable(color))
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public bool CheckLegalBearOffMoves(Dice currDice, Board currBoard)
+        {
+            for (int i = 0; i <= homePos; i++)
+            {
+                if (i - currDice.FirstDice >= 0)
+                {
+                    if (currBoard[i - currDice.FirstDice].IsAvailable(color))
                     {
                         return true;
                     }
@@ -205,9 +205,22 @@ namespace BackgammonLogic
                 {
                     return true;
                 }
+                if (!currDice.IsDouble)
+                {
+                    if (i - currDice.SecondDice >= 0)
+                    {
+                        if (currBoard[i - currDice.SecondDice].IsAvailable(color))
+                        {
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        return true;
+                    }
+                }
             }
+            return false;
         }
-        return false;
     }
-}
 }

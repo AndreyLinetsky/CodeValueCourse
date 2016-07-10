@@ -43,7 +43,63 @@ namespace BackgammonLogic
                 return gameDice.SecondDice;
             }
         }
-        public CheckerColor DecideFirstTurn()
+
+        public int FirstPlayerCheckersOnBar
+        {
+            get
+            {
+                return gameBoard.FirstPlayerBarCheckers;
+            }
+        }
+
+        public int SecondPlayerCheckersOnBar
+        {
+            get
+            {
+                return gameBoard.SecondPlayerBarCheckers;
+            }
+        }
+
+        public bool IsGameOver
+        {
+            get
+            {
+                if ((gameBoard.FirstPlayerBarCheckers == 0 &&
+                    firstPlayer.IsPlayerWon(gameBoard)) ||
+                   gameBoard.SecondPlayerBarCheckers == 0 &&
+                   secondPlayer.IsPlayerWon(gameBoard))
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
+
+        public Point[] GetBoard
+        {
+            get
+            {
+                return gameBoard.GetBoard;
+            }
+        }
+        public CheckerColor CurrentPlayer
+        {
+            get
+            {
+                if (firstPlayer.IsPlayerTurn)
+                {
+                    return firstPlayer.Color;
+                }
+                else
+                {
+                    return secondPlayer.Color;
+                }
+            }
+        }
+        public void DecideFirstTurn()
         {
             while (gameDice.FirstDice == gameDice.SecondDice)
             {
@@ -53,17 +109,14 @@ namespace BackgammonLogic
                     firstPlayer.IsPlayerTurn = true;
                     firstPlayer.Turns = 2;
                     isFirstMove = true;
-                    return CheckerColor.Black;
                 }
                 else if (gameDice.FirstDice < gameDice.SecondDice)
                 {
                     secondPlayer.IsPlayerTurn = true;
                     secondPlayer.Turns = 2;
                     isFirstMove = true;
-                    return CheckerColor.White;
                 }
             }
-            return CheckerColor.Black;
         }
 
         public void ThrowDice()
@@ -209,6 +262,12 @@ namespace BackgammonLogic
             {
                 return false;
             }
+
+            if (SourceIndex > 24 ||
+                SourceIndex < 0)
+            {
+                return false;
+            }
             if (firstPlayer.IsPlayerTurn)
             {
                 if (gameBoard.FirstPlayerBarCheckers > 0 &&
@@ -221,11 +280,17 @@ namespace BackgammonLogic
                 {
                     return false;
                 }
+                if (SourceIndex != barSource &&
+                    gameBoard[SourceIndex].Color != firstPlayer.Color)
+                {
+                    return false;
+                }
 
                 if (SourceIndex == barSource)
                 {
                     if (firstPlayer.MakeBarMove(Move, gameBoard))
                     {
+                        isFirstMove = false;
                         firstPlayer.Turns--;
                         if (firstPlayer.Turns == 0)
                         {
@@ -254,6 +319,7 @@ namespace BackgammonLogic
                 {
                     if (firstPlayer.MakeBearOffMove(SourceIndex, Move, gameBoard))
                     {
+                        isFirstMove = false;
                         firstPlayer.Turns--;
                         if (firstPlayer.Turns == 0)
                         {
@@ -281,6 +347,7 @@ namespace BackgammonLogic
                 {
                     if (firstPlayer.MakeMove(SourceIndex, Move, gameBoard))
                     {
+                        isFirstMove = false;
                         firstPlayer.Turns--;
                         if (firstPlayer.Turns == 0)
                         {
@@ -317,11 +384,16 @@ namespace BackgammonLogic
                 {
                     return false;
                 }
-
+                if (SourceIndex != barSource &&
+                    gameBoard[SourceIndex].Color != secondPlayer.Color)
+                {
+                    return false;
+                }
                 if (SourceIndex == barSource)
                 {
                     if (secondPlayer.MakeBarMove(Move, gameBoard))
                     {
+                        isFirstMove = false;
                         secondPlayer.Turns--;
                         if (secondPlayer.Turns == 0)
                         {
@@ -350,6 +422,7 @@ namespace BackgammonLogic
                 {
                     if (secondPlayer.MakeBearOffMove(SourceIndex, Move, gameBoard))
                     {
+                        isFirstMove = false;
                         secondPlayer.Turns--;
                         if (secondPlayer.Turns == 0)
                         {
@@ -377,6 +450,7 @@ namespace BackgammonLogic
                 {
                     if (secondPlayer.MakeMove(SourceIndex, Move, gameBoard))
                     {
+                        isFirstMove = false;
                         secondPlayer.Turns--;
                         if (secondPlayer.Turns == 0)
                         {

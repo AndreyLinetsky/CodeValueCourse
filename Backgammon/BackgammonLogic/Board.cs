@@ -28,6 +28,13 @@ namespace BackgammonLogic
             }
         }
 
+        public Point[] GetBoard
+        {
+            get
+            {
+                return points;
+            }
+        }
         public int FirstPlayerBarCheckers
         {
             get

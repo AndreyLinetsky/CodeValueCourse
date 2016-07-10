@@ -9,8 +9,10 @@ namespace BackgammonLogic
     interface IHumanPlayer
     {
         bool IsPlayerTurn { get; set; }
+        
         CheckerColor Color { get; }
         int Turns { get; set; }
+        bool IsPlayerWon(Board currBoard);
         bool CheckBearOffStage(Board currBoard);
         bool MakeBarMove(int Move, Board currBoard);
         bool MakeMove(int currentIndex, int Move, Board currBoard);
