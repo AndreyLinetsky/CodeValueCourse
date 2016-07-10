@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    internal enum CheckerColor
+    public enum CheckerColor
     {
         White,
         Black,

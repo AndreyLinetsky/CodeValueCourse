@@ -34,10 +34,10 @@ namespace BackgammonLogic
             {
                 if (currBoard[i].Color == color)
                 {
-                    return true;
+                    return false;
                 }
             }
-            return false;
+            return true;
         }
         public bool MakeBarMove(int Move, Board currBoard)
         {

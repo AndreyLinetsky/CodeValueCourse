@@ -8,13 +8,13 @@ namespace BackgammonLogic
 {
     internal class Board
     {
-        private List<Point> points;
+        private Point[] points;
         private int firstPlayerBarCheckers;
         private int secondPlayerBarCheckers;
 
         public Board()
         {
-            points = new List<Point>(24);
+            points = new Point[24];
             firstPlayerBarCheckers = 0;
             secondPlayerBarCheckers = 0;
             InitBoard();
@@ -78,7 +78,7 @@ namespace BackgammonLogic
 
         public void InitBoard()
         {
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < points.Length; i++)
             {
                 switch (i)
                 {

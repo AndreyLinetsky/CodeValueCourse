@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    class GameController
+    public class GameController
     {
         private BlackPlayer firstPlayer;
         private WhitePlayer secondPlayer;
@@ -21,7 +21,6 @@ namespace BackgammonLogic
             secondPlayer = new WhitePlayer(CheckerColor.White);
             gameBoard = new Board();
             gameDice = new Dice();
-            DecideFirstTurn();
         }
         public bool IsFirstMove
         {
@@ -44,7 +43,7 @@ namespace BackgammonLogic
                 return gameDice.SecondDice;
             }
         }
-        public void DecideFirstTurn()
+        public CheckerColor DecideFirstTurn()
         {
             while (gameDice.FirstDice == gameDice.SecondDice)
             {
@@ -53,14 +52,18 @@ namespace BackgammonLogic
                 {
                     firstPlayer.IsPlayerTurn = true;
                     firstPlayer.Turns = 2;
+                    isFirstMove = true;
+                    return CheckerColor.Black;
                 }
                 else if (gameDice.FirstDice < gameDice.SecondDice)
                 {
                     secondPlayer.IsPlayerTurn = true;
                     secondPlayer.Turns = 2;
+                    isFirstMove = true;
+                    return CheckerColor.White;
                 }
             }
-            isFirstMove = true;
+            return CheckerColor.Black;
         }
 
         public void ThrowDice()
