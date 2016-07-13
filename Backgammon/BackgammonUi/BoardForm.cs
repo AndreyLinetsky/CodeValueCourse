@@ -16,6 +16,7 @@ namespace BackgammonUi
         {
             InitializeComponent();
             
+            
         }
 
         private void BoardForm_Load(object sender, EventArgs e)

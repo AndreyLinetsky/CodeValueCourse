@@ -65,6 +65,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -78,6 +79,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice1.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice1.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice2.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice3.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice4.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice5.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Dice6.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Board.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\BackgammonLogic\BackgammonLogic.csproj">
+      <Project>{04d1f8fc-3621-4a29-b0bb-d988751df742}</Project>
+      <Name>BackgammonLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
