@@ -15,10 +15,18 @@ namespace BackgammonLogic
         private bool isFirstMove;
         private int barSource = 24;
 
-        public GameController()
+        public GameController(int gameStyle)
         {
-            firstPlayer = new BlackPlayer(CheckerColor.Black);
-            secondPlayer = new WhitePlayer(CheckerColor.White);
+            if(gameStyle == 1)
+            {
+                firstPlayer = new BlackPlayer(CheckerColor.Black);
+                secondPlayer = new WhitePlayer(CheckerColor.White);
+            }
+            else
+            {
+                //firstPlayer = new BlackPlayer(CheckerColor.Black);
+               // secondPlayer = new WhitePlayer(CheckerColor.White);
+            }
             gameBoard = new Board();
             gameDice = new Dice();
         }

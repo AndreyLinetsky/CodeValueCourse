@@ -66,7 +66,7 @@ namespace UI
 
         static void Main(string[] args)
         {
-            GameController newGame = new GameController();
+            GameController newGame = new GameController(1);
             bool isLastMoveLegal = true;
             drawBoard(newGame.GetBoard, newGame.FirstPlayerCheckersOnBar, newGame.SecondPlayerCheckersOnBar);
             Console.WriteLine("Randomazing turns order");
