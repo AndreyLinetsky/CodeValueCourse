@@ -8,7 +8,7 @@ namespace BackgammonLogic
 {
     public enum CheckerColor
     {
-        White,
+        Green,
         Black,
         Empty
     }

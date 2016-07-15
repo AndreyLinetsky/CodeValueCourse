@@ -90,7 +90,7 @@ namespace BackgammonLogic
                 switch (i)
                 {
                     case 0:
-                        points[i] = new Point(2, CheckerColor.White);
+                        points[i] = new Point(2, CheckerColor.Green);
                         break;
                     case 5:
                         points[i] = new Point(5, CheckerColor.Black);
@@ -99,16 +99,16 @@ namespace BackgammonLogic
                         points[i] = new Point(3, CheckerColor.Black);
                         break;
                     case 11:
-                        points[i] = new Point(5, CheckerColor.White);
+                        points[i] = new Point(5, CheckerColor.Green);
                         break;
                     case 12:
                         points[i] = new Point(5, CheckerColor.Black);
                         break;
                     case 16:
-                        points[i] = new Point(3, CheckerColor.White);
+                        points[i] = new Point(3, CheckerColor.Green);
                         break;
                     case 18:
-                        points[i] = new Point(5, CheckerColor.White);
+                        points[i] = new Point(5, CheckerColor.Green);
                         break;
                     case 23:
                         points[i] = new Point(2, CheckerColor.Black);

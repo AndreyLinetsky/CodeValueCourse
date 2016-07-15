@@ -22,14 +22,14 @@ namespace BackgammonUI
             if (Human.Enabled)
             {
                 Backgammon backgammon = new Backgammon("Human");
-                backgammon.Show();
+                backgammon.ShowDialog();
             }
             else
             {
                 Backgammon backgammon = new Backgammon("AI");
-                backgammon.Show();
+                backgammon.ShowDialog();
             }
-
+            this.Close();
         }
     }
 }

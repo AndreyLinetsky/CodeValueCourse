@@ -20,7 +20,7 @@ namespace BackgammonLogic
             if(gameStyle == 1)
             {
                 firstPlayer = new BlackPlayer(CheckerColor.Black);
-                secondPlayer = new WhitePlayer(CheckerColor.White);
+                secondPlayer = new WhitePlayer(CheckerColor.Green);
             }
             else
             {

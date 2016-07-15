@@ -45,7 +45,7 @@ namespace BackgammonLogic
         {
             for (int i = 0; i < 24; i++)
             {
-                if(currBoard[i].Color == color)
+                if (currBoard[i].Color == color)
                 {
                     return false;
                 }
@@ -155,13 +155,15 @@ namespace BackgammonLogic
 
         public bool CheckLegalBarMoves(Dice currDice, Board currBoard)
         {
-            if (currBoard[startPos - currDice.FirstDice].IsAvailable(color))
+            if (currDice.FirstDice > 0 &&
+                currBoard[startPos - currDice.FirstDice].IsAvailable(color))
             {
                 return true;
             }
             if (!currDice.IsDouble)
             {
-                if (currBoard[startPos - currDice.SecondDice].IsAvailable(color))
+                if (currDice.SecondDice > 0 &&
+                    currBoard[startPos - currDice.SecondDice].IsAvailable(color))
                 {
                     return true;
                 }
@@ -172,14 +174,15 @@ namespace BackgammonLogic
         {
             for (int i = 0; i < startPos; i++)
             {
-                if (i - currDice.FirstDice >= 0)
+                if (currDice.FirstDice > 0 &&
+                    i - currDice.FirstDice >= 0)
                 {
                     if (currBoard[i - currDice.FirstDice].IsAvailable(color))
                     {
                         return true;
                     }
                 }
-                if (i - currDice.SecondDice >= 0 &&
+                if (currDice.SecondDice > 0 && i - currDice.SecondDice >= 0 &&
                     !currDice.IsDouble)
                 {
                     if (currBoard[i - currDice.SecondDice].IsAvailable(color))
@@ -194,7 +197,8 @@ namespace BackgammonLogic
         {
             for (int i = 0; i <= homePos; i++)
             {
-                if (i - currDice.FirstDice >= 0)
+                if (currDice.FirstDice > 0 &&
+                    i - currDice.FirstDice >= 0)
                 {
                     if (currBoard[i - currDice.FirstDice].IsAvailable(color))
                     {
@@ -207,7 +211,8 @@ namespace BackgammonLogic
                 }
                 if (!currDice.IsDouble)
                 {
-                    if (i - currDice.SecondDice >= 0)
+                    if (currDice.SecondDice > 0 &&
+                        i - currDice.SecondDice >= 0)
                     {
                         if (currBoard[i - currDice.SecondDice].IsAvailable(color))
                         {
