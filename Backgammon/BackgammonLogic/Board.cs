@@ -6,17 +6,13 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    internal class Board
+    public class Board
     {
-        private Point[] points;
-        private int firstPlayerBarCheckers;
-        private int secondPlayerBarCheckers;
-
         public Board()
         {
-            points = new Point[24];
-            firstPlayerBarCheckers = 0;
-            secondPlayerBarCheckers = 0;
+            Points = new Point[24];
+            FirstBar = new Bar(CheckerColor.Black);
+            SecondBar = new Bar(CheckerColor.Green);
             InitBoard();
         }
 
@@ -24,97 +20,71 @@ namespace BackgammonLogic
         {
             get
             {
-                return points[index];
+                return Points[index];
             }
         }
 
-        public Point[] GetBoard
-        {
-            get
-            {
-                return points;
-            }
-        }
-        public int FirstPlayerBarCheckers
-        {
-            get
-            {
-                return firstPlayerBarCheckers;
-            }
-        }
+        public Point[] Points { get; private set; }
 
-        public int SecondPlayerBarCheckers
+
+        private Bar FirstBar { get; set; }
+        private Bar SecondBar { get; set; }
+
+
+        public Bar GetBar(CheckerColor barColor)
         {
-            get
+            if (FirstBar.Color == barColor)
             {
-                return secondPlayerBarCheckers;
-            }
-        }
-        public bool DecreaseFirstPlayerBar()
-        {
-            if (firstPlayerBarCheckers > 0)
-            {
-                firstPlayerBarCheckers--;
-                return true;
+                return FirstBar;
             }
             else
             {
-                return false;
+                return SecondBar;
             }
         }
-        public bool DecreaseSecondPlayerBar()
+        public Bar GetOtherBar(CheckerColor barColor)
         {
-            if (secondPlayerBarCheckers > 0)
+            if (FirstBar.Color == barColor)
             {
-                secondPlayerBarCheckers--;
-                return true;
+                return SecondBar;
             }
             else
             {
-                return false;
+                return FirstBar;
             }
         }
-        public void IncreaseFirstPlayerBar()
-        {
-            firstPlayerBarCheckers++;
-        }
-        public void IncreaseSecondPlayerBar()
-        {
-            secondPlayerBarCheckers++;
-        }
-
         public void InitBoard()
         {
-            for (int i = 0; i < points.Length; i++)
+            for (int i = 0; i < Points.Length; i++)
             {
                 switch (i)
                 {
                     case 0:
-                        points[i] = new Point(2, CheckerColor.Green);
+                        Points[i] = new Point(2, CheckerColor.Green);
                         break;
                     case 5:
-                        points[i] = new Point(5, CheckerColor.Black);
+                        Points[i] = new Point(5, CheckerColor.Black);
                         break;
                     case 7:
-                        points[i] = new Point(3, CheckerColor.Black);
+                        Points[i] = new Point(3, CheckerColor.Black);
                         break;
                     case 11:
-                        points[i] = new Point(5, CheckerColor.Green);
+                        Points[i] = new Point(5, CheckerColor.Green);
                         break;
                     case 12:
-                        points[i] = new Point(5, CheckerColor.Black);
+                        Points[i] = new Point(5, CheckerColor.Black);
                         break;
                     case 16:
-                        points[i] = new Point(3, CheckerColor.Green);
+                        Points[i] = new Point(3, CheckerColor.Green);
                         break;
                     case 18:
-                        points[i] = new Point(5, CheckerColor.Green);
+                        Points[i] = new Point(5, CheckerColor.Green);
                         break;
                     case 23:
-                        points[i] = new Point(2, CheckerColor.Black);
+                        Points[i] = new Point(2, CheckerColor.Black);
                         break;
                     default:
-                        points[i] = new Point();
+                        Points[i] = new Point();
                         break;
                 }
             }

@@ -6,34 +6,18 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    class BlackPlayer : IHumanPlayer
+    class BlackPlayer : HumanPlayer
     {
-        private CheckerColor color;
-        private int startPos;
-        private int homePos;
-        public BlackPlayer(CheckerColor initColor)
+        public BlackPlayer(CheckerColor initColor, int initHomePos, int initStartPos, int initEndPos)
+            : base(initColor, initHomePos, initStartPos, initEndPos)
         {
-            color = initColor;
-            Turns = 0;
-            IsPlayerTurn = false;
-            startPos = 24;
-            homePos = 5;
-        }
-        public bool IsPlayerTurn { get; set; }
-        public int Turns { get; set; }
-        public CheckerColor Color
-        {
-            get
-            {
-                return color;
-            }
         }
 
         public bool CheckBearOffStage(Board currBoard)
         {
             for (int i = homePos + 1; i < startPos; i++)
             {
-                if (currBoard[i].Color == color)
+                if (currBoard[i].Color == Color)
                 {
                     return false;
                 }
@@ -41,39 +25,28 @@ namespace BackgammonLogic
             return true;
         }
 
-        public bool IsPlayerWon(Board currBoard)
-        {
-            for (int i = 0; i < 24; i++)
-            {
-                if (currBoard[i].Color == color)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
         public bool MakeBarMove(int Move, Board currBoard)
         {
-            if (currBoard[startPos - Move].IsAvailable(color))
+            if (currBoard[startPos - Move].IsAvailable(Color))
             {
                 if (currBoard[startPos - Move].Color == CheckerColor.Empty)
                 {
-                    currBoard.DecreaseFirstPlayerBar();
-                    currBoard[startPos - Move].AddChecker(color);
+                    currBoard.GetBar(Color).RemoveBarChecker();
+                    currBoard[startPos - Move].AddChecker(Color);
                     return true;
                 }
-                else if (currBoard[startPos - Move].Color == color)
+                else if (currBoard[startPos - Move].Color == Color)
                 {
-                    currBoard.DecreaseFirstPlayerBar();
+                    currBoard.GetBar(Color).RemoveBarChecker();
                     currBoard[startPos - Move].AddChecker();
                     return true;
                 }
                 else
                 {
-                    currBoard.DecreaseFirstPlayerBar();
-                    currBoard.IncreaseSecondPlayerBar();
+                    currBoard.GetBar(Color).RemoveBarChecker();
+                    currBoard.GetOtherBar(Color).AddBarChecker();
                     currBoard[startPos - Move].RemoveChecker();
-                    currBoard[startPos - Move].AddChecker(color);
+                    currBoard[startPos - Move].AddChecker(Color);
                     return true;
                 }
             }
@@ -84,19 +57,19 @@ namespace BackgammonLogic
         }
         public bool MakeMove(int currentIndex, int Move, Board currBoard)
         {
-            if (currentIndex - Move < 0)
+            if (currentIndex - Move < startPos)
             {
                 return false;
             }
-            if (currBoard[currentIndex - Move].IsAvailable(color))
+            if (currBoard[currentIndex - Move].IsAvailable(Color))
             {
                 if (currBoard[currentIndex - Move].Color == CheckerColor.Empty)
                 {
                     currBoard[currentIndex].RemoveChecker();
-                    currBoard[currentIndex - Move].AddChecker(color);
+                    currBoard[currentIndex - Move].AddChecker(Color);
                     return true;
                 }
-                else if (currBoard[currentIndex - Move].Color == color)
+                else if (currBoard[currentIndex - Move].Color == Color)
                 {
                     currBoard[currentIndex].RemoveChecker();
                     currBoard[currentIndex - Move].AddChecker();
@@ -105,9 +78,9 @@ namespace BackgammonLogic
                 else
                 {
                     currBoard[currentIndex].RemoveChecker();
-                    currBoard.IncreaseSecondPlayerBar();
+                    currBoard.GetOtherBar(Color).AddBarChecker();
                     currBoard[currentIndex - Move].RemoveChecker();
-                    currBoard[currentIndex - Move].AddChecker(color);
+                    currBoard[currentIndex - Move].AddChecker(Color);
                     return true;
                 }
             }
@@ -118,21 +91,31 @@ namespace BackgammonLogic
         }
         public bool MakeBearOffMove(int currentIndex, int Move, Board currBoard)
         {
-            if (currentIndex - Move < 0)
+            if (currentIndex - Move < startPos)
             {
+                if (currentIndex - Move < startPos - 1)
+                {
+                    for (int i = homePos; i > currentIndex; i--)
+                    {
+                        if (currBoard[i].IsAvailable(Color))
+                        {
+                            return false;
+                        }
+                    }
+                }
                 currBoard[currentIndex].RemoveChecker();
                 return true;
             }
 
-            else if (currBoard[currentIndex - Move].IsAvailable(color))
+            else if (currBoard[currentIndex - Move].IsAvailable(Color))
             {
                 if (currBoard[currentIndex - Move].Color == CheckerColor.Empty)
                 {
                     currBoard[currentIndex].RemoveChecker();
-                    currBoard[currentIndex - Move].AddChecker(color);
+                    currBoard[currentIndex - Move].AddChecker(Color);
                     return true;
                 }
-                else if (currBoard[currentIndex - Move].Color == color)
+                else if (currBoard[currentIndex - Move].Color == Color)
                 {
                     currBoard[currentIndex].RemoveChecker();
                     currBoard[currentIndex - Move].AddChecker();
@@ -141,9 +124,9 @@ namespace BackgammonLogic
                 else
                 {
                     currBoard[currentIndex].RemoveChecker();
-                    currBoard.IncreaseSecondPlayerBar();
+                    currBoard.GetOtherBar(Color).AddBarChecker();
                     currBoard[currentIndex - Move].RemoveChecker();
-                    currBoard[currentIndex - Move].AddChecker(color);
+                    currBoard[currentIndex - Move].AddChecker(Color);
                     return true;
                 }
             }
@@ -153,39 +136,39 @@ namespace BackgammonLogic
             }
         }
 
-        public bool CheckLegalBarMoves(Dice currDice, Board currBoard)
+        public bool CheckLegalBarMoves(Dices currDice, Board currBoard)
         {
             if (currDice.FirstDice > 0 &&
-                currBoard[startPos - currDice.FirstDice].IsAvailable(color))
+                currBoard[startPos - currDice.FirstDice].IsAvailable(Color))
             {
                 return true;
             }
             if (!currDice.IsDouble)
             {
                 if (currDice.SecondDice > 0 &&
-                    currBoard[startPos - currDice.SecondDice].IsAvailable(color))
+                    currBoard[startPos - currDice.SecondDice].IsAvailable(Color))
                 {
                     return true;
                 }
             }
             return false;
         }
-        public bool CheckLegalMoves(Dice currDice, Board currBoard)
+        public bool CheckLegalMoves(Dices currDice, Board currBoard)
         {
-            for (int i = 0; i < startPos; i++)
+            for (int i = endpos; i < startPos; i++)
             {
                 if (currDice.FirstDice > 0 &&
-                    i - currDice.FirstDice >= 0)
+                    i - currDice.FirstDice >= endpos)
                 {
-                    if (currBoard[i - currDice.FirstDice].IsAvailable(color))
+                    if (currBoard[i - currDice.FirstDice].IsAvailable(Color))
                     {
                         return true;
                     }
                 }
-                if (currDice.SecondDice > 0 && i - currDice.SecondDice >= 0 &&
+                if (currDice.SecondDice > 0 && i - currDice.SecondDice >= endpos &&
                     !currDice.IsDouble)
                 {
-                    if (currBoard[i - currDice.SecondDice].IsAvailable(color))
+                    if (currBoard[i - currDice.SecondDice].IsAvailable(Color))
                     {
                         return true;
                     }
@@ -193,28 +176,30 @@ namespace BackgammonLogic
             }
             return false;
         }
-        public bool CheckLegalBearOffMoves(Dice currDice, Board currBoard)
+        public bool CheckLegalBearOffMoves(Dices currDice, Board currBoard)
         {
-            for (int i = 0; i <= homePos; i++)
+            for (int i = startPos; i <= homePos; i++)
             {
-                if (currDice.FirstDice > 0 &&
-                    i - currDice.FirstDice >= 0)
+                if (currDice.FirstDice > 0)
                 {
-                    if (currBoard[i - currDice.FirstDice].IsAvailable(color))
+                    if (i - currDice.FirstDice >= endpos)
+                    {
+                        if (currBoard[i - currDice.FirstDice].IsAvailable(Color))
+                        {
+                            return true;
+                        }
+                    }
+                    else
                     {
                         return true;
                     }
                 }
-                else
+                else if (!currDice.IsDouble &&
+                        currDice.SecondDice > 0)
                 {
-                    return true;
-                }
-                if (!currDice.IsDouble)
-                {
-                    if (currDice.SecondDice > 0 &&
-                        i - currDice.SecondDice >= 0)
+                    if (i - currDice.SecondDice >= endpos)
                     {
-                        if (currBoard[i - currDice.SecondDice].IsAvailable(color))
+                        if (currBoard[i - currDice.SecondDice].IsAvailable(Color))
                         {
                             return true;
                         }

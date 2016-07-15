@@ -19,7 +19,8 @@ namespace BackgammonUI
         public int Target { get; private set; }
         public int MoveVal { get; private set; }
         private readonly int numberOfPoints = 26;
-        private readonly int checkerBottom = 130;
+        // to do dynamic
+        private readonly int checkerBottom = 112;
         private readonly int greenBar = 24;
         private readonly int blackBar = 25;
         private readonly int initVal = 99;

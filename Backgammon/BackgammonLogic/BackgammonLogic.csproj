@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BackgammonLogic</RootNamespace>
     <AssemblyName>BackgammonLogic</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,11 +41,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bar.cs" />
+    <Compile Include="HumanPlayer.cs" />
     <Compile Include="WhitePlayer.cs" />
     <Compile Include="BlackPlayer.cs" />
     <Compile Include="Board.cs" />
     <Compile Include="CheckerColor.cs" />
-    <Compile Include="Dice.cs" />
+    <Compile Include="Dices.cs" />
     <Compile Include="GameController.cs" />
     <Compile Include="IPlayer.cs" />
     <Compile Include="IHumanPlayer.cs" />

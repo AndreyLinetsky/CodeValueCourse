@@ -11,7 +11,7 @@ namespace BackgammonLogic
         private BlackPlayer firstPlayer;
         private WhitePlayer secondPlayer;
         private Board gameBoard;
-        private Dice gameDice;
+        private Dices gameDice;
         private bool isFirstMove;
         private int barSource = 24;
 
@@ -28,7 +28,7 @@ namespace BackgammonLogic
                // secondPlayer = new WhitePlayer(CheckerColor.White);
             }
             gameBoard = new Board();
-            gameDice = new Dice();
+            gameDice = new Dices();
         }
         public bool IsFirstMove
         {

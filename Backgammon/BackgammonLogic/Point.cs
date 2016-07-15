@@ -8,78 +8,57 @@ namespace BackgammonLogic
 {
     public class Point
     {
-        private int checkersAmount;
-        private CheckerColor color;
-
         public Point()
         {
-            checkersAmount = 0;
-            color = CheckerColor.Empty;
+            CheckersAmount = 0;
+            Color = CheckerColor.Empty;
         }
+        public int CheckersAmount { get; private set; }
+        public CheckerColor Color { get; private set; }
         public Point(int initCheckers, CheckerColor initcolor)
         {
-            checkersAmount = initCheckers;
-            color = initcolor;
+            CheckersAmount = initCheckers;
+            Color = initcolor;
         }
 
-        public int CheckersAmount
-        {
-            get
-            {
-                return checkersAmount;
-            }
-        }
-
-        public CheckerColor Color
-        {
-            get
-            {
-                return color;
-            }
-        }
         public bool IsAvailable(CheckerColor inputColor)
         {
-            if (color == CheckerColor.Empty)
+            if (Color == CheckerColor.Empty)
             {
                 return true;
             }
-            else if (color == inputColor)
+            else if (Color == inputColor)
             {
                 return true;
             }
             else
             {
-                if (checkersAmount == 1)
+                if (CheckersAmount == 1)
                 {
                     return true;
                 }
             }
             return false;
         }
-        public bool RemoveChecker()
+        public void RemoveChecker()
         {
-            if (checkersAmount > 0)
+            if (CheckersAmount > 0)
             {
-                checkersAmount--;
-                if (checkersAmount == 0)
+                CheckersAmount--;
+                if (CheckersAmount == 0)
                 {
-                    color = CheckerColor.Empty;
+                    Color = CheckerColor.Empty;
                 }
-                return true;
-            }
-            else
-            {
-                return false;
             }
         }
         public void AddChecker()
         {
-            checkersAmount++;
+            CheckersAmount++;
         }
         public void AddChecker(CheckerColor newColor)
         {
-            color = newColor;
-            checkersAmount = 1;
+            Color = newColor;
+            CheckersAmount = 1;
         }
     }
 }

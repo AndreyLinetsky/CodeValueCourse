@@ -17,9 +17,9 @@ namespace BackgammonLogic
         bool MakeBarMove(int Move, Board currBoard);
         bool MakeMove(int currentIndex, int Move, Board currBoard);
         bool MakeBearOffMove(int currentIndex, int Move, Board currBoard);
-        bool CheckLegalBarMoves(Dice currDice, Board currBoard);
-        bool CheckLegalMoves(Dice currDice, Board currBoard);
-        bool CheckLegalBearOffMoves(Dice currDice, Board currBoard);
+        bool CheckLegalBarMoves(Dices currDice, Board currBoard);
+        bool CheckLegalMoves(Dices currDice, Board currBoard);
+        bool CheckLegalBearOffMoves(Dices currDice, Board currBoard);
 
     }
 }

@@ -151,7 +151,7 @@ namespace BackgammonLogic
             }
         }
 
-        public bool CheckLegalBarMoves(Dice currDice, Board currBoard)
+        public bool CheckLegalBarMoves(Dices currDice, Board currBoard)
         {
             if (currDice.FirstDice > 0 &&
                 currBoard[startPos + currDice.FirstDice].IsAvailable(color))
@@ -168,7 +168,7 @@ namespace BackgammonLogic
             }
             return false;
         }
-        public bool CheckLegalMoves(Dice currDice, Board currBoard)
+        public bool CheckLegalMoves(Dices currDice, Board currBoard)
         {
             for (int i = startPos + 1; i < 24; i++)
             {
@@ -192,7 +192,7 @@ namespace BackgammonLogic
             }
             return false;
         }
-        public bool CheckLegalBearOffMoves(Dice currDice, Board currBoard)
+        public bool CheckLegalBearOffMoves(Dices currDice, Board currBoard)
         {
             for (int i = homePos; i <= 23; i++)
             {
