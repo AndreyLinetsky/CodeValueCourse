@@ -11,6 +11,5 @@ namespace BackgammonLogic
         Empty,
         Green,
         Black,
-       
     }
 }

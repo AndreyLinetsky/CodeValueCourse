@@ -25,12 +25,22 @@ namespace BackgammonLogic
         }
 
         public Point[] Points { get; private set; }
-
+        public int BarSource { get; } = 24;
 
         private Bar FirstBar { get; set; }
         private Bar SecondBar { get; set; }
 
-
+        public bool NoCheckersLeft(CheckerColor color)
+        {
+            for (int i = 0; i < Points.Length; i++)
+            {
+                if (Points[i].Color == color)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
         public Bar GetBar(CheckerColor barColor)
         {
             if (FirstBar.Color == barColor)

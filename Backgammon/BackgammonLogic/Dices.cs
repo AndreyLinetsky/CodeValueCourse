@@ -24,6 +24,22 @@ namespace BackgammonLogic
             }
         }
 
+        public bool FirstDiceWasPlayed
+        {
+            get
+            {
+                return FirstDice == 0;
+            }
+        }
+
+        public bool SecondDiceWasPlayed
+        {
+            get
+            {
+                return SecondDice == 0;
+            }
+        }
+
         public void ThrowDice()
         {
             Random rnd = new Random();

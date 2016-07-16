@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace BackgammonLogic
 {
-    abstract class HumanPlayer : IHumanPlayer
+    public abstract class HumanPlayer : IPlayer
     {
         protected readonly int homePos;
         protected readonly int startPos;
         protected readonly int endpos;
-        public HumanPlayer(CheckerColor initColor, int initHomePos, int initStartPos, int initEndPos)
+
+        protected HumanPlayer(CheckerColor initColor, int initHomePos, int initStartPos, int initEndPos)
         {
             Color = initColor;
             Turns = 0;
@@ -24,24 +25,46 @@ namespace BackgammonLogic
         public int Turns { get; set; }
         public CheckerColor Color { get; private set; }
 
+        public bool Checklegality(Dices currDice, Board currBoard)
+        {
+            if (currBoard.GetBar(Color).Checkers > 0)
+            {
+                return CheckLegalBarMoves(currDice, currBoard);
+            }
+            else if (CheckBearOffStage(currBoard))
+            {
+                return CheckLegalBearOffMoves(currDice, currBoard);
+            }
+            else
+            {
+                return CheckLegalMoves(currDice, currBoard);
+            }
+        }
+        public bool PlayTurn(int sourceIndex, int move, Board currBoard)
+        {
+            if (sourceIndex == currBoard.BarSource)
+            {
+                return MakeBarMove(move, currBoard);
+            }
+
+            else if (CheckBearOffStage(currBoard))
+            {
+                return MakeBearOffMove(sourceIndex, move, currBoard);
+            }
+            else
+            {
+                return MakeMove(sourceIndex, move, currBoard);
+            }
+        }
+
         public abstract bool CheckBearOffStage(Board currBoard);
 
-        public bool IsPlayerWin(Board currBoard)
-        {
-            for (int i = 0; i < 24; i++)
-            {
-                if (currBoard[i].Color == Color)
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
-        public abstract bool MakeBarMove(int Move, Board currBoard);
 
-        public abstract bool MakeMove(int currentIndex, int Move, Board currBoard);
+        public abstract bool MakeBarMove(int move, Board currBoard);
 
-        public abstract bool MakeBearOffMove(int currentIndex, int Move, Board currBoard);
+        public abstract bool MakeMove(int currentIndex, int move, Board currBoard);
+
+        public abstract bool MakeBearOffMove(int currentIndex, int move, Board currBoard);
 
         public abstract bool CheckLegalBarMoves(Dices currDice, Board currBoard);
 

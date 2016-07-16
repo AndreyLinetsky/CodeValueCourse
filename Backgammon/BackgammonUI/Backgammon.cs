@@ -18,12 +18,12 @@ namespace BackgammonUI
         public int Source { get; private set; }
         public int Target { get; private set; }
         public int MoveVal { get; private set; }
-        private readonly int numberOfPoints = 26;
+        private const int numberOfPoints = 25;
         // to do dynamic
-        private readonly int checkerBottom = 112;
-        private readonly int greenBar = 24;
-        private readonly int blackBar = 25;
-        private readonly int initVal = 99;
+        private const int checkerBottom = 112;
+        private const int initVal = 99;
+        private const int checkerWidth = 22;
+        private const int checkerHeight = 15;
         public bool FirstTurn { get; private set; }
 
         public Backgammon(string type)
@@ -41,7 +41,7 @@ namespace BackgammonUI
             Game.DecideFirstTurn();
             Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject(string.Format("Dice{0}", Game.FirstDice));
             Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject(string.Format("Dice{0}", Game.secondDice));
-            if (Game.FirstDice > Game.secondDice)
+            if (Game.GameDice.FirstDice > Game.GameDice.SecondDice)
             {
                 turn.Text = "Black player turn";
                 Message.Text = "Black won the initial roll";
@@ -112,8 +112,6 @@ namespace BackgammonUI
             Graphics g = Graphics.FromImage(bmp);
             g.Clear(Color.Transparent);
             SolidBrush brush;
-            int checkerWidth = 22;
-            int checkerHeight = 15;
 
             if (currColor == Color.Black)
             {
@@ -270,39 +268,41 @@ namespace BackgammonUI
         }
         public void RefreshBoard()
         {
-            for (int i = 0; i < Game.GetBoard.Length / 2; i++)
+            // fix color to checker clor to remove ifs
+            for (int i = 0; i < Game.GameBoard.Points.Length / 2; i++)
             {
-                if (Game.GetBoard[i].Color == CheckerColor.Black)
+                if (Game.GameBoard[i].Color == CheckerColor.Black)
                 {
-                    DrawChekers(PointsArr[i], Color.Black, Game.GetBoard[i].CheckersAmount, false);
+                    DrawChekers(PointsArr[i], Color.Black, Game.GameBoard[i].CheckersAmount, false);
                 }
-                else if (Game.GetBoard[i].Color == CheckerColor.Green)
+                else if (Game.GameBoard[i].Color == CheckerColor.Green)
                 {
-                    DrawChekers(PointsArr[i], Color.Green, Game.GetBoard[i].CheckersAmount, false);
+                    DrawChekers(PointsArr[i], Color.Green, Game.GameBoard[i].CheckersAmount, false);
                 }
                 else
                 {
-                    DrawChekers(PointsArr[i], Color.Empty, Game.GetBoard[i].CheckersAmount, false);
+                    DrawChekers(PointsArr[i], Color.Empty, Game.GameBoard[i].CheckersAmount, false);
                 }
             }
 
-            for (int i = Game.GetBoard.Length / 2; i < Game.GetBoard.Length; i++)
+            for (int i = Game.GameBoard.Points.Length / 2; i < Game.GameBoard.Points.Length; i++)
             {
-                if (Game.GetBoard[i].Color == CheckerColor.Black)
+                if (Game.GameBoard[i].Color == CheckerColor.Black)
                 {
-                    DrawChekers(PointsArr[i], Color.Black, Game.GetBoard[i].CheckersAmount, true);
+                    DrawChekers(PointsArr[i], Color.Black, Game.GameBoard[i].CheckersAmount, true);
                 }
-                else if (Game.GetBoard[i].Color == CheckerColor.Green)
+                else if (Game.GameBoard[i].Color == CheckerColor.Green)
                 {
-                    DrawChekers(PointsArr[i], Color.Green, Game.GetBoard[i].CheckersAmount, true);
+                    DrawChekers(PointsArr[i], Color.Green, Game.GameBoard[i].CheckersAmount, true);
                 }
                 else
                 {
-                    DrawChekers(PointsArr[i], Color.Empty, Game.GetBoard[i].CheckersAmount, true);
+                    DrawChekers(PointsArr[i], Color.Empty, Game.GameBoard[i].CheckersAmount, true);
                 }
             }
 
-            // Refresh bar
+            // Refresh bar 
+            // think about both bars in one
             DrawChekers(PointsArr[greenBar], Color.Green, Game.SecondPlayerCheckersOnBar, true);
             DrawChekers(PointsArr[blackBar], Color.Black, Game.FirstPlayerCheckersOnBar, false);
         }

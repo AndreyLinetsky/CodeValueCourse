@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,200 +9,96 @@ namespace BackgammonLogic
 {
     public class GameController
     {
-        private BlackPlayer firstPlayer;
-        private WhitePlayer secondPlayer;
-        private Board gameBoard;
-        private Dices gameDice;
-        private bool isFirstMove;
-        private int barSource = 24;
-
         public GameController(int gameStyle)
         {
-            if(gameStyle == 1)
+            if (gameStyle == 1)
             {
-                firstPlayer = new BlackPlayer(CheckerColor.Black);
-                secondPlayer = new WhitePlayer(CheckerColor.Green);
+                FirstPlayer = new BlackPlayer(CheckerColor.Black, 5, 24, 0);
+                SecondPlayer = new GreenPlayer(CheckerColor.Green, 18, -1, 23);
             }
             else
             {
                 //firstPlayer = new BlackPlayer(CheckerColor.Black);
-               // secondPlayer = new WhitePlayer(CheckerColor.White);
+                // secondPlayer = new WhitePlayer(CheckerColor.White);
             }
-            gameBoard = new Board();
-            gameDice = new Dices();
-        }
-        public bool IsFirstMove
-        {
-            get
-            {
-                return isFirstMove;
-            }
-        }
-        public int FirstDice
-        {
-            get
-            {
-                return gameDice.FirstDice;
-            }
-        }
-        public int secondDice
-        {
-            get
-            {
-                return gameDice.SecondDice;
-            }
+            GameBoard = new Board();
+            GameDice = new Dices();
         }
 
-        public int FirstPlayerCheckersOnBar
-        {
-            get
-            {
-                return gameBoard.FirstPlayerBarCheckers;
-            }
-        }
+        public BlackPlayer FirstPlayer { get; private set; }
+        public GreenPlayer SecondPlayer { get; private set; }
+        public Board GameBoard { get; private set; }
+        public Dices GameDice { get; private set; }
+        public bool IsFirstMove { get; private set; }
 
-        public int SecondPlayerCheckersOnBar
-        {
-            get
-            {
-                return gameBoard.SecondPlayerBarCheckers;
-            }
-        }
 
         public bool IsGameOver
         {
             get
             {
-                if ((gameBoard.FirstPlayerBarCheckers == 0 &&
-                    firstPlayer.IsPlayerWon(gameBoard)) ||
-                   gameBoard.SecondPlayerBarCheckers == 0 &&
-                   secondPlayer.IsPlayerWon(gameBoard))
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                return GameBoard.GetBar(CurrentPlayer).Checkers == 0 &&
+                       GameBoard.NoCheckersLeft(CurrentPlayer);
             }
         }
 
-        public Point[] GetBoard
-        {
-            get
-            {
-                return gameBoard.GetBoard;
-            }
-        }
         public CheckerColor CurrentPlayer
         {
             get
             {
-                if (firstPlayer.IsPlayerTurn)
+                if (FirstPlayer.IsPlayerTurn)
                 {
-                    return firstPlayer.Color;
+                    return FirstPlayer.Color;
                 }
                 else
                 {
-                    return secondPlayer.Color;
+                    return SecondPlayer.Color;
                 }
             }
         }
+
         public void DecideFirstTurn()
         {
-            while (gameDice.FirstDice == gameDice.SecondDice)
+            while (GameDice.FirstDice == GameDice.SecondDice)
             {
-                gameDice.ThrowDice();
-                if (gameDice.FirstDice > gameDice.SecondDice)
+                GameDice.ThrowDice();
+                if (GameDice.FirstDice > GameDice.SecondDice)
                 {
-                    firstPlayer.IsPlayerTurn = true;
-                    firstPlayer.Turns = 2;
-                    isFirstMove = true;
+                    FirstPlayer.IsPlayerTurn = true;
+                    FirstPlayer.Turns = 2;
+                    IsFirstMove = true;
                 }
-                else if (gameDice.FirstDice < gameDice.SecondDice)
+                else if (GameDice.FirstDice < GameDice.SecondDice)
                 {
-                    secondPlayer.IsPlayerTurn = true;
-                    secondPlayer.Turns = 2;
-                    isFirstMove = true;
+                    SecondPlayer.IsPlayerTurn = true;
+                    SecondPlayer.Turns = 2;
+                    IsFirstMove = true;
                 }
             }
         }
 
         public void ThrowDice()
         {
-            gameDice.ThrowDice();
-            if (firstPlayer.IsPlayerTurn)
+            int currTurns = 2;
+            GameDice.ThrowDice();
+            if (GameDice.IsDouble)
             {
-                if (gameDice.IsDouble)
-                {
-                    firstPlayer.Turns = 4;
-                }
-                else
-                {
-                    firstPlayer.Turns = 2;
-                }
+                currTurns = 4;
+            }
+            if (FirstPlayer.IsPlayerTurn)
+            {
+                FirstPlayer.Turns = currTurns;
             }
             else
             {
-                if (gameDice.IsDouble)
-                {
-                    secondPlayer.Turns = 4;
-                }
-                else
-                {
-                    secondPlayer.Turns = 2;
-                }
+                SecondPlayer.Turns = currTurns;
             }
         }
 
         public bool CheckLegalMoves()
         {
-            if (firstPlayer.IsPlayerTurn)
+            if (FirstPlayer.IsPlayerTurn)
             {
-                if (gameBoard.FirstPlayerBarCheckers > 0)
-                {
-                    if (firstPlayer.CheckLegalBarMoves(gameDice, gameBoard))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        SwapTurns();
-                        return false;
-                    }
-                }
-                else
-                {
-                    if (firstPlayer.CheckBearOffStage(gameBoard))
-                    {
-                        if (firstPlayer.CheckLegalBearOffMoves(gameDice, gameBoard))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            SwapTurns();
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        if (firstPlayer.CheckLegalMoves(gameDice, gameBoard))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            SwapTurns();
-                            return false;
-                        }
-                    }
-                }
-            }
-            else
-           if (gameBoard.SecondPlayerBarCheckers > 0)
-            {
-                if (secondPlayer.CheckLegalBarMoves(gameDice, gameBoard))
+                if (FirstPlayer.Checklegality(GameDice, GameBoard))
                 {
                     return true;
                 }
@@ -211,276 +108,126 @@ namespace BackgammonLogic
                     return false;
                 }
             }
+
             else
             {
-                if (secondPlayer.CheckBearOffStage(gameBoard))
+                if (SecondPlayer.Checklegality(GameDice, GameBoard))
                 {
-                    if (secondPlayer.CheckLegalBearOffMoves(gameDice, gameBoard))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        SwapTurns();
-                        return false;
-                    }
+                    return true;
                 }
                 else
                 {
-                    if (secondPlayer.CheckLegalMoves(gameDice, gameBoard))
-                    {
-                        return true;
-                    }
-                    else
-                    {
-                        SwapTurns();
-                        return false;
-                    }
+                    SwapTurns();
+                    return false;
                 }
             }
         }
 
         public void SwapTurns()
         {
-            if (firstPlayer.IsPlayerTurn)
+            IsFirstMove = true;
+            if (FirstPlayer.IsPlayerTurn)
             {
-                firstPlayer.IsPlayerTurn = false;
-                secondPlayer.IsPlayerTurn = true;
-                isFirstMove = true;
-                firstPlayer.Turns = 0;
+                FirstPlayer.IsPlayerTurn = false;
+                SecondPlayer.IsPlayerTurn = true;
+                FirstPlayer.Turns = 0;
             }
             else
             {
-                firstPlayer.IsPlayerTurn = true;
-                secondPlayer.IsPlayerTurn = false;
-                isFirstMove = true;
-                secondPlayer.Turns = 0;
+                FirstPlayer.IsPlayerTurn = true;
+                SecondPlayer.IsPlayerTurn = false;
+                SecondPlayer.Turns = 0;
             }
         }
-        public bool PlayTurn(int SourceIndex, int Move)
+
+        public bool PlayTurn(int sourceIndex, int move)
         {
-            if (Move != gameDice.FirstDice &&
-                Move != gameDice.SecondDice)
+            if (move != GameDice.FirstDice &&
+                move != GameDice.SecondDice)
             {
                 return false;
             }
 
-            if (Move > 6 ||
-                Move < 1)
+            if (move > 6 ||
+                move < 1)
             {
                 return false;
             }
 
-            if (SourceIndex > 24 ||
-                SourceIndex < 0)
+            if (sourceIndex > GameBoard.BarSource ||
+                sourceIndex < 0)
             {
                 return false;
             }
-            if (firstPlayer.IsPlayerTurn)
+            if (GameBoard.GetBar(CurrentPlayer).Checkers > 0 &&
+                sourceIndex != GameBoard.BarSource)
             {
-                if (gameBoard.FirstPlayerBarCheckers > 0 &&
-                    SourceIndex != barSource)
+                return false;
+            }
+            if (GameBoard.GetBar(CurrentPlayer).Checkers == 0 &&
+                sourceIndex == GameBoard.BarSource)
+            {
+                return false;
+            }
+            if (sourceIndex != GameBoard.BarSource &&
+                GameBoard[sourceIndex].Color != CurrentPlayer)
+            {
+                return false;
+            }
+            if (FirstPlayer.IsPlayerTurn)
+            {
+                if (FirstPlayer.PlayTurn(sourceIndex, move, GameBoard))
                 {
-                    return false;
-                }
-                if (gameBoard.FirstPlayerBarCheckers == 0 &&
-                    SourceIndex == barSource)
-                {
-                    return false;
-                }
-                if (SourceIndex != barSource &&
-                    gameBoard[SourceIndex].Color != firstPlayer.Color)
-                {
-                    return false;
-                }
-
-                if (SourceIndex == barSource)
-                {
-                    if (firstPlayer.MakeBarMove(Move, gameBoard))
+                    IsFirstMove = false;
+                    FirstPlayer.Turns--;
+                    if (FirstPlayer.Turns == 0)
                     {
-                        isFirstMove = false;
-                        firstPlayer.Turns--;
-                        if (firstPlayer.Turns == 0)
-                        {
-                            SwapTurns();
-                        }
-                        else if (!gameDice.IsDouble)
-                        {
-                            if (Move == gameDice.FirstDice)
-                            {
-                                gameDice.ResetFirstDice();
-                            }
-                            else
-                            {
-                                gameDice.ResetSecondDice();
-                            }
-                        }
-                        return true;
+                        SwapTurns();
                     }
-                    else
+                    else if (!GameDice.IsDouble)
                     {
-                        return false;
-                    }
-                }
-
-                else if (firstPlayer.CheckBearOffStage(gameBoard))
-                {
-                    if (firstPlayer.MakeBearOffMove(SourceIndex, Move, gameBoard))
-                    {
-                        isFirstMove = false;
-                        firstPlayer.Turns--;
-                        if (firstPlayer.Turns == 0)
+                        if (move == GameDice.FirstDice)
                         {
-                            SwapTurns();
+                            GameDice.ResetFirstDice();
                         }
-                        else if (!gameDice.IsDouble)
+                        else
                         {
-                            if (Move == gameDice.FirstDice)
-                            {
-                                gameDice.ResetFirstDice();
-                            }
-                            else
-                            {
-                                gameDice.ResetSecondDice();
-                            }
+                            GameDice.ResetSecondDice();
                         }
-                        return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
                 }
                 else
                 {
-                    if (firstPlayer.MakeMove(SourceIndex, Move, gameBoard))
-                    {
-                        isFirstMove = false;
-                        firstPlayer.Turns--;
-                        if (firstPlayer.Turns == 0)
-                        {
-                            SwapTurns();
-                        }
-                        else if (!gameDice.IsDouble)
-                        {
-                            if (Move == gameDice.FirstDice)
-                            {
-                                gameDice.ResetFirstDice();
-                            }
-                            else
-                            {
-                                gameDice.ResetSecondDice();
-                            }
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
             else
             {
-                if (gameBoard.SecondPlayerBarCheckers > 0 &&
-                    SourceIndex != barSource)
+                if (SecondPlayer.PlayTurn(sourceIndex, move, GameBoard))
                 {
-                    return false;
-                }
-                if (gameBoard.SecondPlayerBarCheckers == 0 &&
-                    SourceIndex == barSource)
-                {
-                    return false;
-                }
-                if (SourceIndex != barSource &&
-                    gameBoard[SourceIndex].Color != secondPlayer.Color)
-                {
-                    return false;
-                }
-                if (SourceIndex == barSource)
-                {
-                    if (secondPlayer.MakeBarMove(Move, gameBoard))
+                    IsFirstMove = false;
+                    SecondPlayer.Turns--;
+                    if (SecondPlayer.Turns == 0)
                     {
-                        isFirstMove = false;
-                        secondPlayer.Turns--;
-                        if (secondPlayer.Turns == 0)
-                        {
-                            SwapTurns();
-                        }
-                        else if (!gameDice.IsDouble)
-                        {
-                            if (Move == gameDice.FirstDice)
-                            {
-                                gameDice.ResetFirstDice();
-                            }
-                            else
-                            {
-                                gameDice.ResetSecondDice();
-                            }
-                        }
-                        return true;
+                        SwapTurns();
                     }
-                    else
+                    else if (!GameDice.IsDouble)
                     {
-                        return false;
-                    }
-                }
-
-                else if (secondPlayer.CheckBearOffStage(gameBoard))
-                {
-                    if (secondPlayer.MakeBearOffMove(SourceIndex, Move, gameBoard))
-                    {
-                        isFirstMove = false;
-                        secondPlayer.Turns--;
-                        if (secondPlayer.Turns == 0)
+                        if (move == GameDice.FirstDice)
                         {
-                            SwapTurns();
+                            GameDice.ResetFirstDice();
                         }
-                        else if (!gameDice.IsDouble)
+                        else
                         {
-                            if (Move == gameDice.FirstDice)
-                            {
-                                gameDice.ResetFirstDice();
-                            }
-                            else
-                            {
-                                gameDice.ResetSecondDice();
-                            }
+                            GameDice.ResetSecondDice();
                         }
-                        return true;
                     }
-                    else
-                    {
-                        return false;
-                    }
+                    return true;
                 }
                 else
                 {
-                    if (secondPlayer.MakeMove(SourceIndex, Move, gameBoard))
-                    {
-                        isFirstMove = false;
-                        secondPlayer.Turns--;
-                        if (secondPlayer.Turns == 0)
-                        {
-                            SwapTurns();
-                        }
-                        else if (!gameDice.IsDouble)
-                        {
-                            if (Move == gameDice.FirstDice)
-                            {
-                                gameDice.ResetFirstDice();
-                            }
-                            else
-                            {
-                                gameDice.ResetSecondDice();
-                            }
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    return false;
                 }
             }
         }
