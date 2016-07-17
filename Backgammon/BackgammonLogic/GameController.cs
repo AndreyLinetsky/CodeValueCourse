@@ -32,12 +32,24 @@ namespace BackgammonLogic
         public bool IsFirstMove { get; private set; }
 
 
-        public bool IsGameOver
+        public CheckerColor PlayerWon
         {
             get
             {
-                return GameBoard.GetBar(CurrentPlayer).Checkers == 0 &&
-                       GameBoard.NoCheckersLeft(CurrentPlayer);
+                if (GameBoard.GetBar(CheckerColor.Black).Checkers == 0 &&
+                    GameBoard.NoCheckersLeft(CheckerColor.Black))
+                {
+                    return CheckerColor.Black;
+                }
+                else if (GameBoard.GetBar(CheckerColor.Green).Checkers == 0 &&
+                         GameBoard.NoCheckersLeft(CheckerColor.Green))
+                {
+                    return CheckerColor.Green;
+                }
+                else
+                {
+                    return CheckerColor.Empty;
+                }
             }
         }
 
@@ -52,6 +64,21 @@ namespace BackgammonLogic
                 else
                 {
                     return SecondPlayer.Color;
+                }
+            }
+        }
+
+        public bool IsBearOffStage
+        {
+            get
+            {
+                if (FirstPlayer.IsPlayerTurn)
+                {
+                    return FirstPlayer.CheckBearOffStage(GameBoard);
+                }
+                else
+                {
+                    return SecondPlayer.CheckBearOffStage(GameBoard);
                 }
             }
         }

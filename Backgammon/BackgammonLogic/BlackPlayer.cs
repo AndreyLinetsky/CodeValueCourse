@@ -54,7 +54,7 @@ namespace BackgammonLogic
         }
         public override bool MakeMove(int currentIndex, int move, Board currBoard)
         {
-            if (currentIndex - move < startPos)
+            if (currentIndex - move < endpos)
             {
                 return false;
             }
@@ -85,9 +85,9 @@ namespace BackgammonLogic
         }
         public override bool MakeBearOffMove(int currentIndex, int move, Board currBoard)
         {
-            if (currentIndex - move < startPos)
+            if (currentIndex - move < endpos)
             {
-                if (currentIndex - move < startPos - 1)
+                if (currentIndex - move < endpos - 1)
                 {
                     for (int i = homePos; i > currentIndex; i--)
                     {
@@ -160,7 +160,7 @@ namespace BackgammonLogic
         }
         public override bool CheckLegalBearOffMoves(Dices currDice, Board currBoard)
         {
-            for (int i = startPos; i <= homePos; i++)
+            for (int i = endpos; i <= homePos; i++)
             {
                 if (!currDice.FirstDiceWasPlayed)
                 {
