@@ -19,14 +19,19 @@ namespace BackgammonUI
         private void button1_Click_1(object sender, EventArgs e)
         {
             this.Hide();
-            if (Human.Enabled)
+            if (radioButton1.Checked)
             {
-                Backgammon backgammon = new Backgammon("Human");
+                Backgammon backgammon = new Backgammon(1);
+                backgammon.ShowDialog();
+            }
+            else if(radioButton2.Checked)
+            {
+                Backgammon backgammon = new Backgammon(2);
                 backgammon.ShowDialog();
             }
             else
             {
-                Backgammon backgammon = new Backgammon("AI");
+                Backgammon backgammon = new Backgammon(3);
                 backgammon.ShowDialog();
             }
             this.Close();

@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.Human = new System.Windows.Forms.RadioButton();
-            this.AI = new System.Windows.Forms.RadioButton();
             this.button1 = new System.Windows.Forms.Button();
+            this.radioButton1 = new System.Windows.Forms.RadioButton();
+            this.radioButton2 = new System.Windows.Forms.RadioButton();
+            this.radioButton3 = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
@@ -43,31 +44,9 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Please choose game style";
             // 
-            // Human
-            // 
-            this.Human.AutoSize = true;
-            this.Human.Checked = true;
-            this.Human.Location = new System.Drawing.Point(118, 81);
-            this.Human.Name = "Human";
-            this.Human.Size = new System.Drawing.Size(139, 21);
-            this.Human.TabIndex = 1;
-            this.Human.TabStop = true;
-            this.Human.Text = "Human vs human";
-            this.Human.UseVisualStyleBackColor = true;
-            // 
-            // AI
-            // 
-            this.AI.AutoSize = true;
-            this.AI.Location = new System.Drawing.Point(118, 117);
-            this.AI.Name = "AI";
-            this.AI.Size = new System.Drawing.Size(108, 21);
-            this.AI.TabIndex = 2;
-            this.AI.Text = "Human vs AI";
-            this.AI.UseVisualStyleBackColor = true;
-            // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(142, 167);
+            this.button1.Location = new System.Drawing.Point(135, 183);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 24);
             this.button1.TabIndex = 3;
@@ -75,14 +54,45 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click_1);
             // 
+            // radioButton1
+            // 
+            this.radioButton1.AutoSize = true;
+            this.radioButton1.Location = new System.Drawing.Point(118, 68);
+            this.radioButton1.Name = "radioButton1";
+            this.radioButton1.Size = new System.Drawing.Size(130, 21);
+            this.radioButton1.TabIndex = 4;
+            this.radioButton1.Text = "Player vs player";
+            this.radioButton1.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2
+            // 
+            this.radioButton2.AutoSize = true;
+            this.radioButton2.Location = new System.Drawing.Point(118, 106);
+            this.radioButton2.Name = "radioButton2";
+            this.radioButton2.Size = new System.Drawing.Size(144, 21);
+            this.radioButton2.TabIndex = 5;
+            this.radioButton2.Text = "Player vs green AI";
+            this.radioButton2.UseVisualStyleBackColor = true;
+            // 
+            // radioButton3
+            // 
+            this.radioButton3.AutoSize = true;
+            this.radioButton3.Location = new System.Drawing.Point(118, 145);
+            this.radioButton3.Name = "radioButton3";
+            this.radioButton3.Size = new System.Drawing.Size(140, 21);
+            this.radioButton3.TabIndex = 6;
+            this.radioButton3.Text = "Player vs black AI";
+            this.radioButton3.UseVisualStyleBackColor = true;
+            // 
             // OpenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 253);
+            this.Controls.Add(this.radioButton3);
+            this.Controls.Add(this.radioButton2);
+            this.Controls.Add(this.radioButton1);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.AI);
-            this.Controls.Add(this.Human);
             this.Controls.Add(this.label1);
             this.Name = "OpenForm";
             this.Text = "Backgammon";
@@ -94,9 +104,10 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.RadioButton Human;
-        private System.Windows.Forms.RadioButton AI;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.RadioButton radioButton1;
+        private System.Windows.Forms.RadioButton radioButton2;
+        private System.Windows.Forms.RadioButton radioButton3;
     }
 }
 

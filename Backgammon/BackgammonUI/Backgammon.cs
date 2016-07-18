@@ -16,59 +16,51 @@ namespace BackgammonUI
         public GameController Game { get; private set; }
         public PictureBox[] PointsArr { get; private set; }
         public int Source { get; private set; }
-        public int MoveVal { get; private set; }
-        public int CheckerBottom { get; }
-        private const int numberOfPoints = 25;
+        public int Target { get; private set; }
         private const int initVal = 99;
         private const int checkerWidth = 22;
         private const int checkerHeight = 15;
         public bool FirstTurn { get; private set; }
 
-        public Backgammon(string type)
+        public Backgammon(int type)
         {
             InitializeComponent();
-            CheckerBottom = Point0.Height - checkerHeight;
             InitBoard();
-            if (string.Equals(type, "Human"))
+            if (type == 1)
             {
                 Game = new GameController(1);
             }
-            else
+            else if (type == 2)
             {
                 Game = new GameController(2);
             }
-            Game.DecideFirstTurn();
-            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject(string.Format("Dice{0}", Game.GameDice.FirstDice));
-            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject(string.Format("Dice{0}", Game.GameDice.SecondDice));
-            if (Game.GameDice.FirstDice > Game.GameDice.SecondDice)
-            {
-                turn.Text = "Black player turn";
-                Message.Text = "Black won the initial roll";
-            }
             else
             {
-                turn.Text = "Green player turn";
-                Message.Text = "Green won the initial roll";
+                Game = new GameController(3);
             }
-            roll.Enabled = false;
+            Game.DecideFirstTurn();
+            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.FirstDice}");
+            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.SecondDice}");
+            RefreshTurn();
+            Message.Text = $"{Game.PlayerColor.ToString()} won the initial roll";
+            RefreshBoard();
         }
 
         public void InitBoard()
         {
-            board.Image = Properties.Resources.Optimized_Game_Board_BackgammonFull_Red_White_3;
             Source = initVal;
-            MoveVal = initVal;
+            Target = initVal;
             FirstTurn = true;
             PointsArr = this.Controls.OfType<PictureBox>()
-            .Where(pb => pb.Name.StartsWith("Point"))
-            .OrderBy(pb => int.Parse(pb.Name.Replace("Point", "")))
-            .ToArray<PictureBox>();
+                .Where(pb => pb.Name.StartsWith("Point"))
+                .OrderBy(pb => int.Parse(pb.Name.Replace("Point", "")))
+                .ToArray<PictureBox>();
 
-            for (int i = 0; i < numberOfPoints; i++)
+            foreach (PictureBox currPic in PointsArr)
             {
-                PointsArr[i].Parent = board;
-                PointsArr[i].BackColor = Color.Transparent;
-                PointsArr[i].Click += pictureBox_Click;
+                currPic.Parent = board;
+                currPic.BackColor = Color.Transparent;
+                currPic.Click += pictureBox_Click;
             }
             for (int i = 0; i < PointsArr.Length; i++)
             {
@@ -115,7 +107,7 @@ namespace BackgammonUI
             {
                 for (int i = 0; i < blackCheckers; i++)
                 {
-                    g.FillEllipse(brush, 0, i * 15, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, i * checkerHeight, checkerWidth, checkerHeight);
                 }
             }
             if (greenCheckers > 0)
@@ -123,13 +115,14 @@ namespace BackgammonUI
                 brush = new SolidBrush(Color.Green);
                 for (int i = 0; i < greenCheckers; i++)
                 {
-                    g.FillEllipse(brush, 0, (blackCheckers + i) * 15, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, (blackCheckers + i) * checkerHeight, checkerWidth, checkerHeight);
                 }
             }
             currPicture.Image = bmp;
             brush.Dispose();
             g.Dispose();
         }
+
         public void DrawChekers(PictureBox currPicture, CheckerColor currColor, int checkers, bool isTopLine)
         {
             Bitmap bmp = new Bitmap(currPicture.Width, currPicture.Height);
@@ -149,11 +142,11 @@ namespace BackgammonUI
             {
                 if (isTopLine)
                 {
-                    g.FillEllipse(brush, 0, i * 15, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, i * checkerHeight, checkerWidth, checkerHeight);
                 }
                 else
                 {
-                    g.FillEllipse(brush, 0, CheckerBottom - i * 15, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, Point0.Height - checkerHeight - i * checkerHeight, checkerWidth, checkerHeight);
                 }
             }
             currPicture.Image = bmp;
@@ -161,7 +154,12 @@ namespace BackgammonUI
             g.Dispose();
         }
 
-        void pictureBox_Click(object sender, EventArgs e)
+        public void RefreshTurn()
+        {
+            turn.Text = $"{Game.PlayerColor.ToString()} player turn";
+        }
+
+        public void pictureBox_Click(object sender, EventArgs e)
         {
             if (FirstTurn)
             {
@@ -195,83 +193,36 @@ namespace BackgammonUI
                 Message.BackColor = SystemColors.Control;
                 Message.Text = "Select you source point";
             }
-            else if (index == Game.GameBoard.BarSource)
-            {
-                Message.BackColor = Color.Red;
-                Message.Text = "You cannot move into bar";
-            }
-            else if (Source == Game.GameBoard.BarSource)
-            {
-                if (Game.CurrentPlayer == CheckerColor.Green)
-                {
-                    if (index > 5)
-                    {
-                        Message.BackColor = Color.Red;
-                        Message.Text = "Illegal green bar move";
-                    }
-                    else
-                    {
-                        MoveVal = index + 1;
-                        PlayTurn();
-                    }
-                }
-                else
-                {
-                    if (index < 18 || index > 23)
-                    {
-                        Message.BackColor = Color.Red;
-                        Message.Text = "Illegal black bar move";
-                    }
-                    else
-                    {
-                        MoveVal = Game.GameBoard.BarSource - index;
-                        PlayTurn();
-                    }
-                }
-            }
             else
             {
-                if (Game.CurrentPlayer == CheckerColor.Black &&
-                          index > Source)
-                {
-                    Message.BackColor = Color.Red;
-                    Message.Text = "Black moves counter clockwise";
-                }
-                else if (Game.CurrentPlayer == CheckerColor.Green &&
-                    index < Source)
-                {
-                    Message.BackColor = Color.Red;
-                    Message.Text = "Green moves clockwise";
-                }
-                else
-                {
-                    MoveVal = Math.Abs(index - Source);
-                    PlayTurn();
-                }
+                Target = index;
+                PlayTurn();
             }
         }
+
 
         public void CheckLegalMoves()
         {
             if (!Game.CheckLegalMoves())
             {
-                turn.Text = string.Format("{0} player turn", Game.CurrentPlayer.ToString());
+                RefreshTurn();
                 Message.Text = "No legal moves were found";
                 Message.BackColor = Color.Red;
                 roll.Enabled = true;
             }
         }
+
         public void PlayTurn()
         {
-            if (Game.PlayTurn(Source, MoveVal))
+            if (Game.PlayTurn(Source, Target))
             {
                 PointsArr[Source].BackColor = Color.Transparent;
                 RefreshBoard();
                 Source = initVal;
-                MoveVal = initVal;
+                Target = initVal;
                 if (Game.PlayerWon == CheckerColor.Empty)
                 {
-                    turn.Text = String.Format("{0} player turn", Game.CurrentPlayer.ToString());
+                    RefreshTurn();
                     Message.Text = "";
                     Message.BackColor = SystemColors.Control;
                     if (Game.IsFirstMove)
@@ -301,11 +252,12 @@ namespace BackgammonUI
             }
             else
             {
-                MoveVal = initVal;
+                Target = initVal;
                 Message.Text = "Illegal move";
                 Message.BackColor = Color.Red;
             }
         }
+
         public void RefreshBoard()
         {
             for (int i = 0; i < Game.GameBoard.Points.Length / 2; i++)
@@ -319,14 +271,15 @@ namespace BackgammonUI
             }
 
             // Refresh bar 
-            DrawBarChekers(PointsArr[Game.GameBoard.BarSource], Game.GameBoard.GetBar(CheckerColor.Black).Checkers, Game.GameBoard.GetOtherBar(CheckerColor.Black).Checkers);
+            DrawBarChekers(PointsArr[Game.GameBoard.BarSource], Game.GameBoard.GetBar(CheckerColor.Black).Checkers,
+                Game.GameBoard.GetOtherBar(CheckerColor.Black).Checkers);
         }
 
         private void roll_Click(object sender, EventArgs e)
         {
             Game.ThrowDice();
-            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject(string.Format("Dice{0}", Game.GameDice.FirstDice));
-            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject(string.Format("Dice{0}", Game.GameDice.SecondDice));
+            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.FirstDice}");
+            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.SecondDice}");
             roll.Enabled = false;
             Message.BackColor = SystemColors.Control;
             Message.Text = "Select you source point";
@@ -339,24 +292,14 @@ namespace BackgammonUI
                 Game.IsBearOffStage &&
                 Source != initVal)
             {
-                if (Game.CurrentPlayer == CheckerColor.Black)
+                Target = Game.CheckBounds(Source, Game.GameDice.FirstDice);
+                if (Target != -1)
                 {
-                    if (Source - Game.GameDice.FirstDice < 0)
-                    {
-                        MoveVal = Game.GameDice.FirstDice;
-                        PlayTurn();
-                    }
-                }
-                else
-                {
-                    if (Source + Game.GameDice.FirstDice >= Game.GameBoard.BarSource)
-                    {
-                        MoveVal = Game.GameDice.FirstDice;
-                        PlayTurn();
-                    }
+                    PlayTurn();
                 }
             }
         }
+
 
         private void Dice2_Click(object sender, EventArgs e)
         {
@@ -364,21 +307,10 @@ namespace BackgammonUI
                 Game.IsBearOffStage &&
                 Source != initVal)
             {
-                if (Game.CurrentPlayer == CheckerColor.Black)
+                Target = Game.CheckBounds(Source, Game.GameDice.SecondDice);
+                if (Target != -1)
                 {
-                    if (Source - Game.GameDice.SecondDice < 0)
-                    {
-                        MoveVal = Game.GameDice.SecondDice;
-                        PlayTurn();
-                    }
-                }
-                else
-                {
-                    if (Source + Game.GameDice.SecondDice >= Game.GameBoard.BarSource)
-                    {
-                        MoveVal = Game.GameDice.SecondDice;
-                        PlayTurn();
-                    }
+                    PlayTurn();
                 }
             }
         }

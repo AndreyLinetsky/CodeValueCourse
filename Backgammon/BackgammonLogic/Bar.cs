@@ -20,10 +20,7 @@ namespace BackgammonLogic
 
         public void RemoveBarChecker()
         {
-            if (Checkers > 0)
-            {
-                Checkers--;
-            }
+            Checkers--;
         }
 
         public void AddBarChecker()

@@ -104,6 +104,7 @@
             // 
             // roll
             // 
+            this.roll.Enabled = false;
             this.roll.Location = new System.Drawing.Point(693, 89);
             this.roll.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.roll.Name = "roll";
