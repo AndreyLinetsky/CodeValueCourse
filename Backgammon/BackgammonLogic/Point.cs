@@ -27,7 +27,7 @@ namespace BackgammonLogic
         public void RemoveChecker()
         {
             CheckersAmount--;
-            if (CheckersAmount == 0)
+            if (CheckersAmount < 1)
             {
                 Color = CheckerColor.Empty;
             }

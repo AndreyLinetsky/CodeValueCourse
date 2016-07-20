@@ -192,9 +192,9 @@ namespace BackgammonLogic
 
         public void OperateAi(Player currPlayer)
         {
-            while (PlayerWon != currPlayer.Color &&
+            while (PlayerWon == CheckerColor.Empty &&
                 currPlayer.Turns > 0 &&
-                CheckLegalMoves())
+                CurrentPlayer.Checklegality(GameDice, GameBoard))
             {
                 KeyValuePair<int, int> currMove = currPlayer.PlayAiTurn(GameDice, GameBoard);
                 currPlayer.Turns--;
