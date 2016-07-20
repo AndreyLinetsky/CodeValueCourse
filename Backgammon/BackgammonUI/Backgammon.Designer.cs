@@ -147,9 +147,8 @@
             this.Message.AutoSize = true;
             this.Message.Location = new System.Drawing.Point(652, 302);
             this.Message.Name = "Message";
-            this.Message.Size = new System.Drawing.Size(65, 17);
+            this.Message.Size = new System.Drawing.Size(0, 17);
             this.Message.TabIndex = 5;
-            this.Message.Text = "Message";
             // 
             // Dice1
             // 

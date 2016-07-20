@@ -35,6 +35,7 @@ namespace BackgammonLogic
         public Board GameBoard { get; private set; }
         public Dices GameDice { get; private set; }
         public bool IsFirstMove { get; private set; }
+        public CheckerColor StartingColor { get; private set; }
 
 
         public CheckerColor PlayerWon
@@ -105,6 +106,7 @@ namespace BackgammonLogic
                     FirstPlayer.IsPlayerTurn = true;
                     FirstPlayer.Turns = 2;
                     IsFirstMove = true;
+                    StartingColor = PlayerColor;
                     if (FirstPlayer.IsComputer)
                     {
                         OperateAi(FirstPlayer);
@@ -115,6 +117,7 @@ namespace BackgammonLogic
                     SecondPlayer.IsPlayerTurn = true;
                     SecondPlayer.Turns = 2;
                     IsFirstMove = true;
+                    StartingColor = PlayerColor;
                     if (SecondPlayer.IsComputer)
                     {
                         OperateAi(SecondPlayer);
@@ -150,6 +153,18 @@ namespace BackgammonLogic
             else
             {
                 SwapTurns();
+                if (CurrentPlayer.IsComputer)
+                {
+                    ThrowDice();
+                    if (FirstPlayer.IsPlayerTurn)
+                    {
+                        OperateAi(FirstPlayer);
+                    }
+                    else
+                    {
+                        OperateAi(SecondPlayer);
+                    }
+                }
                 return false;
             }
         }
@@ -165,142 +180,68 @@ namespace BackgammonLogic
                 FirstPlayer.IsPlayerTurn = false;
                 SecondPlayer.IsPlayerTurn = true;
                 FirstPlayer.Turns = 0;
-                if (SecondPlayer.IsComputer)
-                {
-                    GameDice.ThrowDice();
-                    OperateAi(SecondPlayer);
-                }
             }
             else
             {
                 FirstPlayer.IsPlayerTurn = true;
                 SecondPlayer.IsPlayerTurn = false;
                 SecondPlayer.Turns = 0;
-                if (FirstPlayer.IsComputer)
-                {
-                    GameDice.ThrowDice();
-                    OperateAi(FirstPlayer);
-                }
             }
 
         }
 
         public void OperateAi(Player currPlayer)
         {
-            while (currPlayer.Turns > 0 &&
+            while (PlayerWon != currPlayer.Color &&
+                currPlayer.Turns > 0 &&
                 CheckLegalMoves())
             {
-                KeyValuePair<int, int> currMove = FirstPlayer.PlayAiTurn(GameDice, GameBoard);
+                KeyValuePair<int, int> currMove = currPlayer.PlayAiTurn(GameDice, GameBoard);
                 currPlayer.Turns--;
                 if (!GameDice.IsDouble)
                 {
-                    if (PlayerColor == CheckerColor.Black)
+                    if (currPlayer.Color == CheckerColor.Black)
                     {
                         if (currMove.Key - currMove.Value == GameDice.FirstDice)
                         {
-                            GameDice.ResetFirstDice();
+                            GameDice.DisableFirstDice();
                         }
                         else
                         {
-                            GameDice.ResetSecondDice();
+                            GameDice.DisableSecondDice();
                         }
                     }
                     else
                     {
-                        if (currMove.Value - currMove.Key == GameDice.FirstDice)
+                        int gameMove;
+                        if (currMove.Key == GameBoard.BarSource)
                         {
-                            GameDice.ResetFirstDice();
+                            gameMove = currMove.Value + 1;
                         }
                         else
                         {
-                            GameDice.ResetSecondDice();
+                            gameMove = currMove.Value - currMove.Key;
+                        }
+                        if (gameMove == GameDice.FirstDice)
+                        {
+                            GameDice.DisableFirstDice();
+                        }
+                        else
+                        {
+                            GameDice.DisableSecondDice();
                         }
                     }
                 }
             }
+            if (PlayerWon != currPlayer.Color)
+            {
+                SwapTurns();
+            }
         }
-        public bool ValidateTurn(int sourceIndex, int targetIndex)
-        {
-            if (sourceIndex > GameBoard.BarSource ||
-                sourceIndex < 0)
-            {
-                return false;
-            }
-            if (targetIndex > 29 ||
-                targetIndex < -6)
-            {
-                return false;
-            }
-            if (sourceIndex == targetIndex)
-            {
-                return false;
-            }
-            if (GameBoard.GetBar(PlayerColor).Checkers > 0 &&
-                    sourceIndex != GameBoard.BarSource)
-            {
-                return false;
-            }
-            if (GameBoard.GetBar(PlayerColor).Checkers == 0 &&
-                sourceIndex == GameBoard.BarSource)
-            {
-                return false;
-            }
-            if (sourceIndex != GameBoard.BarSource &&
-                GameBoard[sourceIndex].Color != PlayerColor)
-            {
-                return false;
-            }
-            if (PlayerColor == CheckerColor.Green &&
-                sourceIndex != GameBoard.BarSource)
-            {
-                if (targetIndex - sourceIndex != GameDice.FirstDice &&
-                       targetIndex - sourceIndex != GameDice.SecondDice)
-                {
-                    return false;
-                }
-            }
-            if (PlayerColor == CheckerColor.Black &&
-                 sourceIndex != GameBoard.BarSource)
-            {
-                if (sourceIndex - targetIndex != GameDice.FirstDice &&
-                        sourceIndex - targetIndex != GameDice.SecondDice)
-                {
-                    return false;
-                }
-            }
-            if (sourceIndex == GameBoard.BarSource &&
-                PlayerColor == CheckerColor.Green &&
-                (targetIndex > 5 || targetIndex < 0))
-            {
-                return false;
-            }
-            if (sourceIndex == GameBoard.BarSource &&
-                PlayerColor == CheckerColor.Black &&
-                (targetIndex > 23 || targetIndex < 18))
-            {
-                return false;
-            }
-            if (sourceIndex == GameBoard.BarSource &&
-                PlayerColor == CheckerColor.Green &&
-                targetIndex + 1 != GameDice.FirstDice &&
-                targetIndex + 1 != GameDice.SecondDice)
-            {
-                return false;
-            }
-            if (sourceIndex == GameBoard.BarSource &&
-                PlayerColor == CheckerColor.Black &&
-                GameBoard.BarSource - targetIndex != GameDice.FirstDice &&
-                GameBoard.BarSource - targetIndex != GameDice.SecondDice)
-            {
-                return false;
-            }
-            return true;
-        }
-
 
         public bool PlayTurn(int sourceIndex, int targetIndex)
         {
-            if (!ValidateTurn(sourceIndex, targetIndex))
+            if (!CurrentPlayer.ValidateTurn(GameDice, GameBoard, sourceIndex, targetIndex))
             {
                 return false;
             }
@@ -314,16 +255,21 @@ namespace BackgammonLogic
                     if (FirstPlayer.Turns == 0)
                     {
                         SwapTurns();
+                        if (SecondPlayer.IsComputer)
+                        {
+                            ThrowDice();
+                            OperateAi(SecondPlayer);
+                        }
                     }
                     else if (!GameDice.IsDouble)
                     {
                         if (sourceIndex - targetIndex == GameDice.FirstDice)
                         {
-                            GameDice.ResetFirstDice();
+                            GameDice.DisableFirstDice();
                         }
                         else
                         {
-                            GameDice.ResetSecondDice();
+                            GameDice.DisableSecondDice();
                         }
                     }
                     return true;
@@ -342,16 +288,21 @@ namespace BackgammonLogic
                     if (SecondPlayer.Turns == 0)
                     {
                         SwapTurns();
+                        if (FirstPlayer.IsComputer)
+                        {
+                            ThrowDice();
+                            OperateAi(FirstPlayer);
+                        }
                     }
                     else if (!GameDice.IsDouble)
                     {
                         if (targetIndex - sourceIndex == GameDice.FirstDice)
                         {
-                            GameDice.ResetFirstDice();
+                            GameDice.DisableFirstDice();
                         }
                         else
                         {
-                            GameDice.ResetSecondDice();
+                            GameDice.DisableSecondDice();
                         }
                     }
                     return true;

@@ -42,6 +42,22 @@ namespace BackgammonLogic
                 return GetAvailableMoves(currDice, currBoard).ToList().Count > 0;
             }
         }
+
+        public bool ValidateTurn(Dices currDice, Board currBoard,int sourceIndex, int targetIndex)
+        {
+            if (currBoard.GetBar(Color).Checkers > 0)
+            {
+                return GetAvailableBarMoves(currDice, currBoard).ToList().Contains(new KeyValuePair<int, int>(sourceIndex,targetIndex));
+            }
+            else if (CheckBearOffStage(currBoard))
+            {
+                return GetAvailableBearOffMoves(currDice, currBoard).ToList().Contains(new KeyValuePair<int, int>(sourceIndex, targetIndex)); ;
+            }
+            else
+            {
+                return GetAvailableMoves(currDice, currBoard).ToList().Contains(new KeyValuePair<int, int>(sourceIndex, targetIndex)); ;
+            }
+        }
         public bool PlayTurn(int sourceIndex, int target, Board currBoard)
         {
             if (sourceIndex == currBoard.BarSource)

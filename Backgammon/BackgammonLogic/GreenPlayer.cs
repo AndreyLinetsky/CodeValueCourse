@@ -32,11 +32,11 @@ namespace BackgammonLogic
         {
             if (source + move <= endpos)
             {
-                return source + move;
+                return 99;
             }
             else
             {
-                return -1;
+                return source + move;
             }
         }
         public override bool MakeBearOffMove(int currentIndex, int target, Board currBoard)
@@ -86,14 +86,16 @@ namespace BackgammonLogic
             {
                 if (!currDice.FirstDiceWasPlayed &&
                     i + currDice.FirstDice <= endpos &&
-                    currBoard[i + currDice.FirstDice].IsAvailable(Color))
+                    currBoard[i + currDice.FirstDice].IsAvailable(Color) &&
+                    currBoard[i].Color == Color)
                 {
                     currMoves.Add(new KeyValuePair<int, int>(i, i + currDice.FirstDice));
                 }
                 if (!currDice.IsDouble &&
                     !currDice.SecondDiceWasPlayed &&
                     i + currDice.SecondDice <= endpos &&
-                    currBoard[i + currDice.SecondDice].IsAvailable(Color))
+                    currBoard[i + currDice.SecondDice].IsAvailable(Color) &&
+                    currBoard[i].Color == Color)
                 {
                     currMoves.Add(new KeyValuePair<int, int>(i, i + currDice.SecondDice));
                 }
@@ -105,7 +107,8 @@ namespace BackgammonLogic
             List<KeyValuePair<int, int>> currMoves = new List<KeyValuePair<int, int>>();
             for (int i = homePos; i <= endpos; i++)
             {
-                if (!currDice.FirstDiceWasPlayed)
+                if (!currDice.FirstDiceWasPlayed &&
+                    currBoard[i].Color == Color)
                 {
                     if (i + currDice.FirstDice <= endpos)
                     {
@@ -119,8 +122,9 @@ namespace BackgammonLogic
                         currMoves.Add(new KeyValuePair<int, int>(i, i + currDice.FirstDice));
                     }
                 }
-                else if (!currDice.IsDouble &&
-                       !currDice.SecondDiceWasPlayed)
+                if (!currDice.IsDouble &&
+                       !currDice.SecondDiceWasPlayed &&
+                       currBoard[i].Color == Color)
                 {
                     if (i + currDice.SecondDice <= endpos)
                     {

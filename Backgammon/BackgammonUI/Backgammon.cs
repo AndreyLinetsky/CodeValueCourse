@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using BackgammonLogic;
-
+using System.Threading;
 namespace BackgammonUI
 {
     public partial class Backgammon : Form
@@ -39,10 +39,10 @@ namespace BackgammonUI
                 Game = new GameController(3);
             }
             Game.DecideFirstTurn();
-            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.FirstDice}");
-            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.SecondDice}");
-            RefreshTurn();
-            Message.Text = $"{Game.PlayerColor.ToString()} won the initial roll";
+            if (Game.PlayerColor != Game.StartingColor)
+            {
+                roll.Enabled = true;
+            }
             RefreshBoard();
         }
 
@@ -222,7 +222,6 @@ namespace BackgammonUI
                 Target = initVal;
                 if (Game.PlayerWon == CheckerColor.Empty)
                 {
-                    RefreshTurn();
                     Message.Text = "";
                     Message.BackColor = SystemColors.Control;
                     if (Game.IsFirstMove)
@@ -260,6 +259,8 @@ namespace BackgammonUI
 
         public void RefreshBoard()
         {
+            ShowDice();
+            RefreshTurn();
             for (int i = 0; i < Game.GameBoard.Points.Length / 2; i++)
             {
                 DrawChekers(PointsArr[i], Game.GameBoard[i].Color, Game.GameBoard[i].CheckersAmount, false);
@@ -275,11 +276,15 @@ namespace BackgammonUI
                 Game.GameBoard.GetOtherBar(CheckerColor.Black).Checkers);
         }
 
+        public void ShowDice()
+        {
+            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.FirstDice}");
+            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.SecondDice}");
+        }
         private void roll_Click(object sender, EventArgs e)
         {
             Game.ThrowDice();
-            Dice1.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.FirstDice}");
-            Dice2.Image = (Image)Properties.Resources.ResourceManager.GetObject($"Dice{Game.GameDice.SecondDice}");
+            ShowDice();
             roll.Enabled = false;
             Message.BackColor = SystemColors.Control;
             Message.Text = "Select you source point";
@@ -293,7 +298,7 @@ namespace BackgammonUI
                 Source != initVal)
             {
                 Target = Game.CheckBounds(Source, Game.GameDice.FirstDice);
-                if (Target != -1)
+                if (Target != initVal)
                 {
                     PlayTurn();
                 }
@@ -308,7 +313,7 @@ namespace BackgammonUI
                 Source != initVal)
             {
                 Target = Game.CheckBounds(Source, Game.GameDice.SecondDice);
-                if (Target != -1)
+                if (Target != initVal)
                 {
                     PlayTurn();
                 }

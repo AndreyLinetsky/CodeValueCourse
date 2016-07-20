@@ -10,8 +10,10 @@ namespace BackgammonLogic
     {
         public Dices()
         {
-            ResetFirstDice();
-            ResetSecondDice();
+            DisableFirstDice();
+            DisableSecondDice();
+            FirstDice = 0;
+            SecondDice = 0;
         }
         public int FirstDice { get; private set; }
         public int SecondDice { get; private set; }
@@ -24,35 +26,26 @@ namespace BackgammonLogic
             }
         }
 
-        public bool FirstDiceWasPlayed
-        {
-            get
-            {
-                return FirstDice == 0;
-            }
-        }
-
-        public bool SecondDiceWasPlayed
-        {
-            get
-            {
-                return SecondDice == 0;
-            }
-        }
+        public bool FirstDiceWasPlayed { get; private set; }
+       
+        public bool SecondDiceWasPlayed { get; private set; }
+        
 
         public void ThrowDice()
         {
             Random rnd = new Random();
             FirstDice = rnd.Next(1, 7);
             SecondDice = rnd.Next(1, 7);
+            FirstDiceWasPlayed = false;
+            SecondDiceWasPlayed = false;
         }
-        public void ResetFirstDice()
+        public void DisableFirstDice()
         {
-            FirstDice = 0;
+            FirstDiceWasPlayed = true;
         }
-        public void ResetSecondDice()
+        public void DisableSecondDice()
         {
-            SecondDice = 0;
+            SecondDiceWasPlayed = true;
         }
     }
 }
