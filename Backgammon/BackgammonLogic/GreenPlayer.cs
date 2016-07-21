@@ -44,7 +44,11 @@ namespace BackgammonLogic
                     {
                         if (currBoard[i].Color == Color)
                         {
-                            return false;
+                            if (!CheckMoveBounds(i, target - currentIndex) ||
+                                currBoard[GetMoveBounds(i, target - currentIndex)].IsAvailable(Color))
+                            {
+                                return false;
+                            }
                         }
                     }
                 }

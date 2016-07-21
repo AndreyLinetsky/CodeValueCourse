@@ -31,8 +31,6 @@
             this.board = new System.Windows.Forms.PictureBox();
             this.roll = new System.Windows.Forms.Button();
             this.turn = new System.Windows.Forms.Label();
-            this.BlackLab = new System.Windows.Forms.Label();
-            this.GreenLab = new System.Windows.Forms.Label();
             this.Message = new System.Windows.Forms.Label();
             this.Dice1 = new System.Windows.Forms.PictureBox();
             this.Dice2 = new System.Windows.Forms.PictureBox();
@@ -123,24 +121,6 @@
             this.turn.Size = new System.Drawing.Size(38, 17);
             this.turn.TabIndex = 2;
             this.turn.Text = "Turn";
-            // 
-            // BlackLab
-            // 
-            this.BlackLab.AutoSize = true;
-            this.BlackLab.Location = new System.Drawing.Point(663, 153);
-            this.BlackLab.Name = "BlackLab";
-            this.BlackLab.Size = new System.Drawing.Size(42, 17);
-            this.BlackLab.TabIndex = 3;
-            this.BlackLab.Text = "Black";
-            // 
-            // GreenLab
-            // 
-            this.GreenLab.AutoSize = true;
-            this.GreenLab.Location = new System.Drawing.Point(749, 153);
-            this.GreenLab.Name = "GreenLab";
-            this.GreenLab.Size = new System.Drawing.Size(48, 17);
-            this.GreenLab.TabIndex = 4;
-            this.GreenLab.Text = "Green";
             // 
             // Message
             // 
@@ -431,8 +411,6 @@
             this.Controls.Add(this.Dice2);
             this.Controls.Add(this.Dice1);
             this.Controls.Add(this.Message);
-            this.Controls.Add(this.GreenLab);
-            this.Controls.Add(this.BlackLab);
             this.Controls.Add(this.turn);
             this.Controls.Add(this.roll);
             this.Controls.Add(this.board);
@@ -477,8 +455,6 @@
         private System.Windows.Forms.PictureBox board;
         private System.Windows.Forms.Button roll;
         private System.Windows.Forms.Label turn;
-        private System.Windows.Forms.Label BlackLab;
-        private System.Windows.Forms.Label GreenLab;
         private System.Windows.Forms.Label Message;
         private System.Windows.Forms.PictureBox Dice1;
         private System.Windows.Forms.PictureBox Dice2;

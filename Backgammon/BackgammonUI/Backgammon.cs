@@ -20,7 +20,6 @@ namespace BackgammonUI
         public int InitVal { get; } = 99;
         public int CheckerWidth { get; } = 22;
         public int CheckerHeight { get; } = 15;
-        public bool FirstTurn { get; private set; }
 
         public Backgammon(bool isFirstAi, bool isSecondAi)
         {
@@ -28,18 +27,17 @@ namespace BackgammonUI
             InitBoard();
             Game = new GameController(isFirstAi, isSecondAi);
             Game.DecideFirstTurn();
-            if (Game.CurrentPlayer.Color != Game.StartingColor)
-            {
-                roll.Enabled = true;
-            }
             RefreshBoard();
+            if (Game.CurrentPlayer.IsComputer)
+            {
+                OperateAi();
+            }
         }
 
         public void InitBoard()
         {
             Source = InitVal;
             Target = InitVal;
-            FirstTurn = true;
             PointsArr = this.Controls.OfType<PictureBox>()
                 .Where(pb => pb.Name.StartsWith("Point"))
                 .OrderBy(pb => int.Parse(pb.Name.Replace("Point", "")))
@@ -148,14 +146,34 @@ namespace BackgammonUI
             turn.Text = $"{Game.CurrentPlayer.Color} player turn";
         }
 
+        public void OperateAi()
+        {
+            // While for a case when both players are AI
+            while (Game.CurrentPlayer.IsComputer &&
+                   Game.PlayerWon == CheckerColor.Empty)
+            {
+                Game.PlayAiTurn();
+                RefreshBoard();
+            }
+            if (Game.PlayerWon == CheckerColor.Green)
+            {
+                Message.Text = "Green player won";
+                Message.BackColor = Color.Gold;
+            }
+            else if (Game.PlayerWon == CheckerColor.Black)
+            {
+                Message.Text = "Black player won";
+                Message.BackColor = Color.Gold;
+            }
+            else
+            {
+                Message.BackColor = SystemColors.Control;
+                roll.Enabled = true;
+                Message.Text = "Roll the dice";
+            }
+        }
         public void pictureBox_Click(object sender, EventArgs e)
         {
-            if (FirstTurn)
-            {
-                BlackLab.Visible = false;
-                GreenLab.Visible = false;
-                FirstTurn = false;
-            }
             PictureBox currPicture = sender as PictureBox;
             int index = Array.IndexOf(PointsArr, currPicture);
             if (roll.Enabled)
@@ -197,7 +215,14 @@ namespace BackgammonUI
                 RefreshTurn();
                 Message.Text = "No legal moves were found";
                 Message.BackColor = Color.Red;
-                roll.Enabled = true;
+                if (Game.CurrentPlayer.IsComputer)
+                {
+                    OperateAi();
+                }
+                else
+                {
+                    roll.Enabled = true;
+                }
             }
         }
 
@@ -213,10 +238,17 @@ namespace BackgammonUI
                 {
                     Message.Text = "";
                     Message.BackColor = SystemColors.Control;
-                    if (Game.IsFirstMove)
+                    if (Game.IsTurnStart)
                     {
-                        roll.Enabled = true;
-                        Message.Text = "Roll the dice";
+                        if (Game.CurrentPlayer.IsComputer)
+                        {
+                            OperateAi();
+                        }
+                        else
+                        {
+                            roll.Enabled = true;
+                            Message.Text = "Roll the dice";
+                        }
                     }
                     else
                     {

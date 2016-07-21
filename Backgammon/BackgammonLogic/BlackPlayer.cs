@@ -43,7 +43,11 @@ namespace BackgammonLogic
                     {
                         if (currBoard[i].Color == Color)
                         {
-                            return false;
+                            if (!CheckMoveBounds(i, currentIndex - target) ||
+                                currBoard[GetMoveBounds(i, currentIndex - target)].IsAvailable(Color))
+                            {
+                                return false;
+                            }
                         }
                     }
                 }
@@ -75,7 +79,7 @@ namespace BackgammonLogic
         public override IEnumerable<KeyValuePair<int, int>> GetAvailableMoves(Dices currDice, Board currBoard)
         {
             List<KeyValuePair<int, int>> currMoves = new List<KeyValuePair<int, int>>();
-            for (int i = Endpos; i < StartPos; i++)
+            for (int i = StartPos - 1; i >= Endpos; i--)
             {
                 if (!currDice.FirstDiceWasPlayed &&
                     i - currDice.FirstDice >= Endpos &&
@@ -98,7 +102,7 @@ namespace BackgammonLogic
         public override IEnumerable<KeyValuePair<int, int>> GetAvailableBearOffMoves(Dices currDice, Board currBoard)
         {
             List<KeyValuePair<int, int>> currMoves = new List<KeyValuePair<int, int>>();
-            for (int i = Endpos; i <= HomePos; i++)
+            for (int i = HomePos; i >= Endpos; i--)
             {
                 if (!currDice.FirstDiceWasPlayed &&
                     currBoard[i].Color == Color)

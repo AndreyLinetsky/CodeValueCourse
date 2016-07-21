@@ -21,8 +21,8 @@ namespace BackgammonLogic
         public Player SecondPlayer { get; private set; }
         public Board GameBoard { get; private set; }
         public Dices GameDice { get; private set; }
-        public bool IsFirstMove { get; private set; }
-        public CheckerColor StartingColor { get; private set; }
+        public bool IsTurnStart { get; private set; }
+        
 
 
         public CheckerColor PlayerWon
@@ -78,23 +78,13 @@ namespace BackgammonLogic
                 {
                     FirstPlayer.IsPlayerTurn = true;
                     FirstPlayer.Turns = 2;
-                    IsFirstMove = true;
-                    StartingColor = CurrentPlayer.Color;
-                    if (FirstPlayer.IsComputer)
-                    {
-                        OperateAi(FirstPlayer);
-                    }
+                    IsTurnStart = true;
                 }
                 else if (GameDice.FirstDice < GameDice.SecondDice)
                 {
                     SecondPlayer.IsPlayerTurn = true;
                     SecondPlayer.Turns = 2;
-                    IsFirstMove = true;
-                    StartingColor = CurrentPlayer.Color;
-                    if (SecondPlayer.IsComputer)
-                    {
-                        OperateAi(SecondPlayer);
-                    }
+                    IsTurnStart = true;
                 }
             }
         }
@@ -126,18 +116,6 @@ namespace BackgammonLogic
             else
             {
                 SwapTurns();
-                if (CurrentPlayer.IsComputer)
-                {
-                    ThrowDice();
-                    if (FirstPlayer.IsPlayerTurn)
-                    {
-                        OperateAi(FirstPlayer);
-                    }
-                    else
-                    {
-                        OperateAi(SecondPlayer);
-                    }
-                }
                 return false;
             }
         }
@@ -151,7 +129,7 @@ namespace BackgammonLogic
         }
         public void SwapTurns()
         {
-            IsFirstMove = true;
+            IsTurnStart = true;
             if (FirstPlayer.IsPlayerTurn)
             {
                 FirstPlayer.IsPlayerTurn = false;
@@ -167,6 +145,18 @@ namespace BackgammonLogic
 
         }
 
+        public void PlayAiTurn()
+        {
+            ThrowDice();
+            if (FirstPlayer.IsPlayerTurn)
+            {
+                OperateAi(FirstPlayer);
+            }
+            else
+            {
+                OperateAi(SecondPlayer);
+            }
+        }
         public void OperateAi(Player currPlayer)
         {
             while (PlayerWon == CheckerColor.Empty &&
@@ -227,16 +217,11 @@ namespace BackgammonLogic
             {
                 if (FirstPlayer.PlayTurn(sourceIndex, targetIndex, GameBoard))
                 {
-                    IsFirstMove = false;
+                    IsTurnStart = false;
                     FirstPlayer.Turns--;
                     if (FirstPlayer.Turns == 0)
                     {
                         SwapTurns();
-                        if (SecondPlayer.IsComputer)
-                        {
-                            ThrowDice();
-                            OperateAi(SecondPlayer);
-                        }
                     }
                     else if (!GameDice.IsDouble)
                     {
@@ -260,16 +245,11 @@ namespace BackgammonLogic
             {
                 if (SecondPlayer.PlayTurn(sourceIndex, targetIndex, GameBoard))
                 {
-                    IsFirstMove = false;
+                    IsTurnStart = false;
                     SecondPlayer.Turns--;
                     if (SecondPlayer.Turns == 0)
                     {
                         SwapTurns();
-                        if (FirstPlayer.IsComputer)
-                        {
-                            ThrowDice();
-                            OperateAi(FirstPlayer);
-                        }
                     }
                     else if (!GameDice.IsDouble)
                     {
