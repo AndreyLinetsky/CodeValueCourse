@@ -21,17 +21,22 @@ namespace BackgammonUI
             this.Hide();
             if (radioButton1.Checked)
             {
-                Backgammon backgammon = new Backgammon(1);
+                Backgammon backgammon = new Backgammon(false,false);
                 backgammon.ShowDialog();
             }
             else if(radioButton2.Checked)
             {
-                Backgammon backgammon = new Backgammon(2);
+                Backgammon backgammon = new Backgammon(false,true);
+                backgammon.ShowDialog();
+            }
+            else if(radioButton3.Checked)
+            {
+                Backgammon backgammon = new Backgammon(true,false);
                 backgammon.ShowDialog();
             }
             else
             {
-                Backgammon backgammon = new Backgammon(3);
+                Backgammon backgammon = new Backgammon(true, true);
                 backgammon.ShowDialog();
             }
             this.Close();

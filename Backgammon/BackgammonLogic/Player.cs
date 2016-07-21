@@ -8,20 +8,19 @@ namespace BackgammonLogic
 {
     public abstract class Player
     {
-        protected readonly int homePos;
-        protected readonly int startPos;
-        protected readonly int endpos;
-
-        protected Player(CheckerColor initColor, int initHomePos, int initStartPos, int initEndPos, bool isAI)
+        protected Player(CheckerColor initColor, int initHomePos, int initStartPos, int initEndpos, bool isAI)
         {
             Color = initColor;
             Turns = 0;
             IsPlayerTurn = false;
-            startPos = initStartPos;
-            homePos = initHomePos;
-            endpos = initEndPos;
+            StartPos = initStartPos;
+            HomePos = initHomePos;
+            Endpos = initEndpos;
             IsComputer = isAI;
         }
+        public int HomePos { get; }
+        public int StartPos { get; }
+        public int Endpos { get; }
         public bool IsPlayerTurn { get; set; }
         public int Turns { get; set; }
         public bool IsComputer { get; private set; }
@@ -43,11 +42,11 @@ namespace BackgammonLogic
             }
         }
 
-        public bool ValidateTurn(Dices currDice, Board currBoard,int sourceIndex, int targetIndex)
+        public bool ValidateTurn(Dices currDice, Board currBoard, int sourceIndex, int targetIndex)
         {
             if (currBoard.GetBar(Color).Checkers > 0)
             {
-                return GetAvailableBarMoves(currDice, currBoard).ToList().Contains(new KeyValuePair<int, int>(sourceIndex,targetIndex));
+                return GetAvailableBarMoves(currDice, currBoard).ToList().Contains(new KeyValuePair<int, int>(sourceIndex, targetIndex));
             }
             else if (CheckBearOffStage(currBoard))
             {
@@ -71,14 +70,7 @@ namespace BackgammonLogic
             }
             else
             {
-                if (!CheckMoveBounds(target))
-                {
-                    return false;
-                }
-                else
-                {
-                    return MakeMove(sourceIndex, target, currBoard);
-                }
+                return MakeMove(sourceIndex, target, currBoard);
             }
         }
 
@@ -154,8 +146,8 @@ namespace BackgammonLogic
             return true;
         }
         public abstract bool CheckBearOffStage(Board currBoard);
-        public abstract bool CheckMoveBounds(int target);
-        public abstract int CheckMoveBounds(int source, int move);
+        public abstract bool CheckMoveBounds(int source, int move);
+        public abstract int GetMoveBounds(int source, int move);
         public abstract bool MakeBearOffMove(int currentIndex, int target, Board currBoard);
 
         public abstract IEnumerable<KeyValuePair<int, int>> GetAvailableBarMoves(Dices currDice, Board currBoard);

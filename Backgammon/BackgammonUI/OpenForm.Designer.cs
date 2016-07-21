@@ -33,6 +33,7 @@
             this.radioButton1 = new System.Windows.Forms.RadioButton();
             this.radioButton2 = new System.Windows.Forms.RadioButton();
             this.radioButton3 = new System.Windows.Forms.RadioButton();
+            this.radioButton4 = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // label1
@@ -46,7 +47,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(135, 183);
+            this.button1.Location = new System.Drawing.Point(134, 208);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(91, 24);
             this.button1.TabIndex = 3;
@@ -84,11 +85,22 @@
             this.radioButton3.Text = "Player vs black AI";
             this.radioButton3.UseVisualStyleBackColor = true;
             // 
+            // radioButton4
+            // 
+            this.radioButton4.AutoSize = true;
+            this.radioButton4.Location = new System.Drawing.Point(118, 172);
+            this.radioButton4.Name = "radioButton4";
+            this.radioButton4.Size = new System.Drawing.Size(75, 21);
+            this.radioButton4.TabIndex = 7;
+            this.radioButton4.Text = "AI vs AI";
+            this.radioButton4.UseVisualStyleBackColor = true;
+            // 
             // OpenForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 253);
+            this.Controls.Add(this.radioButton4);
             this.Controls.Add(this.radioButton3);
             this.Controls.Add(this.radioButton2);
             this.Controls.Add(this.radioButton1);
@@ -108,6 +120,7 @@
         private System.Windows.Forms.RadioButton radioButton1;
         private System.Windows.Forms.RadioButton radioButton2;
         private System.Windows.Forms.RadioButton radioButton3;
+        private System.Windows.Forms.RadioButton radioButton4;
     }
 }
 

@@ -9,23 +9,10 @@ namespace BackgammonLogic
 {
     public class GameController
     {
-        public GameController(int gameStyle)
+        public GameController(bool isFirstAi, bool isSecondAi)
         {
-            if (gameStyle == 1)
-            {
-                FirstPlayer = new BlackPlayer(CheckerColor.Black, 5, 24, 0, false);
-                SecondPlayer = new GreenPlayer(CheckerColor.Green, 18, -1, 23, false);
-            }
-            else if (gameStyle == 2)
-            {
-                FirstPlayer = new BlackPlayer(CheckerColor.Black, 5, 24, 0, false);
-                SecondPlayer = new GreenPlayer(CheckerColor.Green, 18, -1, 23, true);
-            }
-            else
-            {
-                FirstPlayer = new BlackPlayer(CheckerColor.Black, 5, 24, 0, true);
-                SecondPlayer = new GreenPlayer(CheckerColor.Green, 18, -1, 23, false);
-            }
+            FirstPlayer = new BlackPlayer(CheckerColor.Black, 5, 24, 0, isFirstAi);
+            SecondPlayer = new GreenPlayer(CheckerColor.Green, 18, -1, 23, isSecondAi);
             GameBoard = new Board();
             GameDice = new Dices();
         }
@@ -59,20 +46,6 @@ namespace BackgammonLogic
             }
         }
 
-        public CheckerColor PlayerColor
-        {
-            get
-            {
-                if (FirstPlayer.IsPlayerTurn)
-                {
-                    return FirstPlayer.Color;
-                }
-                else
-                {
-                    return SecondPlayer.Color;
-                }
-            }
-        }
         public Player CurrentPlayer
         {
             get
@@ -106,7 +79,7 @@ namespace BackgammonLogic
                     FirstPlayer.IsPlayerTurn = true;
                     FirstPlayer.Turns = 2;
                     IsFirstMove = true;
-                    StartingColor = PlayerColor;
+                    StartingColor = CurrentPlayer.Color;
                     if (FirstPlayer.IsComputer)
                     {
                         OperateAi(FirstPlayer);
@@ -117,7 +90,7 @@ namespace BackgammonLogic
                     SecondPlayer.IsPlayerTurn = true;
                     SecondPlayer.Turns = 2;
                     IsFirstMove = true;
-                    StartingColor = PlayerColor;
+                    StartingColor = CurrentPlayer.Color;
                     if (SecondPlayer.IsComputer)
                     {
                         OperateAi(SecondPlayer);
@@ -168,9 +141,13 @@ namespace BackgammonLogic
                 return false;
             }
         }
-        public int CheckBounds(int source, int move)
+        public bool CheckBounds(int source, int move)
         {
             return CurrentPlayer.CheckMoveBounds(source, move);
+        }
+        public int GetBounds(int source, int move)
+        {
+            return CurrentPlayer.GetMoveBounds(source, move);
         }
         public void SwapTurns()
         {
@@ -194,7 +171,7 @@ namespace BackgammonLogic
         {
             while (PlayerWon == CheckerColor.Empty &&
                 currPlayer.Turns > 0 &&
-                CurrentPlayer.Checklegality(GameDice, GameBoard))
+                currPlayer.Checklegality(GameDice, GameBoard))
             {
                 KeyValuePair<int, int> currMove = currPlayer.PlayAiTurn(GameDice, GameBoard);
                 currPlayer.Turns--;

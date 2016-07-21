@@ -17,29 +17,18 @@ namespace BackgammonUI
         public PictureBox[] PointsArr { get; private set; }
         public int Source { get; private set; }
         public int Target { get; private set; }
-        private const int initVal = 99;
-        private const int checkerWidth = 22;
-        private const int checkerHeight = 15;
+        public int InitVal { get; } = 99;
+        public int CheckerWidth { get; } = 22;
+        public int CheckerHeight { get; } = 15;
         public bool FirstTurn { get; private set; }
 
-        public Backgammon(int type)
+        public Backgammon(bool isFirstAi, bool isSecondAi)
         {
             InitializeComponent();
             InitBoard();
-            if (type == 1)
-            {
-                Game = new GameController(1);
-            }
-            else if (type == 2)
-            {
-                Game = new GameController(2);
-            }
-            else
-            {
-                Game = new GameController(3);
-            }
+            Game = new GameController(isFirstAi, isSecondAi);
             Game.DecideFirstTurn();
-            if (Game.PlayerColor != Game.StartingColor)
+            if (Game.CurrentPlayer.Color != Game.StartingColor)
             {
                 roll.Enabled = true;
             }
@@ -48,8 +37,8 @@ namespace BackgammonUI
 
         public void InitBoard()
         {
-            Source = initVal;
-            Target = initVal;
+            Source = InitVal;
+            Target = InitVal;
             FirstTurn = true;
             PointsArr = this.Controls.OfType<PictureBox>()
                 .Where(pb => pb.Name.StartsWith("Point"))
@@ -107,7 +96,7 @@ namespace BackgammonUI
             {
                 for (int i = 0; i < blackCheckers; i++)
                 {
-                    g.FillEllipse(brush, 0, i * checkerHeight, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, i * CheckerHeight, CheckerWidth, CheckerHeight);
                 }
             }
             if (greenCheckers > 0)
@@ -115,7 +104,7 @@ namespace BackgammonUI
                 brush = new SolidBrush(Color.Green);
                 for (int i = 0; i < greenCheckers; i++)
                 {
-                    g.FillEllipse(brush, 0, (blackCheckers + i) * checkerHeight, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, (blackCheckers + i) * CheckerHeight, CheckerWidth, CheckerHeight);
                 }
             }
             currPicture.Image = bmp;
@@ -142,11 +131,11 @@ namespace BackgammonUI
             {
                 if (isTopLine)
                 {
-                    g.FillEllipse(brush, 0, i * checkerHeight, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, i * CheckerHeight, CheckerWidth, CheckerHeight);
                 }
                 else
                 {
-                    g.FillEllipse(brush, 0, Point0.Height - checkerHeight - i * checkerHeight, checkerWidth, checkerHeight);
+                    g.FillEllipse(brush, 0, Point0.Height - CheckerHeight - i * CheckerHeight, CheckerWidth, CheckerHeight);
                 }
             }
             currPicture.Image = bmp;
@@ -156,7 +145,7 @@ namespace BackgammonUI
 
         public void RefreshTurn()
         {
-            turn.Text = $"{Game.PlayerColor.ToString()} player turn";
+            turn.Text = $"{Game.CurrentPlayer.Color} player turn";
         }
 
         public void pictureBox_Click(object sender, EventArgs e)
@@ -179,7 +168,7 @@ namespace BackgammonUI
                 Message.BackColor = Color.Red;
                 Message.Text = "Game is over";
             }
-            else if (Source == initVal)
+            else if (Source == InitVal)
             {
                 Source = index;
                 PointsArr[index].BackColor = Color.LightSkyBlue;
@@ -188,7 +177,7 @@ namespace BackgammonUI
             }
             else if (Source == index)
             {
-                Source = initVal;
+                Source = InitVal;
                 PointsArr[index].BackColor = Color.Transparent;
                 Message.BackColor = SystemColors.Control;
                 Message.Text = "Select you source point";
@@ -218,8 +207,8 @@ namespace BackgammonUI
             {
                 PointsArr[Source].BackColor = Color.Transparent;
                 RefreshBoard();
-                Source = initVal;
-                Target = initVal;
+                Source = InitVal;
+                Target = InitVal;
                 if (Game.PlayerWon == CheckerColor.Empty)
                 {
                     Message.Text = "";
@@ -251,7 +240,7 @@ namespace BackgammonUI
             }
             else
             {
-                Target = initVal;
+                Target = InitVal;
                 Message.Text = "Illegal move";
                 Message.BackColor = Color.Red;
             }
@@ -295,10 +284,11 @@ namespace BackgammonUI
         {
             if (roll.Enabled == false &&
                 Game.IsBearOffStage &&
-                Source != initVal)
+                Source != InitVal &&
+                !Game.CheckBounds(Source, Game.GameDice.FirstDice))
             {
-                Target = Game.CheckBounds(Source, Game.GameDice.FirstDice);
-                if (Target != initVal)
+                Target = Game.GetBounds(Source, Game.GameDice.FirstDice);
+                if (Target != InitVal)
                 {
                     PlayTurn();
                 }
@@ -310,10 +300,11 @@ namespace BackgammonUI
         {
             if (roll.Enabled == false &&
                 Game.IsBearOffStage &&
-                Source != initVal)
+                Source != InitVal &&
+                !Game.CheckBounds(Source, Game.GameDice.SecondDice))
             {
-                Target = Game.CheckBounds(Source, Game.GameDice.SecondDice);
-                if (Target != initVal)
+                Target = Game.GetBounds(Source, Game.GameDice.SecondDice);
+                if (Target != InitVal)
                 {
                     PlayTurn();
                 }
