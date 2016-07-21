@@ -13,8 +13,7 @@ namespace XLinq
     {
         static void Main(string[] args)
         {
-            string fileName = string.Concat("Log", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
-            Console.WriteLine(fileName);
+            string fileName = string.Concat("Log_XML", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
             FileStream fileLog = new FileStream(fileName, FileMode.Append);
             Trace.Listeners.Add(new TextWriterTraceListener(fileLog));
 
@@ -43,8 +42,7 @@ namespace XLinq
             Trace.Flush();
             fileLog.Close();
             Trace.Listeners.Clear();
-            fileName = string.Concat("xlog", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
-            Console.WriteLine(fileName);
+            fileName = string.Concat("log_Query", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
             fileLog = new FileStream(fileName, FileMode.Append);
             Trace.Listeners.Add(new TextWriterTraceListener(fileLog));
             Trace.WriteLine("");
@@ -71,7 +69,46 @@ namespace XLinq
             var thirdCount =
                 xml.Select(t => t.Descendants("Property").Count()).Sum();
             Trace.WriteLine($"Total properties - {thirdCount}");
-
+            var thirdResult = xml.Descendants("Parameter").GroupBy(t => (string)t.Attribute("Type")).Select(g => new
+            {
+                parmType = g.Key,
+                parmCount = g.Count()
+            }).OrderByDescending(parm => parm.parmCount).First();
+            Trace.WriteLine(thirdResult);
+            Trace.WriteLine("");
+            Trace.WriteLine("3.d");
+            var fourthResult =
+                xml.OrderByDescending(t => t.Descendants("Method").Count()).Select(t => new
+                {
+                    Name = (string)t.Attribute("FullName"),
+                    MethodCount = t.Descendants("Method").Count(),
+                    PropCount = t.Descendants("Property").Count()
+                });
+            var newXml =
+                fourthResult.Select(
+                    t =>
+                        new XElement("Type", new XAttribute("FullName", t.Name), new XAttribute("MethodCount", t.MethodCount),
+                            new XAttribute("PropertiesCount", t.PropCount)));
+            var newXmlShow = new XElement("NewXML", newXml);
+            Trace.WriteLine(newXmlShow);
+            Trace.WriteLine("");
+            Trace.WriteLine("3.e");
+            var fifthResult =
+                xml.OrderBy(t => (string)t.Attribute("FullName"))
+                    .GroupBy(t => new
+                    {
+                        Name = (string)t.Attribute("FullName"),
+                        MethodCount = t.Descendants("Method").Count()
+                    })
+                    .OrderByDescending(g => g.Key.MethodCount).Select(g => new
+                    {
+                        Name = g.Key.Name,
+                        MethodCount = g.Key.MethodCount
+                    });
+            foreach (var xmlType in fifthResult)
+            {
+                Trace.WriteLine(xmlType);
+            }
             Trace.Flush();
             fileLog.Close();
         }

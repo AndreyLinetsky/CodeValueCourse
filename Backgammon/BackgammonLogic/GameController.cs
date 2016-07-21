@@ -296,7 +296,17 @@ namespace BackgammonLogic
                     }
                     else if (!GameDice.IsDouble)
                     {
-                        if (targetIndex - sourceIndex == GameDice.FirstDice)
+
+                        int gameMove;
+                        if (sourceIndex == GameBoard.BarSource)
+                        {
+                            gameMove = targetIndex + 1;
+                        }
+                        else
+                        {
+                            gameMove = targetIndex - sourceIndex;
+                        }
+                        if (gameMove == GameDice.FirstDice)
                         {
                             GameDice.DisableFirstDice();
                         }
