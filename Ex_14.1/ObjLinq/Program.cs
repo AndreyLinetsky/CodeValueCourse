@@ -14,7 +14,6 @@ namespace ObjLinq
         public static void Main(string[] args)
         {
             string fileName = string.Concat("Log", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
-            Console.WriteLine(fileName);
             FileStream fileLog = new FileStream(fileName, FileMode.Append);
             Trace.Listeners.Add(new TextWriterTraceListener(fileLog));
             Trace.WriteLine(" ");
@@ -30,7 +29,7 @@ namespace ObjLinq
             }
             Trace.WriteLine("");
             Trace.WriteLine("Process info");
-            AccessCheck accCheck = new AccessCheck();;
+            AccessCheck accCheck = new AccessCheck(); ;
             var secondResult = Process.GetProcesses().Where(p => p.Threads.Count < 5 && accCheck.IsAccessible(p)).OrderBy(p => p.Id).Select(p => new
             {
                 Name = p.ProcessName,
@@ -66,14 +65,14 @@ namespace ObjLinq
             }
 
             Trace.WriteLine("");
-            
+
             var fourthResult = Process.GetProcesses().Select(p => p.Threads.Count).Sum();
             Trace.WriteLine($"Total system threads- {fourthResult}");
             Trace.WriteLine("");
             Trace.WriteLine("CopyTest");
-            Car firstCar= new Car(2010,2000,20,"secret",12);
+            Car firstCar = new Car(2010, 2000, 20, "secret", 12);
             Car secondCar = new Car(0, 0, 0, "", 0);
-            MiniCar thirdCar = new MiniCar(0,0,11);
+            MiniCar thirdCar = new MiniCar(0, 0, 11);
             firstCar.CopyTo(secondCar);
             Trace.WriteLine($"First car info - year: {firstCar.Year} ,fuel: {firstCar.FuelAmount}, price: {firstCar.Price},id: {firstCar.GetId()},name: {firstCar.GetName()}");
             Trace.WriteLine($"Second car info - year: {secondCar.Year} ,fuel: {secondCar.FuelAmount}, price: {secondCar.Price},id: {secondCar.GetId()},name: {secondCar.GetName()}");

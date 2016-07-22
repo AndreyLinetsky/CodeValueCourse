@@ -19,7 +19,7 @@ namespace ObjLinq
         }
 
         public int Year { get; }
-        public int Price { get; set; }
+        public int Price { get; private set; }
         public int FuelAmount { get; set; }
         private string SecretName { get;set; }
 

@@ -9,7 +9,7 @@ namespace ObjLinq
 {
     public class AccessCheck
     {
-        public  bool IsAccessible(Process proc)
+        public bool IsAccessible(Process proc)
         {
             try
             {
@@ -18,8 +18,8 @@ namespace ObjLinq
             catch (Win32Exception ex)
             {
                 Trace.WriteLine($"Name = {proc.ProcessName} , ID = {proc.Id}, {ex.Message}");
-                return false;
             }
+            return false;
         }
     }
 }
