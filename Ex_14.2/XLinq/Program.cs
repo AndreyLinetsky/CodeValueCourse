@@ -7,6 +7,7 @@ using System.Xml.Linq;
 using System.Reflection;
 using System.Diagnostics;
 using System.IO;
+
 namespace XLinq
 {
     class Program
@@ -27,18 +28,19 @@ namespace XLinq
                                         new XAttribute("Type", p.PropertyType)))),
                     new XElement("Methods",
                         t.GetMethods(BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly)
+                            .Where(m => !m.IsSpecialName)
                             .Select(
                                 m =>
                                     new XElement("Method", new XAttribute("Name", m.Name),
                                         new XAttribute("ReturnType", m.ReturnType),
                                         new XElement("Parameters",
-                                        m.GetParameters()
-                                            .Select(
-                                                par =>
-                                                   new XElement("Parameter", new XAttribute("Name", par.Name),
+                                            m.GetParameters()
+                                                .Select(
+                                                    par =>
+                                                        new XElement("Parameter", new XAttribute("Name", par.Name),
                                                             new XAttribute("Type", par.ParameterType)))))))));
-            var xmltypes = new XElement("XML", xml);
-            Trace.WriteLine(xmltypes);
+            var printXml = new XElement("XML", xml);
+            Trace.WriteLine(printXml);
             Trace.Flush();
             fileLog.Close();
             Trace.Listeners.Clear();
@@ -87,7 +89,8 @@ namespace XLinq
             var newXml =
                 fourthResult.Select(
                     t =>
-                        new XElement("Type", new XAttribute("FullName", t.Name), new XAttribute("MethodCount", t.MethodCount),
+                        new XElement("Type", new XAttribute("FullName", t.Name),
+                            new XAttribute("MethodCount", t.MethodCount),
                             new XAttribute("PropertiesCount", t.PropCount)));
             var newXmlShow = new XElement("NewXML", newXml);
             Trace.WriteLine(newXmlShow);
