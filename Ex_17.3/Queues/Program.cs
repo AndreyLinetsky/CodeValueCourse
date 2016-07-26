@@ -11,7 +11,7 @@ namespace Queues
     {
         public static void Main(string[] args)
         {
-            LimitedQueue<Double> testingQueue = new LimitedQueue<double>(5);
+            LimitedQueue<int> testingQueue = new LimitedQueue<int>(5);
             for (int i = 0; i <= 21; i++)
             {
                 if (i % 3 != 0)
@@ -24,7 +24,7 @@ namespace Queues
                     Console.WriteLine($"Removing {i}");
                     ThreadPool.QueueUserWorkItem(q => testingQueue.Deque());
                 }
-                Thread.Sleep(4000);
+                Thread.Sleep(3000);
             }
         }
     }

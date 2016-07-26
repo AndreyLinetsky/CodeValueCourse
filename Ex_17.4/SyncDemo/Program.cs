@@ -19,16 +19,21 @@ namespace SyncDemo
             {
                 Directory.CreateDirectory(@"c:\temp");
             }
+
             Console.WriteLine("Starting writing");
             for (int i = 0; i < 10000; i++)
             {
-                if (!mutexWasCreated)
+                if (mutexWasCreated)
+                {
+                    mutexWasCreated = false;
+                }
+                else
                 {
                     newMutex.WaitOne();
                 }
+
                 using (StreamWriter streamWriter = new StreamWriter(@"c:\temp\data.txt", true))
                 {
-                    Console.WriteLine($"Current process is {Process.GetCurrentProcess().Id},Line Number {i}");
                     streamWriter.WriteLine($"Current process is {Process.GetCurrentProcess().Id},Line Number {i}");
                 }
                 newMutex.ReleaseMutex();

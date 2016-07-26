@@ -17,13 +17,18 @@ namespace Queues
             }
             LocalQueue = new Queue<T>();
             QueueLimit = new Semaphore(maxSize, maxSize);
+            CurrLock = new object();
         }
-        private static Semaphore QueueLimit { get; set; }
+        private Semaphore QueueLimit { get; set; }
         private Queue<T> LocalQueue { get; set; }
+        private object CurrLock { get; set; }
         public void Enque(T newVar)
         {
             QueueLimit.WaitOne();
-            LocalQueue.Enqueue(newVar);
+            lock (CurrLock)
+            {
+                LocalQueue.Enqueue(newVar);
+            }
             Console.WriteLine($"Current queue size(after add {newVar}) is {LocalQueue.Count}");
         }
         public T Deque()
@@ -31,9 +36,12 @@ namespace Queues
             T returnValue = default(T);
             if (LocalQueue.Count > 0)
             {
-                returnValue = LocalQueue.Dequeue();
-                Console.WriteLine($"Current queue size(after remove {returnValue}) is {LocalQueue.Count}");
-                QueueLimit.Release();
+                lock (CurrLock)
+                {
+                    returnValue = LocalQueue.Dequeue();
+                    Console.WriteLine($"Current queue size(after remove {returnValue}) is {LocalQueue.Count}");
+                    QueueLimit.Release();
+                }
             }
             return returnValue;
         }
