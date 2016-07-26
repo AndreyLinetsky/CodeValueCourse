@@ -16,12 +16,12 @@ namespace Queues
             {
                 if (i % 3 != 0)
                 {
-                    Console.WriteLine($"Adding {i}");
+                    Console.WriteLine($"Adding line {i}");
                     ThreadPool.QueueUserWorkItem(q => testingQueue.Enque(i));
                 }
                 else
                 {
-                    Console.WriteLine($"Removing {i}");
+                    Console.WriteLine($"Removing line {i}");
                     ThreadPool.QueueUserWorkItem(q => testingQueue.Deque());
                 }
                 Thread.Sleep(3000);

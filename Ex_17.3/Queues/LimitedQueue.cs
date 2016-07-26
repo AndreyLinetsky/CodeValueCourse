@@ -28,8 +28,9 @@ namespace Queues
             lock (CurrLock)
             {
                 LocalQueue.Enqueue(newVar);
+                // Follow threads flow
+                Console.WriteLine($"Current queue size(after add {newVar}) is {LocalQueue.Count}");
             }
-            Console.WriteLine($"Current queue size(after add {newVar}) is {LocalQueue.Count}");
         }
         public T Deque()
         {
