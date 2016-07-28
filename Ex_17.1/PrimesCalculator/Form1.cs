@@ -48,6 +48,7 @@ namespace PrimesCalculator
                if (cancellation != null)
               {
                 cancellation.Cancel();
+                cancellation.Dispose();
                 listBox1.Items.Add("Process stopped");
               }
         }
