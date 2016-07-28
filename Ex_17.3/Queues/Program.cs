@@ -14,17 +14,20 @@ namespace Queues
             LimitedQueue<int> testingQueue = new LimitedQueue<int>(5);
             for (int i = 0; i <= 21; i++)
             {
-                if (i % 3 != 0)
+                Console.WriteLine($"Queue size is {testingQueue.Count}");
+                Random rand = new Random();
+                int currRand = rand.Next(1, 101);
+                if (currRand % 3 != 0)
                 {
-                    Console.WriteLine($"Adding line {i}");
+                    Console.WriteLine("Start adding process");
                     ThreadPool.QueueUserWorkItem(q => testingQueue.Enque(i));
                 }
                 else
                 {
-                    Console.WriteLine($"Removing line {i}");
+                    Console.WriteLine("Start removing process");
                     ThreadPool.QueueUserWorkItem(q => testingQueue.Deque());
                 }
-                Thread.Sleep(3000);
+                Thread.Sleep(1000);
             }
         }
     }

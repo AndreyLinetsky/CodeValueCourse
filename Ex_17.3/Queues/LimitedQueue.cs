@@ -22,14 +22,19 @@ namespace Queues
         private Semaphore QueueLimit { get; set; }
         private Queue<T> LocalQueue { get; set; }
         private object CurrLock { get; set; }
+        public int Count
+        {
+            get
+            {
+                return LocalQueue.Count;
+            }
+        }
         public void Enque(T newVar)
         {
             QueueLimit.WaitOne();
             lock (CurrLock)
             {
                 LocalQueue.Enqueue(newVar);
-                // Follow threads flow
-                Console.WriteLine($"Current queue size(after add {newVar}) is {LocalQueue.Count}");
             }
         }
         public T Deque()
@@ -40,7 +45,6 @@ namespace Queues
                 lock (CurrLock)
                 {
                     returnValue = LocalQueue.Dequeue();
-                    Console.WriteLine($"Current queue size(after remove {returnValue}) is {LocalQueue.Count}");
                     QueueLimit.Release();
                 }
             }
