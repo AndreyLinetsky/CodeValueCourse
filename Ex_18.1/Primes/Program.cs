@@ -45,9 +45,10 @@ namespace Primes
 
         public static List<int> CalcPrimes(int firstNum, int secondNum, int maxDegree)
         {
-            if (maxDegree <= 0)
+            if (maxDegree < -1 ||
+                maxDegree == 0)
             {
-                throw new ArgumentOutOfRangeException("Max degree must be larger than 0");
+                throw new ArgumentOutOfRangeException("Max degree is invalid");
             }
             List<int> primeList = new List<int>();
             bool isPrime;
