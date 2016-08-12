@@ -26,7 +26,7 @@ namespace Jobs
     {
         private IntPtr _hJob;
         private List<Process> _processes;
-        private bool Disposed { get; set; }
+        private bool _disposed;
 
         public Job(string name)
         {
@@ -36,7 +36,7 @@ namespace Jobs
                 throw new InvalidOperationException();
             }
             _processes = new List<Process>();
-            Disposed = false;
+            _disposed = false;
         }
 
         public Job()
@@ -54,7 +54,7 @@ namespace Jobs
 
         private void CheckIfDisposed()
         {
-            if (Disposed)
+            if (_disposed)
             {
                 throw new ObjectDisposedException("Job already disposed");
             }
@@ -84,7 +84,7 @@ namespace Jobs
         }
         protected virtual void Dispose(bool disposing)
         {
-            if (!Disposed)
+            if (!_disposed)
             {
                 if (disposing)
                 {
@@ -94,7 +94,7 @@ namespace Jobs
                     }
                 }
                 NativeJob.CloseHandle(_hJob);
-                Disposed = true;
+                _disposed = true;
             }
         }
         ~Job()
