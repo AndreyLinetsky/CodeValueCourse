@@ -30,7 +30,7 @@ namespace Primes
                 firstNum = secondNum;
                 secondNum = tempNumber;
             }
-            Parallel.For(firstNum, secondNum + 1, new ParallelOptions { MaxDegreeOfParallelism = -1 }, (i, loopState) =>
+            Parallel.For(firstNum, secondNum + 1, (i, loopState) =>
             {
                 int randNum = rand.Next(10000000);
                 if (randNum == 0)
