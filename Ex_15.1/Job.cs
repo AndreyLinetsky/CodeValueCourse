@@ -27,16 +27,9 @@ namespace Jobs
         private IntPtr _hJob;
         private List<Process> _processes;
         private bool Disposed { get; set; }
-        private long Size { get; set; }
 
-        public Job(string name, long sizeInByte)
+        public Job(string name)
         {
-            if (sizeInByte < 1)
-            {
-                Console.WriteLine("wrong");
-                throw new ArgumentOutOfRangeException("Size", "Size must be greater than 0");
-            }
-            Console.WriteLine("right");
             _hJob = NativeJob.CreateJobObject(IntPtr.Zero, name);
             if (_hJob == IntPtr.Zero)
             {
@@ -44,13 +37,10 @@ namespace Jobs
             }
             _processes = new List<Process>();
             Disposed = false;
-            Size = sizeInByte;
-            GC.AddMemoryPressure(Size);
-            Console.WriteLine("Job was created");
         }
 
         public Job()
-            : this(null, 1)
+            : this(null)
         {
         }
 
@@ -66,7 +56,7 @@ namespace Jobs
         {
             if (Disposed)
             {
-                throw new ObjectDisposedException("Current job");
+                throw new ObjectDisposedException("Job already disposed");
             }
         }
 
@@ -110,8 +100,6 @@ namespace Jobs
         ~Job()
         {
             Dispose(false);
-            GC.RemoveMemoryPressure(Size);
-            Console.WriteLine("Job was released");
         }
     }
 }
