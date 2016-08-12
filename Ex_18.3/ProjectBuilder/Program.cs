@@ -22,7 +22,7 @@ namespace ProjectBuilder
             Task fourthTask = firstTask.ContinueWith(t => { Project currProject = new Project(4); });
             Task fifthTask = Task.Factory.ContinueWhenAll(new Task[] { firstTask, secondTask, thirdTask }, t => { Project currProject = new Project(5); });
             Task sixthTask = Task.Factory.ContinueWhenAll(new Task[] { thirdTask, fourthTask }, t => { Project currProject = new Project(6); });
-            Task seventhTask = Task.Factory.ContinueWhenAll(new Task[] { firstTask, sixthTask }, t => { Project currProject = new Project(7); });
+            Task seventhTask = Task.Factory.ContinueWhenAll(new Task[] { fifthTask, sixthTask }, t => { Project currProject = new Project(7); });
             Task eightTask = fifthTask.ContinueWith(t => { Project currProject = new Project(8); });
             Task.WaitAll(seventhTask, eightTask);
         }
