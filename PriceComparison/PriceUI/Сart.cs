@@ -15,7 +15,7 @@ namespace PriceUI
         public Сart()
         {
             InitializeComponent();
-            numericUpDown1.DataBindings.Add()
+           // numericUpDown1.DataBindings.Add();
         }
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e)
