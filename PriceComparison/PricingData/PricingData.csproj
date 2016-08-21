@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C230338C-FB83-4B1D-AF90-996F60153401}</ProjectGuid>
+    <ProjectGuid>{0C59BDFC-28F2-4863-8B68-5DECBD71842A}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>PriceLogic</RootNamespace>
-    <AssemblyName>PriceLogic</AssemblyName>
+    <RootNamespace>PricingData</RootNamespace>
+    <AssemblyName>PricingData</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -41,8 +41,6 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,22 +49,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account.cs" />
-    <Compile Include="Cart.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemGeneral.cs" />
-    <Compile Include="PricingContex.cs" />
-    <Compile Include="PricingLogicManager.cs" />
-    <Compile Include="Store.cs" />
+    <Compile Include="ILoad.cs" />
+    <Compile Include="ItemLoad.cs" />
+    <Compile Include="StoreLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UpdatedCart.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PriceLogic\PriceLogic.csproj">
+      <Project>{c230338c-fb83-4b1d-af90-996f60153401}</Project>
+      <Name>PriceLogic</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -8,7 +8,17 @@ namespace PriceLogic
 {
     public class Account
     {
-        public string AccountID { get; set; }
+        public Account()
+        {
+
+        }
+        public Account(string name, string password)
+        {
+            Name = name;
+            Password = password;
+        }
+        public int ID { get; set; }
+        public string Name { get; set; }
         public string Password { get; set; }
     }
 }

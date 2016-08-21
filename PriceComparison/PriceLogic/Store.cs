@@ -8,9 +8,25 @@ namespace PriceLogic
 {
     public class Store
     {
+        public Store()
+        {
+        }
+        public Store(int storeId, long chainId, int storeType, string chainName, string storeName,
+            string address, string city, string zip, string lastUpdateDate, string location)
+        {
+            StoreID = storeId;
+            ChainID = chainId;
+            StoreType = storeType;
+            ChainName = chainName;
+            StoreName = storeName;
+            Address = address;
+            City = city;
+            Zip = zip;
+            LastUpdateDate = lastUpdateDate;
+            Location = location;
+        }
         public int StoreID { get; set; }
-        public int ChainID { get; set; }
-        public virtual Chain Chain { get; set; }
+        public long ChainID { get; set; }
         public int StoreType { get; set; }
         public string ChainName { get; set; }
         public string StoreName { get; set; }
@@ -20,7 +36,7 @@ namespace PriceLogic
         public string LastUpdateDate { get; set; }
         public string Location { get; set; }
         public virtual ICollection<Item> Items { get; set; }
-         
+
 
     }
 }

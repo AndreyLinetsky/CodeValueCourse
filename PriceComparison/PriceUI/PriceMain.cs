@@ -7,6 +7,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using PricingData;
+using PriceLogic;
+using System.Data.Entity;
 
 namespace PriceUI
 {
@@ -15,6 +18,13 @@ namespace PriceUI
         public PriceMain()
         {
             InitializeComponent();
+           Database.SetInitializer<PricingContex>(new DropCreateDatabaseAlways<PricingContex>());
+            StoreLoad str = new StoreLoad();
+            ItemLoad it = new ItemLoad();
+
+             str.DataLoad();
+            it.DataLoad();
+
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
