@@ -5,17 +5,30 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
-using PriceLogic;
 using System.Reflection;
 
 namespace PricingData
 {
     public class StoreLoad : ILoad
     {
-        public StoreLoad()
+        public StoreLoad(bool fullLoad)
         {
             Stores = new List<Store>();
+            if (fullLoad)
+            {
+                DataLoad();
+            }
+            else
+            {
+                PartialDataload();
+            }
         }
+
+        private void PartialDataload()
+        {
+            throw new NotImplementedException();
+        }
+
         public List<Store> Stores { get; set; }
         public void DataLoad()
         {
@@ -64,7 +77,7 @@ namespace PricingData
         }
         public void WriteToDb()
         {
-            using (var db = new PricingContex())
+            using (var db = new PricingContext())
             {
                 var dbStores = db.Set<Store>();
                 db.Stores.RemoveRange(dbStores);

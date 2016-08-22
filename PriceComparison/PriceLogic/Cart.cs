@@ -15,7 +15,7 @@ namespace PriceLogic
         public List<ItemGeneral> Items { get; set; }
         public int getCurrentIndex(int itemCode, int itemType, int chainId)
         {
-            return Items.FindIndex(i => i.ItemСode == itemCode && i.ItemType == itemType && i.ChainId == chainId);
+            return Items.FindIndex(i => i.ItemCode == itemCode && i.ItemType == itemType && i.ChainId == chainId);
         }
         public void Add(int itemCode, string itemDesc, int amount, int itemType, int chainId)
         {

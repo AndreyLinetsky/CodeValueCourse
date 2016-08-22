@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PriceLogic
+namespace PricingData
 {
     public class Item
     {
@@ -16,8 +16,9 @@ namespace PriceLogic
         {
             StoreID = storeId;
             ChainID = chainID;
+            //remove later
             ItemID = itemId;
-            ItemСode = itemСode;
+            ItemCode = itemСode;
             ItemType = itemType;
             ItemDesc = itemDesc;
             UnitQuantity = unitQuantity;
@@ -29,7 +30,7 @@ namespace PriceLogic
         public int StoreID { get; set; }
         public virtual Store Store { get; set; }
         public long ChainID { get; set; }
-        public long ItemСode { get; set; }
+        public long ItemCode { get; set; }
         public int ItemType { get; set; }
         public string ItemDesc { get; set; }
         public string UnitQuantity { get; set; }

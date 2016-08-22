@@ -61,6 +61,12 @@
     <Compile Include="Item.Designer.cs">
       <DependentUpon>Item.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="PriceMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,6 +83,9 @@
     </Compile>
     <EmbeddedResource Include="Item.resx">
       <DependentUpon>Item.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="PriceMain.resx">
       <DependentUpon>PriceMain.cs</DependentUpon>
@@ -111,10 +120,6 @@
     <ProjectReference Include="..\PriceLogic\PriceLogic.csproj">
       <Project>{c230338c-fb83-4b1d-af90-996f60153401}</Project>
       <Name>PriceLogic</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\PricingData\PricingData.csproj">
-      <Project>{0c59bdfc-28f2-4863-8b68-5decbd71842a}</Project>
-      <Name>PricingData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

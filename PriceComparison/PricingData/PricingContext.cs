@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using System.Data.Entity;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PriceLogic
+namespace PricingData
 {
-    public class PricingContex : DbContext
+    public class PricingContext : DbContext
     {
-        public PricingContex() : base("PricingContext")
+        public PricingContext() : base("PricingContext")
         {
 
         }

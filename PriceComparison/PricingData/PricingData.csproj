@@ -41,6 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -49,16 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Account.cs" />
+    <Compile Include="AccountQuery.cs" />
     <Compile Include="ILoad.cs" />
+    <Compile Include="Item.cs" />
     <Compile Include="ItemLoad.cs" />
+    <Compile Include="ItemQuery.cs" />
+    <Compile Include="PricingContext.cs" />
+    <Compile Include="Store.cs" />
     <Compile Include="StoreLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\PriceLogic\PriceLogic.csproj">
-      <Project>{c230338c-fb83-4b1d-af90-996f60153401}</Project>
-      <Name>PriceLogic</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

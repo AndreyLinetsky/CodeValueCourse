@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
-using PriceLogic;
 using System.Reflection;
 
 namespace PricingData
@@ -60,7 +59,7 @@ namespace PricingData
         }
         public void WriteToDb()
         {
-            using (var db = new PricingContex())
+            using (var db = new PricingContext())
             {
                 var dbItems = db.Set<Item>();
                 db.Items.RemoveRange(dbItems);
