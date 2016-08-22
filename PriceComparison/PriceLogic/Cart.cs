@@ -13,22 +13,30 @@ namespace PriceLogic
             Items = new List<ItemGeneral>();
         }
         public List<ItemGeneral> Items { get; set; }
-        public int getCurrentIndex(int itemCode, int itemType, int chainId)
+        public int getCurrentIndex(long itemCode, int itemType, long chainId)
         {
             return Items.FindIndex(i => i.ItemCode == itemCode && i.ItemType == itemType && i.ChainId == chainId);
         }
-        public void Add(int itemCode, string itemDesc, int amount, int itemType, int chainId)
+        public bool Add(ItemGeneral currItem,int amount)
         {
-            ItemGeneral currItem = new ItemGeneral(itemCode, itemDesc, amount, itemType, chainId);
-            Items.Add(currItem);
+            if (getCurrentIndex(currItem.ItemCode, currItem.ItemType, currItem.ChainId) != -1)
+            {
+                return false;
+            }
+            else
+            {
+                currItem.Amount = amount;
+                Items.Add(currItem);
+                return true;
+            }
         }
-        public void Remove(int itemCode, int itemType, int chainId)
+        public void Remove(ItemGeneral currItem)
         {
-            Items.RemoveAt(getCurrentIndex(itemCode, itemType, chainId));
+            Items.Remove(currItem);
         }
-        public void UpdateAmount(int itemCode, int itemType, int chainId, int newAmount)
+        public void UpdateAmount(ItemGeneral currItem,int amount)
         {
-            Items[getCurrentIndex(itemCode, itemType, chainId)].Amount = newAmount;
+            Items[getCurrentIndex(currItem.ItemCode, currItem.ItemType, currItem.ChainId)].Amount = amount;
         }
     }
 }

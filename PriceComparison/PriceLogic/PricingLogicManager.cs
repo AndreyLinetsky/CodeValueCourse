@@ -15,6 +15,7 @@ namespace PriceLogic
             User = "";
             AccQuery = new AccountQuery();
             ItemQuery = new ItemQuery();
+            Cart = new Cart();
             // Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
             //StoreLoad str = new StoreLoad(true);
             //ItemLoad it = new ItemLoad();
@@ -22,8 +23,10 @@ namespace PriceLogic
             //str.DataLoad();
             //   it.DataLoad();
         }
+
         public AccountQuery AccQuery { get; set; }
         public ItemQuery ItemQuery { get; set; }
+        public Cart Cart { get; set; }
         public string User { get; set; }
         public string UserMessage
         {
@@ -72,6 +75,7 @@ namespace PriceLogic
         public void Logout()
         {
             User = "";
+            Cart = new Cart();
         }
         public List<ItemGeneral> GetItems(string input)
         {
@@ -80,9 +84,49 @@ namespace PriceLogic
         }
         public List<ItemGeneral> ConvertToGeneralItems(List<Item> items)
         {
-            var generalItems = items.OrderBy(i => i.ItemCode).Select(i => new ItemGeneral() { ItemCode = i.ItemCode, ItemDesc = i.ItemDesc, Amount = 0, ItemType = i.ItemType, ChainId = i.ChainID });
+            var generalItems = items.OrderBy(i => i.ItemCode).Select(i => new ItemGeneral()
+            {
+                ItemCode = i.ItemCode,
+                ItemDesc = i.ItemDesc,
+                Amount = 0,
+                ItemType = i.ItemType,
+                ChainId = i.ChainID,
+                Quantity = i.Quantity,
+                UnitQuantity = i.UnitQuantity
+            });
             List<ItemGeneral> retList = generalItems.ToList<ItemGeneral>();
             return retList;
+        }
+
+        public decimal GetMinPrice(ItemGeneral currItem)
+        {
+            if (currItem.ItemType == 1)
+            {
+                return ItemQuery.GetMinPrice(currItem.ItemCode);
+            }
+            else
+            {
+                return ItemQuery.GetMinPrice(currItem.ItemCode, currItem.ItemType, currItem.ChainId);
+            }
+        }
+
+        public bool AddItemToCart(ItemGeneral currItem,int amount)
+        {
+            return Cart.Add(currItem, amount);
+        }
+        public List<ItemGeneral> GetCartItems()
+        {
+            return Cart.Items;
+        }
+        public List<ItemGeneral> RemoveItemFromCart(ItemGeneral currItem)
+        {
+            Cart.Remove(currItem);
+            return Cart.Items;
+        }
+        public List<ItemGeneral> UpdateCart(ItemGeneral currItem,int amount)
+        {
+            Cart.UpdateAmount(currItem, amount);
+            return Cart.Items;
         }
     }
 }

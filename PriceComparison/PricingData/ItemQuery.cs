@@ -16,5 +16,38 @@ namespace PricingData
                 return result.ToList<Item>();
             }
         }
+
+        public decimal GetMinPrice(long itemCode, int itemType, long chainId)
+        {
+            using (var db = new PricingContext())
+            {
+                var result = db.Items.Where(t => t.ItemCode == itemCode && t.ItemType == itemType && t.ChainID == chainId).OrderBy(t => t.Price).FirstOrDefault();
+                Item item = result as Item;
+                if(item != null)
+                {
+                    return item.Price;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
+        public decimal GetMinPrice(long itemCode)
+        {
+            using (var db = new PricingContext())
+            {
+                var result = db.Items.Where(t => t.ItemCode == itemCode).OrderBy(t => t.Price).FirstOrDefault();
+                Item item = result as Item;
+                if (item != null)
+                {
+                    return item.Price;
+                }
+                else
+                {
+                    return 0;
+                }
+            }
+        }
     }
 }

@@ -18,16 +18,23 @@ namespace PriceUI
         {
             InitializeComponent();
             Manager = new PricingLogicManager();
+            ResetForm();
             Login();
         }
         public PricingLogicManager Manager { get; set; }
         public void ResetForm()
         {
             label1.Text = "Please login or register";
+            button1.Enabled = false;
+            ResetItemData();
+            searchText.Text = string.Empty;
+            dataGridView1.DataSource = null;
+            dataGridView1.Refresh();
         }
 
         private void logInToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // comp with guest?
             if (Manager.User != "")
             {
                 MessageBox.Show("You are already logged");
@@ -56,10 +63,7 @@ namespace PriceUI
             if (logForm.ShowDialog(this) == DialogResult.OK)
             {
                 label1.Text = Manager.UserMessage;
-            }
-            else
-            {
-                ResetForm();
+                button1.Enabled = true;
             }
             logForm.Dispose();
         }
@@ -73,11 +77,12 @@ namespace PriceUI
             else
             {
                 dataGridView1.DataSource = Manager.GetItems(searchText.Text);
-                dataGridView1.Columns["Amount"].Visible = false;
-                dataGridView1.Columns["ChainId"].Visible = false;
-                dataGridView1.Columns["ItemType"].Visible = false;
-                dataGridView1.Columns["ItemCode"].SortMode = DataGridViewColumnSortMode.Automatic;
-                dataGridView1.Columns["ItemDesc"].SortMode = DataGridViewColumnSortMode.Automatic;
+                foreach (DataGridViewColumn col in dataGridView1.Columns)
+                {
+                    col.Visible = false;
+                }
+                dataGridView1.Columns["ItemCode"].Visible = true;
+                dataGridView1.Columns["ItemDesc"].Visible = true;
             }
         }
 
@@ -87,8 +92,67 @@ namespace PriceUI
         }
         public void UpdateItemDetails()
         {
-
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
+                if (currItem != null)
+                {
+                    priceText.Text = Manager.GetMinPrice(currItem).ToString();
+                    codeText.Text = currItem.ItemCode.ToString();
+                    nameText.Text = currItem.ItemDesc.ToString();
+                    quanText.Text = currItem.Quantity.ToString();
+                    unitText.Text = currItem.UnitQuantity.ToString();
+                    button2.Enabled = true;
+                }
+                else
+                {
+                    ResetItemData();
+                }
+            }
+            else
+            {
+                ResetItemData();
+            }
+        }
+        public void ResetItemData()
+        {
+            foreach (Control control in panel1.Controls)
+            {
+                if (control.Name.Contains("Text"))
+                {
+                    control.Text = "";
+                }
+            }
+            numericUpDown1.Value = 0;
+            button2.Enabled = false;
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
+            if (numericUpDown1.Value < 1 ||
+                numericUpDown1.Value > 100)
+            {
+                MessageBox.Show("Please enter valid amount");
             }
+            else
+            {
+                ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
+                if (!Manager.AddItemToCart(currItem, Convert.ToInt32(numericUpDown1.Value)))
+                {
+                    MessageBox.Show("The product is already in cart");
+                }
+                else
+                {
+                    MessageBox.Show("The product was added successfully");
+                }
+            }
+        }
+
+        private void viewCartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            СartForm cartForm = new СartForm(Manager);
+            cartForm.ShowDialog();
+
+        }
+    }
 }
