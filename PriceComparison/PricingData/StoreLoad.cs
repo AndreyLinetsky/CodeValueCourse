@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 using System.Reflection;
+using GoogleMaps.LocationServices;
 
 namespace PricingData
 {
@@ -71,8 +72,53 @@ namespace PricingData
                 string address = node.SelectSingleNode("Address").InnerText;
                 string city = node.SelectSingleNode("City").InnerText;
                 string zip = node.SelectSingleNode("ZipCode").InnerText;
-                Store currStore = new Store(storeId, chainId, storeType, chainName, storeName, address, city, zip, date, "");
+                string location = GetStoreLocation(city);
+                Store currStore = new Store(storeId, chainId, storeType, chainName, storeName, address, city, zip, date, location);
                 Stores.Add(currStore);
+            }
+        }
+        public string GetStoreLocation(string address)
+        {
+            if (!string.Equals(address, "unknown", StringComparison.OrdinalIgnoreCase) &&
+                !string.IsNullOrWhiteSpace(address))
+            {
+                GoogleLocationService locationService = new GoogleLocationService();
+                var point = locationService.GetLatLongFromAddress(address);
+                if (point == null)
+                {
+                    return string.Empty;
+                }
+                if (point.Longitude < 35.0)
+
+                {
+                    if (point.Latitude < 32)
+                    {
+                        return "South";
+                    }
+
+                    if (point.Latitude < 32.5)
+                    {
+                        return "Merkaz";
+                    }
+                    return "North";
+                }
+                else
+                {
+                    if (point.Latitude < 31.4)
+                    {
+                        return "South";
+                    }
+
+                    if (point.Latitude < 32.4)
+                    {
+                        return "Jerusalem";
+                    }
+                    return "North";
+                }
+            }
+            else
+            {
+                return string.Empty;
             }
         }
         public void WriteToDb()

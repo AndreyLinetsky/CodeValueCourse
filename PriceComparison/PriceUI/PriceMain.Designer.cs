@@ -30,6 +30,8 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.cartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.viewCartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,8 +54,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.viewCartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -80,6 +80,21 @@
             this.cartToolStripMenuItem.Name = "cartToolStripMenuItem";
             this.cartToolStripMenuItem.Size = new System.Drawing.Size(48, 24);
             this.cartToolStripMenuItem.Text = "Cart";
+            // 
+            // viewCartToolStripMenuItem
+            // 
+            this.viewCartToolStripMenuItem.Enabled = false;
+            this.viewCartToolStripMenuItem.Name = "viewCartToolStripMenuItem";
+            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.viewCartToolStripMenuItem.Text = "View Cart";
+            this.viewCartToolStripMenuItem.Click += new System.EventHandler(this.viewCartToolStripMenuItem_Click);
+            // 
+            // loadToolStripMenuItem
+            // 
+            this.loadToolStripMenuItem.Enabled = false;
+            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.loadToolStripMenuItem.Text = "Load Cart";
             // 
             // userToolStripMenuItem
             // 
@@ -285,19 +300,6 @@
             this.label3.Size = new System.Drawing.Size(81, 17);
             this.label3.TabIndex = 0;
             this.label3.Text = "Item Details";
-            // 
-            // viewCartToolStripMenuItem
-            // 
-            this.viewCartToolStripMenuItem.Name = "viewCartToolStripMenuItem";
-            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.viewCartToolStripMenuItem.Text = "View Cart";
-            this.viewCartToolStripMenuItem.Click += new System.EventHandler(this.viewCartToolStripMenuItem_Click);
-            // 
-            // loadToolStripMenuItem
-            // 
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.loadToolStripMenuItem.Text = "Load Cart";
             // 
             // PriceMain
             // 

@@ -30,6 +30,8 @@ namespace PriceUI
             searchText.Text = string.Empty;
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
+            viewCartToolStripMenuItem.Enabled = false;
+            loadToolStripMenuItem.Enabled = false;
         }
 
         private void logInToolStripMenuItem_Click(object sender, EventArgs e)
@@ -64,6 +66,7 @@ namespace PriceUI
             {
                 label1.Text = Manager.UserMessage;
                 button1.Enabled = true;
+                loadToolStripMenuItem.Enabled = true;
             }
             logForm.Dispose();
         }
@@ -83,6 +86,8 @@ namespace PriceUI
                 }
                 dataGridView1.Columns["ItemCode"].Visible = true;
                 dataGridView1.Columns["ItemDesc"].Visible = true;
+                viewCartToolStripMenuItem.Enabled = true;
+                dataGridView1.ClearSelection();
             }
         }
 

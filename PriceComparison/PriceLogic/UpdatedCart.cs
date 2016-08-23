@@ -11,13 +11,13 @@ namespace PriceLogic
     {
         public UpdatedCart(int storeId, int chainId)
         {
-            Items = new List<Item>();
+            Items = new List<ItemGeneral>();
             StoreId = storeId;
             ChainId = chainId;
         }
-        public List<Item> Items { get; set; }
-        public int StoreId { get; set; }
-        public int ChainId { get; set; }
+        public List<ItemGeneral> Items { get; set; }
+        public int StoreName { get; set; }
+        public int ChainName { get; set; }
 
         public void Add(Item item)
         {

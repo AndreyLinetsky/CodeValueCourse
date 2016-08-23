@@ -45,15 +45,14 @@ namespace PricingData
             dataNodes = xmlDoc.SelectNodes("/Root/Items/Item");
             foreach (XmlNode node in dataNodes)
             {
-                int itemId = Convert.ToInt32(node.SelectSingleNode("ItemId").InnerText);
                 int itemType = Convert.ToInt32(node.SelectSingleNode("ItemType").InnerText);
                 long itemCode = Convert.ToInt64(node.SelectSingleNode("ItemCode").InnerText);
-                string itemDesc = node.SelectSingleNode("ManufacturerItemDescription").InnerText;
+                string itemDesc = node.SelectSingleNode("ItemName").InnerText;
                 string unitQuantity = node.SelectSingleNode("UnitQty").InnerText;
                 string quantity = node.SelectSingleNode("Quantity").InnerText;
                 decimal price = Convert.ToDecimal(node.SelectSingleNode("ItemPrice").InnerText);
                 string date = node.SelectSingleNode("PriceUpdateDate").InnerText;
-                Item currItem = new Item(storeId,chainId,itemId,itemCode,itemType,itemDesc,unitQuantity,quantity,price,date);
+                Item currItem = new Item(storeId, chainId, itemCode, itemType, itemDesc, unitQuantity, quantity, price, date);
                 Items.Add(currItem);
             }
         }

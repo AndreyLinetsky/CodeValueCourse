@@ -11,13 +11,11 @@ namespace PricingData
         public Item()
         {
         }
-        public Item(int storeId, long chainID, int itemId, long itemСode, int itemType, string itemDesc,
+        public Item(int storeId, long chainID, long itemСode, int itemType, string itemDesc,
             string unitQuantity, string quantity, decimal price, string lastUpdateDate)
         {
             StoreID = storeId;
             ChainID = chainID;
-            //remove later
-            ItemID = itemId;
             ItemCode = itemСode;
             ItemType = itemType;
             ItemDesc = itemDesc;

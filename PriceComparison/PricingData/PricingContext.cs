@@ -31,7 +31,7 @@ namespace PricingData
             // Turn off autogeneration in database
             modelBuilder.Entity<Item>()
                         .Property(it => it.ItemID)
-                        .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
+                        .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
         }
 
     }

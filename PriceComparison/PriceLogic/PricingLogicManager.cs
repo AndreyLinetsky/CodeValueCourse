@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using PricingData;
 
+
 namespace PriceLogic
 {
     public class PricingLogicManager
@@ -15,18 +16,22 @@ namespace PriceLogic
             User = "";
             AccQuery = new AccountQuery();
             ItemQuery = new ItemQuery();
+            StoreQuery = new StoreQuery();
             Cart = new Cart();
-            // Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
-            //StoreLoad str = new StoreLoad(true);
-            //ItemLoad it = new ItemLoad();
 
-            //str.DataLoad();
-            //   it.DataLoad();
+            //  Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
+            //   StoreLoad str = new StoreLoad(true);
+            //   ItemLoad it = new ItemLoad();
+
+
+            //     it.DataLoad();
         }
 
         public AccountQuery AccQuery { get; set; }
         public ItemQuery ItemQuery { get; set; }
+        public StoreQuery StoreQuery { get; set; }
         public Cart Cart { get; set; }
+        public int MaxCartsToShow { get; } = 3;
         public string User { get; set; }
         public string UserMessage
         {
@@ -110,7 +115,7 @@ namespace PriceLogic
             }
         }
 
-        public bool AddItemToCart(ItemGeneral currItem,int amount)
+        public bool AddItemToCart(ItemGeneral currItem, int amount)
         {
             return Cart.Add(currItem, amount);
         }
@@ -123,10 +128,30 @@ namespace PriceLogic
             Cart.Remove(currItem);
             return Cart.Items;
         }
-        public List<ItemGeneral> UpdateCart(ItemGeneral currItem,int amount)
+        public List<ItemGeneral> UpdateCart(ItemGeneral currItem, int amount)
         {
             Cart.UpdateAmount(currItem, amount);
             return Cart.Items;
+        }
+        public List<String> GetChains()
+        {
+            return StoreQuery.GetChains();
+        }
+        public List<string> GetLocations(List<string> chains)
+        {
+            return StoreQuery.GetLocations(chains);
+        }
+        public List<string> GetStores(List<string> chains, string location)
+        {
+            List<KeyValuePair<string, string>> stores = StoreQuery.GetStores(chains, location);
+            var result = stores.Select(s => $"{s.Key}-{s.Value}");
+            return result.ToList<string>();
+        }
+        public List<string> GetStores(List<string> chains)
+        {
+            List<KeyValuePair<string, string>> stores = StoreQuery.GetStores(chains);
+            var result = stores.Select(s => $"{s.Key}-{s.Value}");
+            return result.ToList<string>();
         }
     }
 }
