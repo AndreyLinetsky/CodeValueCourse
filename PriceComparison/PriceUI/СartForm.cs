@@ -8,26 +8,66 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using PriceLogic;
+using System.IO;
 
 namespace PriceUI
 {
     public partial class СartForm : Form
     {
-        public СartForm(PricingLogicManager manager)
+        public СartForm(PricingLogicManager manager, bool isLoad)
         {
             InitializeComponent();
             Manager = manager;
+            if (isLoad)
+            {
+                LoadCart();
+            }
+            else
+            {
+                ResetUI();
+            }
+        }
+        public PricingLogicManager Manager { get; set; }
+        public int ProductsToFetch { get; } = 3;
+        public void ResetUI()
+        {
             PopulateCart();
             List<string> chains = Manager.GetChains();
             listBox1.Items.AddRange(chains.ToArray());
+            ResetCompOutput();
         }
-        public PricingLogicManager Manager { get; set; }
         private void PopulateCart()
         {
             dataGridView1.DataSource = Manager.GetCartItems();
             InitCart();
         }
-
+        public void ResetCompOutput()
+        {
+            foreach (var panel in Controls.OfType<Panel>())
+            {
+                foreach (var label in panel.Controls.OfType<Label>())
+                {
+                    if (label.Name.Contains("comp"))
+                    {
+                        label.Text = string.Empty;
+                    }
+                }
+                foreach (Control control in panel.Controls)
+                {
+                    control.Visible = false;
+                }
+            }
+        }
+        public void EnableCompare()
+        {
+            foreach (var panel in Controls.OfType<Panel>())
+            {
+                foreach (Control control in panel.Controls)
+                {
+                    control.Visible = true;
+                }
+            }
+        }
         private void button1_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
@@ -130,6 +170,9 @@ namespace PriceUI
             List<string> stores3 = new List<string>(stores);
             comboBox2.DataSource = stores2;
             comboBox3.DataSource = stores3;
+            comboBox1.SelectedItem = null;
+            comboBox2.SelectedItem = null;
+            comboBox3.SelectedItem = null;
             storeAllRadio.Checked = true;
         }
         private void locComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -154,21 +197,108 @@ namespace PriceUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            List<UpdatedCart> updatedItems = new List<UpdatedCart>(); 
+            //List<UpdatedCart> updatedItems = new List<UpdatedCart>();
+
+            //if (ValidateFilters())
+            //{
+            //    if (!storeAllRadio.Checked)
+            //    {
+            //        List<string> stores = new List<string>();
+            //        foreach (var comboBox in panel1.Controls.OfType<ComboBox>())
+            //        {
+            //            if (comboBox.SelectedItem != null)
+            //            {
+            //                stores.Add(comboBox.SelectedValue.ToString());
+            //            }
+            //        }
+            //        updatedItems = Manager.CalculateTotal(stores);
+            //    }
+            //    else if (locAllRadio.Checked)
+            //    {
+            //        updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), null, ProductsToFetch);
+            //    }
+            //    else
+            //    {
+            //        updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
+            //    }
+            //    ShowUpdatedCart(updatedItems);
+            //}
+        }
+        public bool ValidateFilters()
+        {
+            if (listBox1.SelectedItems.OfType<string>().ToList().Count < 1)
+            {
+                MessageBox.Show("Please select at least one chain");
+                return false;
+            }
             if (!storeAllRadio.Checked)
             {
-                updatedItems = Manager.CalculateTotal(comboBox1.SelectedValue.ToString(), comboBox2.SelectedValue.ToString(), comboBox1.SelectedValue.ToString();
+                if (comboBox1.SelectedItem == null &&
+                        comboBox2.SelectedItem == null &&
+                        comboBox3.SelectedItem == null)
+                {
+                    MessageBox.Show("Please select at least one store");
+                    return false;
+                }
+                if (string.Equals(comboBox1.SelectedValue.ToString(), comboBox2.SelectedValue.ToString()) ||
+                    string.Equals(comboBox2.SelectedValue.ToString(), comboBox3.SelectedValue.ToString()) ||
+                    string.Equals(comboBox1.SelectedValue.ToString(), comboBox3.SelectedValue.ToString()))
+                {
+                    MessageBox.Show("Duplicated stores were selected");
+                    return false;
+                }
             }
-            else if (locAllRadio.Checked)
+            if (!locAllRadio.Checked &&
+                locComboBox.SelectedItem == null)
             {
-                updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList());
+                MessageBox.Show("Please select location");
+                return false;
             }
-            else
+            return true;
+        }
+
+        private void saveCartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = @"C:\";
+            saveFileDialog.Title = "Save Cart";
+            saveFileDialog.CheckPathExists = true;
+            saveFileDialog.DefaultExt = "xml";
+            saveFileDialog.Filter = "XML-File | *.xml";
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
-                updatedItems =  Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString());
+                string path = saveFileDialog.FileName;
+                Manager.SaveCart(path);
+                MessageBox.Show("Cart was saved");
             }
         }
 
+        private void loadCartToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoadCart();
+        }
+        public void LoadCart()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.InitialDirectory = @"C:\";
+            openFileDialog.Title = "Load Cart";
+            openFileDialog.CheckFileExists = true;
+            openFileDialog.CheckPathExists = true;
+            openFileDialog.DefaultExt = "xml";
+            openFileDialog.Filter = "XML-File | *.xml";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string path = openFileDialog.FileName;
+                Manager.LoadCart(path);
+                ResetUI();
+            }
+        }
+
+        private void exportHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ItemHistForm histForm = new histForm(Manager);
+            histForm.ShowDialog();
+        }
     }
 }
-}
+

@@ -74,7 +74,11 @@ namespace PricingData
                 string zip = node.SelectSingleNode("ZipCode").InnerText;
                 string location = GetStoreLocation(city);
                 Store currStore = new Store(storeId, chainId, storeType, chainName, storeName, address, city, zip, date, location);
-                Stores.Add(currStore);
+                //Prevent duplicates
+                if (!Stores.Any(s => s.StoreID == currStore.StoreID && s.ChainID == currStore.ChainID))
+                {
+                    Stores.Add(currStore);
+                }
             }
         }
         public string GetStoreLocation(string address)

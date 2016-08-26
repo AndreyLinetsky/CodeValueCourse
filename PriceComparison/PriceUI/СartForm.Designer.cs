@@ -42,6 +42,7 @@
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.chainsTab = new System.Windows.Forms.TabPage();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.locTab = new System.Windows.Forms.TabPage();
             this.panel2 = new System.Windows.Forms.Panel();
             this.locComboBox = new System.Windows.Forms.ComboBox();
@@ -54,7 +55,77 @@
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.storeRadio = new System.Windows.Forms.RadioButton();
             this.storeAllRadio = new System.Windows.Forms.RadioButton();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.comboMiss1 = new System.Windows.Forms.ComboBox();
+            this.label21 = new System.Windows.Forms.Label();
+            this.compPrice3Ch1 = new System.Windows.Forms.Label();
+            this.compItem3Ch1 = new System.Windows.Forms.Label();
+            this.compPrice2Ch1 = new System.Windows.Forms.Label();
+            this.compItem2Ch1 = new System.Windows.Forms.Label();
+            this.compPrice1Ch1 = new System.Windows.Forms.Label();
+            this.compItem1Ch1 = new System.Windows.Forms.Label();
+            this.compPrice3Ex1 = new System.Windows.Forms.Label();
+            this.compItem3Ex1 = new System.Windows.Forms.Label();
+            this.compPrice2Ex1 = new System.Windows.Forms.Label();
+            this.compItem2Ex1 = new System.Windows.Forms.Label();
+            this.compPrice1Ex1 = new System.Windows.Forms.Label();
+            this.compItem1Ex1 = new System.Windows.Forms.Label();
+            this.compTotal1 = new System.Windows.Forms.Label();
+            this.compStore1 = new System.Windows.Forms.Label();
+            this.compChain1 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.comboMiss2 = new System.Windows.Forms.ComboBox();
+            this.label22 = new System.Windows.Forms.Label();
+            this.compPrice3Ch2 = new System.Windows.Forms.Label();
+            this.compItem3Ch2 = new System.Windows.Forms.Label();
+            this.compPrice2Ch2 = new System.Windows.Forms.Label();
+            this.compItem2Ch2 = new System.Windows.Forms.Label();
+            this.compPrice1Ch2 = new System.Windows.Forms.Label();
+            this.compItem1Ch2 = new System.Windows.Forms.Label();
+            this.compPrice3Ex2 = new System.Windows.Forms.Label();
+            this.compItem3Ex2 = new System.Windows.Forms.Label();
+            this.compPrice2Ex2 = new System.Windows.Forms.Label();
+            this.compItem2Ex2 = new System.Windows.Forms.Label();
+            this.compPrice1Ex2 = new System.Windows.Forms.Label();
+            this.compItem1Ex2 = new System.Windows.Forms.Label();
+            this.compTotal2 = new System.Windows.Forms.Label();
+            this.compStore2 = new System.Windows.Forms.Label();
+            this.compChain2 = new System.Windows.Forms.Label();
+            this.label38 = new System.Windows.Forms.Label();
+            this.label39 = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
+            this.label41 = new System.Windows.Forms.Label();
+            this.label42 = new System.Windows.Forms.Label();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.comboMiss3 = new System.Windows.Forms.ComboBox();
+            this.label43 = new System.Windows.Forms.Label();
+            this.compPrice3Ch3 = new System.Windows.Forms.Label();
+            this.compItem3Ch3 = new System.Windows.Forms.Label();
+            this.compPrice2Ch3 = new System.Windows.Forms.Label();
+            this.compItem2Ch3 = new System.Windows.Forms.Label();
+            this.compPrice1Ch3 = new System.Windows.Forms.Label();
+            this.compItem1Ch3 = new System.Windows.Forms.Label();
+            this.compPrice3Ex3 = new System.Windows.Forms.Label();
+            this.compItem3Ex3 = new System.Windows.Forms.Label();
+            this.compPrice2Ex3 = new System.Windows.Forms.Label();
+            this.compItem2Ex3 = new System.Windows.Forms.Label();
+            this.compPrice1Ex3 = new System.Windows.Forms.Label();
+            this.compItem1Ex3 = new System.Windows.Forms.Label();
+            this.compTotal3 = new System.Windows.Forms.Label();
+            this.compStore3 = new System.Windows.Forms.Label();
+            this.compChain3 = new System.Windows.Forms.Label();
+            this.label59 = new System.Windows.Forms.Label();
+            this.label60 = new System.Windows.Forms.Label();
+            this.label61 = new System.Windows.Forms.Label();
+            this.label62 = new System.Windows.Forms.Label();
+            this.label63 = new System.Windows.Forms.Label();
+            this.itemHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -66,348 +137,181 @@
             this.panel2.SuspendLayout();
             this.storeTab.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.SuspendLayout();
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(87, 72);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(32, 22);
-            this.numericUpDown1.TabIndex = 0;
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToOrderColumns = true;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(137, 45);
-            this.dataGridView1.MultiSelect = false;
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.RowTemplate.Height = 24;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(313, 239);
-            this.dataGridView1.TabIndex = 6;
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(6, 21);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 29);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Remove";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(6, 71);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 29);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "Update";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.button1);
-            this.groupBox1.Controls.Add(this.button2);
-            this.groupBox1.Controls.Add(this.numericUpDown1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 45);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(119, 126);
-            this.groupBox1.TabIndex = 10;
-            this.groupBox1.TabStop = false;
-            // 
-            // menuStrip1
-            // 
-            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cartToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(780, 28);
-            this.menuStrip1.TabIndex = 11;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // cartToolStripMenuItem
-            // 
-            this.cartToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.saveCartToolStripMenuItem,
-            this.loadCartToolStripMenuItem,
-            this.exitCartToolStripMenuItem});
-            this.cartToolStripMenuItem.Name = "cartToolStripMenuItem";
-            this.cartToolStripMenuItem.Size = new System.Drawing.Size(48, 24);
-            this.cartToolStripMenuItem.Text = "Cart";
-            // 
-            // saveCartToolStripMenuItem
-            // 
-            this.saveCartToolStripMenuItem.Name = "saveCartToolStripMenuItem";
-            this.saveCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
-            this.saveCartToolStripMenuItem.Text = "Save Cart";
-            // 
-            // loadCartToolStripMenuItem
-            // 
-            this.loadCartToolStripMenuItem.Name = "loadCartToolStripMenuItem";
-            this.loadCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
-            this.loadCartToolStripMenuItem.Text = "Load Cart";
-            // 
-            // exitCartToolStripMenuItem
-            // 
-            this.exitCartToolStripMenuItem.Name = "exitCartToolStripMenuItem";
-            this.exitCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
-            this.exitCartToolStripMenuItem.Text = "Exit Cart";
-            this.exitCartToolStripMenuItem.Click += new System.EventHandler(this.exitCartToolStripMenuItem_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(275, 303);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(280, 44);
-            this.button3.TabIndex = 12;
-            this.button3.Text = "Compare Items";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.tabControl1);
-            this.groupBox2.Location = new System.Drawing.Point(482, 45);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(272, 239);
-            this.groupBox2.TabIndex = 13;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Comparison Options";
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.chainsTab);
-            this.tabControl1.Controls.Add(this.locTab);
-            this.tabControl1.Controls.Add(this.storeTab);
-            this.tabControl1.Location = new System.Drawing.Point(6, 21);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(266, 218);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // chainsTab
-            // 
-            this.chainsTab.Controls.Add(this.listBox1);
-            this.chainsTab.Location = new System.Drawing.Point(4, 25);
-            this.chainsTab.Name = "chainsTab";
-            this.chainsTab.Padding = new System.Windows.Forms.Padding(3);
-            this.chainsTab.Size = new System.Drawing.Size(258, 189);
-            this.chainsTab.TabIndex = 0;
-            this.chainsTab.Text = "Chains";
-            this.chainsTab.UseVisualStyleBackColor = true;
-            // 
-            // locTab
-            // 
-            this.locTab.Controls.Add(this.panel2);
-            this.locTab.Location = new System.Drawing.Point(4, 25);
-            this.locTab.Name = "locTab";
-            this.locTab.Padding = new System.Windows.Forms.Padding(3);
-            this.locTab.Size = new System.Drawing.Size(258, 189);
-            this.locTab.TabIndex = 1;
-            this.locTab.Text = "Location";
-            this.locTab.UseVisualStyleBackColor = true;
-            // 
-            // panel2
-            // 
-            this.panel2.Controls.Add(this.locComboBox);
-            this.panel2.Controls.Add(this.locSelRadio);
-            this.panel2.Controls.Add(this.locAllRadio);
-            this.panel2.Location = new System.Drawing.Point(3, 3);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(252, 183);
-            this.panel2.TabIndex = 1;
-            // 
-            // locComboBox
-            // 
-            this.locComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.locComboBox.Enabled = false;
-            this.locComboBox.FormattingEnabled = true;
-            this.locComboBox.Location = new System.Drawing.Point(0, 78);
-            this.locComboBox.Name = "locComboBox";
-            this.locComboBox.Size = new System.Drawing.Size(245, 24);
-            this.locComboBox.TabIndex = 2;
-            this.locComboBox.SelectedIndexChanged += new System.EventHandler(this.locComboBox_SelectedIndexChanged);
-            // 
-            // locSelRadio
-            // 
-            this.locSelRadio.AutoSize = true;
-            this.locSelRadio.Location = new System.Drawing.Point(3, 39);
-            this.locSelRadio.Name = "locSelRadio";
-            this.locSelRadio.Size = new System.Drawing.Size(126, 21);
-            this.locSelRadio.TabIndex = 1;
-            this.locSelRadio.Text = "Select Location";
-            this.locSelRadio.UseVisualStyleBackColor = true;
-            this.locSelRadio.CheckedChanged += new System.EventHandler(this.locSelRadio_CheckedChanged);
-            // 
-            // locAllRadio
-            // 
-            this.locAllRadio.AutoSize = true;
-            this.locAllRadio.Checked = true;
-            this.locAllRadio.Location = new System.Drawing.Point(3, 12);
-            this.locAllRadio.Name = "locAllRadio";
-            this.locAllRadio.Size = new System.Drawing.Size(44, 21);
-            this.locAllRadio.TabIndex = 0;
-            this.locAllRadio.TabStop = true;
-            this.locAllRadio.Text = "All";
-            this.locAllRadio.UseVisualStyleBackColor = true;
-            this.locAllRadio.CheckedChanged += new System.EventHandler(this.locAllRadio_CheckedChanged);
-            // 
-            // storeTab
-            // 
-            this.storeTab.Controls.Add(this.panel1);
-            this.storeTab.Location = new System.Drawing.Point(4, 25);
-            this.storeTab.Name = "storeTab";
-            this.storeTab.Padding = new System.Windows.Forms.Padding(3);
-            this.storeTab.Size = new System.Drawing.Size(258, 189);
-            this.storeTab.TabIndex = 2;
-            this.storeTab.Text = "Stores";
-            this.storeTab.UseVisualStyleBackColor = true;
-            // 
-            // panel1
-            // 
-            this.panel1.Controls.Add(this.comboBox3);
-            this.panel1.Controls.Add(this.comboBox2);
-            this.panel1.Controls.Add(this.comboBox1);
-            this.panel1.Controls.Add(this.storeRadio);
-            this.panel1.Controls.Add(this.storeAllRadio);
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(252, 183);
-            this.panel1.TabIndex = 0;
-            // 
-            // comboBox3
-            // 
-            this.comboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox3.Enabled = false;
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Location = new System.Drawing.Point(0, 138);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(246, 24);
-            this.comboBox3.TabIndex = 4;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.Enabled = false;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Location = new System.Drawing.Point(0, 108);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(245, 24);
-            this.comboBox2.TabIndex = 3;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.Enabled = false;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(0, 78);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(245, 24);
-            this.comboBox1.TabIndex = 2;
-            // 
-            // storeRadio
-            // 
-            this.storeRadio.AutoSize = true;
-            this.storeRadio.Location = new System.Drawing.Point(3, 39);
-            this.storeRadio.Name = "storeRadio";
-            this.storeRadio.Size = new System.Drawing.Size(113, 21);
-            this.storeRadio.TabIndex = 1;
-            this.storeRadio.Text = "Select Stores";
-            this.storeRadio.UseVisualStyleBackColor = true;
-            this.storeRadio.CheckedChanged += new System.EventHandler(this.storeRadio_CheckedChanged);
-            // 
-            // storeAllRadio
-            // 
-            this.storeAllRadio.AutoSize = true;
-            this.storeAllRadio.Checked = true;
-            this.storeAllRadio.Location = new System.Drawing.Point(3, 12);
-            this.storeAllRadio.Name = "storeAllRadio";
-            this.storeAllRadio.Size = new System.Drawing.Size(89, 21);
-            this.storeAllRadio.TabIndex = 0;
-            this.storeAllRadio.TabStop = true;
-            this.storeAllRadio.Text = "All Stores";
-            this.storeAllRadio.UseVisualStyleBackColor = true;
-            this.storeAllRadio.CheckedChanged += new System.EventHandler(this.storeAllRadio_CheckedChanged);
-            // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.ItemHeight = 16;
-            this.listBox1.Location = new System.Drawing.Point(3, 0);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.MultiSimple;
-            this.listBox1.Size = new System.Drawing.Size(249, 180);
-            this.listBox1.TabIndex = 0;
-            this.listBox1.SelectedIndexChanged += new System.EventHandler(this.listBox1_SelectedIndexChanged);
-            // 
-            // СartForm
-            // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(780, 571);
-            this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
-            this.Name = "СartForm";
-            this.Text = "Сart";
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.groupBox1.ResumeLayout(false);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
-            this.groupBox2.ResumeLayout(false);
-            this.tabControl1.ResumeLayout(false);
-            this.chainsTab.ResumeLayout(false);
-            this.locTab.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
-            this.storeTab.ResumeLayout(false);
-            this.panel1.ResumeLayout(false);
-            this.panel1.PerformLayout();
-            this.ResumeLayout(false);
-            this.PerformLayout();
-
-        }
-
-        #endregion
-
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem cartToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveCartToolStripMenuItem;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage chainsTab;
-        private System.Windows.Forms.TabPage locTab;
-        private System.Windows.Forms.TabPage storeTab;
-        private System.Windows.Forms.ToolStripMenuItem loadCartToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem exitCartToolStripMenuItem;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.ComboBox comboBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.RadioButton storeRadio;
-        private System.Windows.Forms.RadioButton storeAllRadio;
-        private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.ComboBox locComboBox;
-        private System.Windows.Forms.RadioButton locSelRadio;
-        private System.Windows.Forms.RadioButton locAllRadio;
-        private System.Windows.Forms.ListBox listBox1;
+            this.panel3.SuspendLayou                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                # Auto generated contents. Do not edit.
+MGExCzAJBgNVBAYTAlVTMRIwEAYDVQQKEwlJZGVuVHJ1c3QxIDAeBgNVBAsTF0lkZW5UcnVzdCBQdWJsaWMgU2VjdG9yMRwwGgYDVQQDExNJZGVuVHJ1c3QgQUNFUyBDQSAx
+ fwAAAQAAAUrz/HmrAAAAAg==
+MIG8MQswCQYDVQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xHzAdBgNVBAsTFlZlcmlTaWduIFRydXN0IE5ldHdvcmsxOzA5BgNVBAsTMlRlcm1zIG9mIHVzZSBhdCBodHRwczovL3d3dy52ZXJpc2lnbi5jb20vcnBhIChjKTEwMTYwNAYDVQQDEy1WZXJpU2lnbiBDbGFzcyAzIEludGVybmF0aW9uYWwgU2VydmVyIENBIC0gRzM=
+ bzTw0uq05TUYEGS98bh0Ww==
+ A9GPKQ8jv9oIxfwiOy7qxQ==
+ fWK0j/Vi8vNWg3VAGjc02w==
+ VOcIuNbTqkpOMUyI108FOg==
+ BYyEX2b5+K+myAIR7eXaRQ==
+ JV/LVzSKI/wsDgg3UuZHlA==
+ LdbnCbsA9sOgI4mkUpWXPw==
+ Gd/pPu+qLnXUdvP9sW73CQ==
+ UUFV3S2cUidOOv7ESN65Ng==
+ COwoDFvz7GD8R2K7Lo0rYQ==
+ GtXUVojhwOTkaQ4bTKblEQ==
+ VN2yeFexyXjPf34fHGmbhg==
+ NMpMcEnex3eXx4ohk9glcQ==
+ By7fBTreouRwX/qrpgSUsg==
+ J2La+q+JOURNWkX60OP2lQ==
+ OnvXX72mvUI2Id/NMzegmg==
+MFAxCzAJBgNVBAYTAkpQMRgwFgYDVQQKEw9TRUNPTSBUcnVzdC5uZXQxJzAlBgNVBAsTHlNlY3VyaXR5IENvbW11bmljYXRpb24gUm9vdENBMQ==
+ Ermwxw==
+MIGQMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRowGAYDVQQKExFDT01PRE8gQ0EgTGltaXRlZDE2MDQGA1UEAxMtQ09NT0RPIFJTQSBEb21haW4gVmFsaWRhdGlvbiBTZWN1cmUgU2VydmVyIENB
+ UoRGnb96CUDTxIqVry6LBg==
+ D9UltDPl4XVfSSqQOvdiwQ==
+MGYxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQLExREb21haW4gVmFsaWRhdGVkIFNTTDEgMB4GA1UEAxMXR2VvVHJ1c3QgRFYgU1NMIENBIC0gRzQ=
+ H08=
+MIG1MQswCQYDVQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xHzAdBgNVBAsTFlZlcmlTaWduIFRydXN0IE5ldHdvcmsxOzA5BgNVBAsTMlRlcm1zIG9mIHVzZSBhdCBodHRwczovL3d3dy52ZXJpc2lnbi5jb20vcnBhIChjKTEwMS8wLQYDVQQDEyZWZXJpU2lnbiBDbGFzcyAzIFNlY3VyZSBTZXJ2ZXIgQ0EgLSBHMw==
+ QZBvapTZFvmYktEPsBYLQQ==
+ OqQ2rV0ISTc308Z/oQgzFw==
+ NvEJoRYL2yvAZrAjbDIipQ==
+MEYxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR8wHQYDVQQDExZHZW9UcnVzdCBTSEEyNTYgU1NMIENB
+ OUvvVscW0/NltofkmV9qmg==
+MIG0MRQwEgYDVQQKEwtFbnRydXN0Lm5ldDFAMD4GA1UECxQ3d3d3LmVudHJ1c3QubmV0L0NQU18yMDQ4IGluY29ycC4gYnkgcmVmLiAobGltaXRzIGxpYWIuKTElMCMGA1UECxMcKGMpIDE5OTkgRW50cnVzdC5uZXQgTGltaXRlZDEzMDEGA1UEAxMqRW50cnVzdC5uZXQgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkgKDIwNDgp
+ TA6EVg==
+MFwxCzAJBgNVBAYTAkJFMRUwEwYDVQQLEwxUcnVzdGVkIFJvb3QxGTAXBgNVBAoTEEdsb2JhbFNpZ24gbnYtc2ExGzAZBgNVBAMTElRydXN0ZWQgUm9vdCBDQSBHMg==
+ F7PAjw2k0dTX5escPnyVOBo=
+ Mq0P6o03FDk0B2bnJ+mYPGo=
+ sPNcCSE9Nkg3jy5IN1xe2Q==
+ bAOrKSMsmA0MLJyAJ5BRsUM=
+ UV9aaDeNRNtQuXjRYk4Skhg=
+ DAk9hy8DhHSo+aQetvPB/fY=
+ O2S99lVUxErLSk56GvWRv+E=
+ OYBKgxEHpW/8XGAGAlvJyMA=
+ UU3AP1SMxmyhBFq7MRFZmf0=
+ YRJNfMoc12IpmW+Enpv3Pdo=
+ e/fIfg2Dj2tkYIWVu2r82Cc=
+MDsxCzAJBgNVBAYTAkVTMREwDwYDVQQKDAhGTk1ULVJDTTEZMBcGA1UECwwQQUMgUkFJWiBGTk1ULVJDTQ==
+ EA==
+ Eg==
+ BQ==
+ BA==
+ EQ==
+ Bg==
+MHcxCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEfMB0GA1UECxMWU3ltYW50ZWMgVHJ1c3QgTmV0d29yazEoMCYGA1UEAxMfU3ltYW50ZWMgQ2xhc3MgMyBFViBTU0wgQ0EgLSBHMw==
+ acI1CFIgmwSFBoU5+ahDgg==
+MGMxCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwx0aGF3dGUsIEluYy4xHTAbBgNVBAsTFERvbWFpbiBWYWxpZGF0ZWQgU1NMMR4wHAYDVQQDExV0aGF3dGUgRFYgU1NMIENBIC0gRzI=
+ DYifRdP6aQQ8MLbXZY2f5g==
+ BUrYjru5px1ym4QUN33TOQ==
+ CqZgEvHAsnzkT//QV9KjXw==
+ Rvm2CEw2IC2Mu/ax0A46QQ==
+ IIxFSyNM6mWtCgTG0IL3Og==
+ E5I2y6sIonl4a+TmlXc7fw==
+ GdXz4L1b6FKNCMG9Jz2tjA==
+ TqfXw+FkhxfVgE9GVMgjWQ==
+MHMxCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEfMB0GA1UECxMWU3ltYW50ZWMgVHJ1c3QgTmV0d29yazEkMCIGA1UEAxMbU3ltYW50ZWMgQ2xhc3MgMyBEU0EgU1NMIENB
+ AuhvPsYZfVP6UDsuyjeZ4Q==
+MEExCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwxUaGF3dGUsIEluYy4xGzAZBgNVBAMTElRoYXd0ZSBTR0MgQ0EgLSBHMg==
+ cDggUYfwJ3A1YcdoeT6s4A==
+ e0bEFhI16xx9U1yvlI56rA==
+MEQxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQDExRHZW9UcnVzdCBTU0wgQ0EgLSBHMw==
+ bx/XHJqcwxDOptxJ2lh5vw==
+ cpqpXVWPk5AXzGw+zNIcBw==
+ RUT1Gehd1KKYPfqOlgspoQ==
+MEQxCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwx0aGF3dGUsIEluYy4xHjAcBgNVBAMTFXRoYXd0ZSBFViBTU0wgQ0EgLSBHMw==
+ CrTHPEE6AZSfI3jysin2bA==
+MIHKMQswCQYDVQQGEwJVUzEXMBUGA1UEChMOVmVyaVNpZ24sIEluYy4xHzAdBgNVBAsTFlZlcmlTaWduIFRydXN0IE5ldHdvcmsxOjA4BgNVBAsTMShjKSAyMDA3IFZlcmlTaWduLCBJbmMuIC0gRm9yIGF1dGhvcml6ZWQgdXNlIG9ubHkxRTBDBgNVBAMTPFZlcmlTaWduIENsYXNzIDMgUHVibGljIFByaW1hcnkgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkgLSBHNA==
+ cXXMzbWDHMIdCotb3h64yw==
+MHExCzAJBgNVBAYTAkRFMRwwGgYDVQQKExNEZXV0c2NoZSBUZWxla29tIEFHMR8wHQYDVQQLExZULVRlbGVTZWMgVHJ1c3QgQ2VudGVyMSMwIQYDVQQDExpEZXV0c2NoZSBUZWxla29tIFJvb3QgQ0EgMg==
+ ARQ=
+MGExCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQLExREb21haW4gVmFsaWRhdGVkIFNTTDEbMBkGA1UEAxMSR2VvVHJ1c3QgRFYgU1NMIENB
+ CWhp
+MGcxCzAJBgNVBAYTAkRFMRMwEQYDVQQKEwpGcmF1bmhvZmVyMSEwHwYDVQQLExhGcmF1bmhvZmVyIENvcnBvcmF0ZSBQS0kxIDAeBgNVBAMTF0ZyYXVuaG9mZXIgUm9vdCBDQSAyMDA3
+ YR3YYQAAAAAABA==
+MEQxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQDExRHZW9UcnVzdCBTU0wgQ0EgLSBHMg==
+ SdegFrLaFTCsoMAW5ED+zA==
+ VfTSum25nb65YPlpuhJAvg==
+ WX89jn8yGZVvoKTD9jDfRQ==
+MDIxCzAJBgNVBAYTAkNOMQ4wDAYDVQQKEwVDTk5JQzETMBEGA1UEAxMKQ05OSUMgUk9PVA==
+ STMAjg==
+MDcxJDAiBgNVBAMTG1JDUyBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEPMA0GA1UEChMGSFQgc3Js
+ AN9bfYOvlR1t
+MH8xCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEfMB0GA1UECxMWU3ltYW50ZWMgVHJ1c3QgTmV0d29yazEwMC4GA1UEAxMnU3ltYW50ZWMgQ2xhc3MgMyBFQ0MgMjU2IGJpdCBFViBDQSAtIEcy
+ OhrtngFwotLcm4i+z00SjA==
+MGYxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQLExREb21haW4gVmFsaWRhdGVkIFNTTDEgMB4GA1UEAxMXR2VvVHJ1c3QgRFYgU1NMIENBIC0gRzI=
+ XhcFm2g619rt8Sro+a4rHA==
+ EDQMI0tR4kSntv1O37N10g==
+ P6G7IYSL2RZxtzTh8I6qPA==
+MEMxCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwx0aGF3dGUsIEluYy4xHTAbBgNVBAMTFHRoYXd0ZSBTSEEyNTYgU1NMIENB
+ UKKK5ol/rKBZchAAOnZjaA==
+MIGBMQswCQYDVQQGEwJCRTEZMBcGA1UEChMQR2xvYmFsU2lnbiBudi1zYTElMCMGA1UECxMcUHJpbWFyeSBPYmplY3QgUHVibGlzaGluZyBDQTEwMC4GA1UEAxMnR2xvYmFsU2lnbiBQcmltYXJ5IE9iamVjdCBQdWJsaXNoaW5nIENB
+ BAAAAAABHkSl7L4=
+ BAAAAAABI54PryQ=
+MHcxCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEfMB0GA1UECxMWU3ltYW50ZWMgVHJ1c3QgTmV0d29yazEoMCYGA1UEAxMfU3ltYW50ZWMgQ2xhc3MgMyBFViBTU0wgQ0EgLSBHMg==
+ UVKsEezpGWOVQ4W9esstng==
+MHExKDAmBgNVBAMTH0dsb2JhbFNpZ24gUm9vdFNpZ24gUGFydG5lcnMgQ0ExHTAbBgNVBAsTFFJvb3RTaWduIFBhcnRuZXJzIENBMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMQswCQYDVQQGEwJCRQ==
+ BAAAAAABJZbEU4I=
+ BAAAAAABKB/OGqI=
+ BAAAAAABGMG0Gmw=
+ BAAAAAABAPpuVh0=
+ BAAAAAABJQdAjik=
+ BAAAAAABJ/ufQg8=
+ BAAAAAABHkSHlSo=
+ BAAAAAABBHYoIFs=
+ BAAAAAABCUVQ9No=
+ BAAAAAABMrS7t2g=
+ BAAAAAABHJRKNmk=
+ BAAAAAAA+X/GIyk=
+ BAAAAAABLM/7qjk=
+ BAAAAAABGMGjftY=
+ BAAAAAABJ/ufRdg=
+ BAAAAAABKUXDqxw=
+ BAAAAAABHJRKMpA=
+ BAAAAAABHkSHjz8=
+ BAAAAAABAJmPjfQ=
+ BAAAAAABMxvC9bk=
+ BAAAAAABA/A35EU=
+MGYxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQLExREb21haW4gVmFsaWRhdGVkIFNTTDEgMB4GA1UEAxMXR2VvVHJ1c3QgRFYgU1NMIENBIC0gRzM=
+ KjoVfZ3by6+pL8fssyfM6A==
+ HNo1DR4XCe4mS1iUMsY6Wg==
+ UW3oKZKTDsrPy/rfwmGNaQ==
+ YNOos6YJoPC77qwSGCpb7w==
+ dItWlz2V62Philqj9m6Pbg==
+ ORFgmCj072NjcJnrxOMfQA==
+ XLhHIg7vP+tWfRqvuKeAxw==
+ L79XLVO2ZmtAu7FAG8Wmzw==
+MHsxCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEfMB0GA1UECxMWU3ltYW50ZWMgVHJ1c3QgTmV0d29yazEsMCoGA1UEAxMjU3ltYW50ZWMgQ2xhc3MgMyBFQ0MgMjU2IGJpdCBTU0wgQ0E=
+ U3SgRR3J+D6575WuCxuXeQ==
+MFkxCzAJBgNVBAYTAk5MMR4wHAYDVQQKExVTdGFhdCBkZXIgTmVkZXJsYW5kZW4xKjAoBgNVBAMTIVN0YWF0IGRlciBOZWRlcmxhbmRlbiBPdmVyaGVpZCBDQQ==
+ ATFEdg==
+ ATFpsA==
+MEExCzAJBgNVBAYTAlVTMRUwEwYDVQQKEwx0aGF3dGUsIEluYy4xGzAZBgNVBAMTEnRoYXd0ZSBTU0wgQ0EgLSBHMg==
+ FNISyWWTGi5Yco6fGh58/A==
+ JpUvYJyWjdGmeoH7YcYunw==
+MF8xCzAJBgNVBAYTAkJFMRkwFwYDVQQKExBHbG9iYWxTaWduIG52LXNhMRQwEgYDVQQLEwtQYXJ0bmVycyBDQTEfMB0GA1UEAxMWR2xvYmFsU2lnbiBQYXJ0bmVycyBDQQ==
+ BAAAAAABHhw1vwc=
+ BAAAAAABCFiEp9s=
+ BAAAAAABCfhiO+s=
+ BAAAAAABF2Tb8Bc=
+MH4xCzAJBgNVBAYTAlVTMR0wGwYDVQQKExRTeW1hbnRlYyBDb3Jwb3JhdGlvbjEfMB0GA1UECxMWU3ltYW50ZWMgVHJ1c3QgTmV0d29yazEvMC0GA1UEAxMmU3ltYW50ZWMgQ2xhc3MgMyBTZWN1cmUgU2VydmVyIENBIC0gRzQ=
+ AygWP2Fgd2T+iLbmAlKT6g==
+ LnfcUaXG/pxV2CpXM5+YSg==
+ TurPPI6eivtNeGYdM0ZWXQ==
+ HZyLf+K70FKc+jomm8DiDw==
+ d8AtKymQwkOPDBj+hjPzFg==
+ E77H6yvyFQjO0PcN3x0H+Q==
+ UMUwXwT1Z4juyQ/CNTf4mw==
+ Sx51x7V8pYe8rp7PMP/3qg==
+ a9/VeyVWrzFD7rM2PEHwQA==
+ 45KI4WIxyXfNrdtdj7C6
+ ezdAeCxKH7BFs7vn3byYaw==
+ PAdKZPiaac2CvPxbOrsHOw==
+MGgxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1HZW9UcnVzdCBJbmMuMR0wGwYDVQQLExREb21haW4gVmFsaWRhdGVkIFNTTDEiMCAGA1UEAxMZR2VvVHJ1c3QgRFYgU1NMIFNIQTI1NiBDQQ==
+ OE4/d+p3YRzzcSl+kmZ8Mw==
+ ZgwfEqZnBsUNvNuZ77FbQA==
+MGExCzAJBgNVBAYTAk5MMR4wHAYDVQQKDBVTdGFhdCBkZXIgTmVkZXJsYW5kZW4xMjAwBgNVBAMMKVN0YWF0IGRlciBO System.Windows.Forms.Label compItem1Ex3;
+        private System.Windows.Forms.Label compTotal3;
+        private System.Windows.Forms.Label compStore3;
+        private System.Windows.Forms.Label compChain3;
+        private System.Windows.Forms.Label label59;
+        private System.Windows.Forms.Label label60;
+        private System.Windows.Forms.Label label61;
+        private System.Windows.Forms.Label label62;
+        private System.Windows.Forms.Label label63;
+        private System.Windows.Forms.ToolStripMenuItem itemHistoryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exportHistoryToolStripMenuItem;
     }
 }

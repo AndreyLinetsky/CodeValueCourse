@@ -155,9 +155,17 @@ namespace PriceUI
 
         private void viewCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            СartForm cartForm = new СartForm(Manager);
+            СartForm cartForm = new СartForm(Manager,false);
             cartForm.ShowDialog();
 
         }
+
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            СartForm cartForm = new СartForm(Manager, true);
+            cartForm.ShowDialog();
+        }
+
+
     }
 }

@@ -8,7 +8,7 @@ namespace PriceLogic
 {
     public class ItemGeneral
     {
-        public ItemGeneral(long itemCode, string itemDesc, int amount, int itemType, long chainId,string unitQuantity, string quantity)
+        public ItemGeneral(long itemCode, string itemDesc, int amount, int itemType, long chainId,string unitQuantity, string quantity,decimal price)
         {
             ItemCode = itemCode;
             ItemDesc = itemDesc;
@@ -24,7 +24,7 @@ namespace PriceLogic
             {
                 ChainId = 0;
             }
-
+            Price = price;
         }
 
         public ItemGeneral()
@@ -38,5 +38,6 @@ namespace PriceLogic
         public long ChainId { get; set; }
         public string UnitQuantity { get; set; }
         public string Quantity { get; set; }
+        public decimal Price { get; set; }
     }
 }

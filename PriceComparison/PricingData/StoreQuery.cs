@@ -8,12 +8,19 @@ namespace PricingData
 {
     public class StoreQuery
     {
-        public List<String> GetChains()
+        public List<String> GetAllChains()
         {
             using (var db = new PricingContext())
             {
                 var result = db.Stores.Select(s => s.ChainName).Distinct();
                 return result.ToList<String>();
+            }
+        }
+        public long GetChainId(string chain)
+        {
+            using (var db = new PricingContext())
+            {
+                return db.Stores.Where(s => s.ChainName == chain).Select(s => s.ChainID).FirstOrDefault();
             }
         }
         public List<String> GetLocations(List<string> chains)
@@ -24,11 +31,11 @@ namespace PricingData
                 return result.ToList<String>();
             }
         }
-        public List<KeyValuePair<string, string>> GetStores(List<string> chains, string location)
+        public List<KeyValuePair<string, string>> GetAllStores(List<string> chains, string location)
         {
             using (var db = new PricingContext())
             {
-                var result = db.Stores.Where(s => chains.Contains(s.ChainName) && string.Equals(location,s.Location)).Select(s => new
+                var result = db.Stores.Where(s => chains.Contains(s.ChainName) && string.Equals(location, s.Location)).Select(s => new
                 {
                     ChainName = s.ChainName,
                     StoreName = s.StoreName
@@ -37,7 +44,7 @@ namespace PricingData
                 return pairs;
             }
         }
-        public List<KeyValuePair<string, string>> GetStores(List<string> chains)
+        public List<KeyValuePair<string, string>> GetAllStores(List<string> chains)
         {
             using (var db = new PricingContext())
             {
@@ -48,6 +55,26 @@ namespace PricingData
                 }).Distinct();
                 var pairs = result.AsEnumerable().Select(p => new KeyValuePair<string, string>(p.ChainName, p.StoreName)).ToList();
                 return pairs;
+            }
+        }
+        public string GetStoreName(long chainId,int storeId)
+        {
+            using (var db = new PricingContext())
+            {
+                return db.Stores.Where(s => s.ChainID == chainId && s.StoreID == storeId).Select(s => s.StoreName).FirstOrDefault();
+            }
+        }
+        public KeyValuePair<long, int> ConvertNameToID(string chainName, string storeName)
+        {
+            using (var db = new PricingContext())
+            {
+                var result = db.Stores.Where(s => string.Equals(chainName, s.ChainName) && string.Equals(storeName, s.StoreName)).Select(s => new
+                {
+                    ChainID = s.ChainID,
+                    StoreID = s.StoreID
+                }).Distinct();
+                var pair = result.AsEnumerable().Select(p => new KeyValuePair<long, int>(p.ChainID, p.StoreID)).FirstOrDefault();
+                return pair;
             }
         }
     }

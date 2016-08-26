@@ -53,7 +53,11 @@ namespace PricingData
                 decimal price = Convert.ToDecimal(node.SelectSingleNode("ItemPrice").InnerText);
                 string date = node.SelectSingleNode("PriceUpdateDate").InnerText;
                 Item currItem = new Item(storeId, chainId, itemCode, itemType, itemDesc, unitQuantity, quantity, price, date);
-                Items.Add(currItem);
+                //Prevent duplicates
+                if (!Items.Any(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType))
+                {
+                    Items.Add(currItem);
+                }
             }
         }
         public void WriteToDb()

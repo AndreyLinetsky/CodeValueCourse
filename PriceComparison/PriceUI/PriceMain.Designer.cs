@@ -95,6 +95,7 @@
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
             this.loadToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.loadToolStripMenuItem.Text = "Load Cart";
+            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // userToolStripMenuItem
             // 
@@ -189,6 +190,7 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(345, 287);
             this.panel1.TabIndex = 13;
+            
             // 
             // priceText
             // 
@@ -338,23 +340,8 @@
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox searchText;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label unitText;
-        private System.Windows.Forms.Label quanText;
-        private System.Windows.Forms.Label nameText;
-        private System.Windows.Forms.Label codeText;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label priceText;
-        private System.Windows.Forms.ToolStripMenuItem viewCartToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
-    }
-}
-
+        private System.Windows.Formf´ V e r s  i o n =  1  
+ E v ¸n t T ˆy p ,= P |P G\Ìi c D ìiVr F ‚u Fd‚i mQ‚1 3 ¾1 4@ 0 6 8 7Ñ0 9 9 }ªC‹sit“R Šp r •I dXi f »= ]dE 0 4 5 -E b e0 -eeA _- b a 9E f 3 2‚9u€
+d€4€A6s·€|ŠD.€:…„4‚p"S€;g [€[] X. N€ƒrA€‰cT h€t€,c€u€eV€l u1€= x€M‹+1 U‹+H€r€ow‚eğ   I€¿U…Dƒ‰*U S B \T V‚_€ë0€ÓF¬ &€æ_€^0À J5@R@V E1]@M@ÁÃ„D@‚n•Àm@6cÀi A?õM)O@ ÀAdE•Á(kYI,1@#.Â A5U@h6@W2À 0Ä 7]@J8ÀÁY&2ÌOLõÀcÀ/lÀ[ÇNÓ%Ã­Í%3À“Á2FÀsi@ºn@cl@EGËGI@Â¢sÀ~a l@ e@
+ª ÀKe@eBcÀoVdBAÚr@sÀ'f×@ÅwACÀn@çÁht KÀyÀÃkâA­@±pÈ§Éì Ào ^Ôt §Ji*a cƒ+ác	P (t \= hC : KW Ba!oµ sàS`"aeà~Õák\àTs`U ¡¢Tàs k`8eà^W#cám¥{Dàs ‹r¥à
+pæ= ë ¢Õm,dz*  	h¢!êu"#o t cájw!„aWa4f`a cxsÕà4oà%  o wá6«cl!Jnà	u  àve ¢!¤e a#mõ`nàfà 'ƒ¡!êy p ob!œñ3›!/!  áqb !ZÕ!a Ld "t` á–UaO  e t¢eíà."‘#9l ab%õéªt`= qáƒ 5ı¡F  ?????ÿ???????ÿÿÿÿ

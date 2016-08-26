@@ -9,17 +9,57 @@ namespace PriceLogic
 {
     public class UpdatedCart
     {
-        public UpdatedCart(int storeId, int chainId)
+        public UpdatedCart(int storeId, long chainId, string storeName, string chainName)
         {
             Items = new List<ItemGeneral>();
-            StoreId = storeId;
-            ChainId = chainId;
+            StoreID = storeId;
+            StoreName = storeName;
+            ChainID = chainId;
+            ChainName = chainName;
         }
         public List<ItemGeneral> Items { get; set; }
-        public int StoreName { get; set; }
-        public int ChainName { get; set; }
+        public string StoreName { get; set; }
+        public string ChainName { get; set; }
+        public int StoreID { get; set; }
+        public long ChainID { get; set; }
+        public int ItemsToShow { get; } = 3;
 
-        public void Add(Item item)
+        public List<ItemGeneral> CheapItems
+        {
+            get
+            {
+                if (Items.Where(i => i.Price > 0).Count() <= 3)
+                {
+                    return Items.Where(i => i.Price > 0).OrderBy(i => i.Price * i.Amount).ToList();
+                }
+                else
+                {
+                    return Items.Where(i => i.Price > 0).OrderBy(i => i.Price * i.Amount).Take(ItemsToShow).ToList();
+                }
+            }
+        }
+        public List<ItemGeneral> ExpensiveItems
+        {
+            get
+            {
+                if (Items.Where(i => i.Price > 0).Count() <= 3)
+                {
+                    return Items.Where(i => i.Price > 0).OrderByDescending(i => i.Price * i.Amount).ToList();
+                }
+                else
+                {
+                    return Items.Where(i => i.Price > 0).OrderByDescending(i => i.Price * i.Amount).Take(ItemsToShow).ToList();
+                }
+            }
+        }
+        public decimal TotalPrice
+        {
+            get
+            {
+                return Items.Select(i => i.Price * i.Amount).Sum();
+            }
+        }
+        public void Add(ItemGeneral item)
         {
             Items.Add(item);
         }
