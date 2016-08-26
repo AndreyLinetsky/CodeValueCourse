@@ -33,6 +33,7 @@ namespace PriceUI
         {
             PopulateCart();
             List<string> chains = Manager.GetChains();
+            listBox1.Items.Clear();
             listBox1.Items.AddRange(chains.ToArray());
             ResetCompOutput();
         }
@@ -100,9 +101,16 @@ namespace PriceUI
                     ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
                     if (currItem != null)
                     {
-                        List<ItemGeneral> newItems = Manager.UpdateCart(currItem, Convert.ToInt32(numericUpDown1.Value));
-                        RefreshCart(newItems);
-                        MessageBox.Show("Product was updated successfully");
+                        if (currItem.Amount == Convert.ToInt32(numericUpDown1.Value))
+                        {
+                            MessageBox.Show("Amount was not changed");
+                        }
+                        else
+                        {
+                            List<ItemGeneral> newItems = Manager.UpdateCart(currItem, Convert.ToInt32(numericUpDown1.Value));
+                            RefreshCart(newItems);
+                            MessageBox.Show("Product was updated successfully");
+                        }
                     }
                 }
             }
@@ -296,9 +304,11 @@ namespace PriceUI
 
         private void exportHistoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ItemHistForm histForm = new histForm(Manager);
-            histForm.ShowDialog();
+            //ItemHistForm histForm = new histForm(Manager);
+            //histForm.ShowDialog();
         }
+
+        
     }
 }
 
