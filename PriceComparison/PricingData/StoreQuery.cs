@@ -23,6 +23,13 @@ namespace PricingData
                 return db.Stores.Where(s => s.ChainName == chain).Select(s => s.ChainID).FirstOrDefault();
             }
         }
+        public string GetChainName(long chainId)
+        {
+            using (var db = new PricingContext())
+            {
+                return db.Stores.Where(s => s.ChainID == chainId).Select(s => s.ChainName).FirstOrDefault();
+            }
+        }
         public List<String> GetLocations(List<string> chains)
         {
             using (var db = new PricingContext())

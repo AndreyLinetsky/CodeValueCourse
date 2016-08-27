@@ -169,46 +169,60 @@ namespace PriceLogic
             }
             return UpdatedCarts;
         }
-        //public List<UpdatedCart> CalculateTotal(List<string> chains, string location, int productsToFetch)
-        //{
-        //    UpdatedCarts = new List<UpdatedCart>();
-        //    List<KeyValuePair<long, int>> itemsToCheck = FetchCheckItems();
-        //    for (int i = 0; i < productsToFetch; i++)
-        //    {
-        //        long chainId = StoreQuery.GetChainId(chains[i]);
-        //        KeyValuePair<long, int> idsData = ItemQuery.GetCheapestStore(new List<long>() { chainId }, itemsToCheck, location);
-        //        string storeName = StoreQuery.GetStoreName(chainId, idsData.Value);
-        //        UpdatedCart currCart = new UpdatedCart(idsData.Value, chainId, storeName, chains[i]);
-        //        UpdateCart(currCart);
-        //    }
-        //    List<long> chainIds = chains.Select(c => StoreQuery.GetChainId(c)).Distinct().ToList();
-        //    while (UpdatedCarts.Count < productsToFetch)
-        //    {
-        //        KeyValuePair<long, int> idsData = ItemQuery.GetCheapestStore(chainIds, itemsToCheck, location);
-        //        string storeName = StoreQuery.GetStoreName(idsData.Key, idsData.Value);
-        //        UpdatedCart currCart = new UpdatedCart(idsData.Value, idsData.Key, storeName, chains[i]);
-        //        UpdateCart(currCart);
-        //    }
-        //    return UpdatedCarts;
-        //}
+        public List<UpdatedCart> CalculateTotal(List<string> chains, string location, int productsToFetch)
+        {
+            UpdatedCarts = new List<UpdatedCart>();
+            List<IdValuePair> itemsToCheck = FetchCheckItems();
+            List<IdValuePair> markedStores = new List<IdValuePair>();
+            for (int i = 0; i < chains.Count; i++)
+            {
+                long chainId = StoreQuery.GetChainId(chains[i]);
+                IdValuePair idsData = ItemQuery.GetCheapestStore(new List<long>() { chainId }, itemsToCheck, location, markedStores);
+                if (idsData != null)
+                {
+                    string storeName = StoreQuery.GetStoreName(chainId, idsData.Value);
+                    UpdatedCart newCart = new UpdatedCart(idsData.Value, chainId, storeName, chains[i]);
+                    UpdateCart(newCart);
+                    markedStores.Add(idsData);
+                }
+            }
+            List<long> chainIds = chains.Select(c => StoreQuery.GetChainId(c)).Distinct().ToList();
+            while (UpdatedCarts.Count < productsToFetch)
+            {
+                IdValuePair idsData = ItemQuery.GetCheapestStore(chainIds, itemsToCheck, location, markedStores);
+                if (idsData != null)
+                {
+                    string storeName = StoreQuery.GetStoreName(idsData.Key, idsData.Value);
+                    string chainName = StoreQuery.GetChainName(idsData.Key);
+                    UpdatedCart currCart = new UpdatedCart(idsData.Value, idsData.Key, storeName, chainName);
+                    UpdateCart(currCart);
+                    markedStores.Add(idsData);
+                }
+                else
+                {
+                    break;
+                }
+            }
+            return UpdatedCarts;
+        }
 
         public void UpdateCart(UpdatedCart currCart)
         {
-            currCart.Items.AddRange(Cart.Items);
+            currCart.Items = (Cart.Items.Select(i => i.c);
             foreach (ItemGeneral item in currCart.Items)
             {
                 item.Price = ItemQuery.GetPrice(currCart.ChainID, currCart.StoreID, item.ItemCode, item.ItemType);
             }
             UpdatedCarts.Add(currCart);
         }
-        public List<KeyValuePair<long, int>> FetchCheckItems()
+        public List<IdValuePair> FetchCheckItems()
         {
             var result = Cart.Items.Select(i => new
             {
                 ItemCode = i.ItemCode,
                 ItemType = i.ItemType
             }).Distinct();
-            return result.AsEnumerable().Select(p => new KeyValuePair<long, int>(p.ItemCode, p.ItemType)).ToList();
+            return result.AsEnumerable().Select(p => new IdValuePair(p.ItemCode, p.ItemType)).ToList();
         }
         public void SaveCart(string path)
         {

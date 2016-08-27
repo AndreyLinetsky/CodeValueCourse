@@ -205,32 +205,32 @@ namespace PriceUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            //List<UpdatedCart> updatedItems = new List<UpdatedCart>();
+            List<UpdatedCart> updatedItems = new List<UpdatedCart>();
 
-            //if (ValidateFilters())
-            //{
-            //    if (!storeAllRadio.Checked)
-            //    {
-            //        List<string> stores = new List<string>();
-            //        foreach (var comboBox in panel1.Controls.OfType<ComboBox>())
-            //        {
-            //            if (comboBox.SelectedItem != null)
-            //            {
-            //                stores.Add(comboBox.SelectedValue.ToString());
-            //            }
-            //        }
-            //        updatedItems = Manager.CalculateTotal(stores);
-            //    }
-            //    else if (locAllRadio.Checked)
-            //    {
-            //        updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), null, ProductsToFetch);
-            //    }
-            //    else
-            //    {
-            //        updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
-            //    }
-            //    ShowUpdatedCart(updatedItems);
-            //}
+            if (ValidateFilters())
+            {
+                if (!storeAllRadio.Checked)
+                {
+                    List<string> stores = new List<string>();
+                    foreach (var comboBox in panel1.Controls.OfType<ComboBox>())
+                    {
+                        if (comboBox.SelectedItem != null)
+                        {
+                            stores.Add(comboBox.SelectedValue.ToString());
+                        }
+                    }
+                    updatedItems = Manager.CalculateTotal(stores);
+                }
+                else if (locAllRadio.Checked)
+                {
+                    updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), null, ProductsToFetch);
+                }
+                else
+                {
+                    updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
+                }
+                //ShowUpdatedCart(updatedItems);
+            }
         }
         public bool ValidateFilters()
         {

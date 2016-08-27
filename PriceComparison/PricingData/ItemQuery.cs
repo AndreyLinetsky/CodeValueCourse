@@ -57,16 +57,22 @@ namespace PricingData
                 return result;
             }
         }
-        //public KeyValuePair<long,int> GetCheapestStore(List<long> chainIds, List<KeyValuePair<long, int>> items,string location)
-        //{
-        //    using (var db = new PricingContext())
-        //    {
-        //        var cartItems = db.Items.Where(i => chainIds.Contains(i.ChainID) && (i.Store.Location == location || location == null) && items.Contains(new KeyValuePair<long, int>(i.ItemCode, i.ItemType)));
-        //        var bestPrice = cartItems.GroupBy(i => new { i.ChainID, i.StoreID }).Max(g => g.Key.)
-        //        var result = db.Items.Where(i => chainIds.Contains(i.ChainID) && (i.Store.Location == location || location == null)).Join(items, s => new { s.ItemCode, s.ItemType }, t => new { ItemCode = t.Key, ItemType = t.Value }, (s, t) => new { Data = s, Input = t }).Select(s => new { s.Data.StoreID, s.Data.ChainID });
-        //        return result.AsEnumerable().Select(r => new KeyValuePair<long, int>(r.ChainID, r.StoreID)).FirstOrDefault();
-        //        KeyValuePair<long, int> idData = new KeyValuePair<long, int>(result.)
-        //    }
-        //}
+        public IdValuePair GetCheapestStore(List<long> chainIds, List<IdValuePair> items, string location, List<IdValuePair> markedStores)
+        {
+            using (var db = new PricingContext())
+            {
+                var filtItems = db.Items.Where(i => chainIds.Contains(i.ChainID) && (i.Store.Location == location || location == null)).ToList();
+                var updItems = filtItems.Where(i => !markedStores.Any(s => s.Key == i.ChainID && s.Value == i.StoreID) && items.Any(s => s.Key == i.ItemCode && s.Value == i.ItemType)).ToList();
+                var bestStore = updItems.GroupBy(i => new { i.ChainID, i.StoreID }).Select(g => new { ChainID = g.Key.ChainID, StoreID = g.Key.StoreID, Count = g.Count(), TotalPrice = g.Sum(g1 => g1.Price) }).OrderByDescending(i => i.Count).ThenBy(i => i.TotalPrice).FirstOrDefault();
+                if(bestStore != null)
+                {
+                    return new IdValuePair(bestStore.ChainID, bestStore.StoreID);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
     }
 }
