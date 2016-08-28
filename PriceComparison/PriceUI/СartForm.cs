@@ -32,9 +32,10 @@ namespace PriceUI
         public void ResetUI()
         {
             PopulateCart();
-            List<string> chains = Manager.GetChains();
-            listBox1.Items.Clear();
-            listBox1.Items.AddRange(chains.ToArray());
+            List<KeyValuePair<long, string>> chains = Manager.GetChains();
+            listBox1.DataSource = chains;
+            listBox1.DisplayMember = "Value";
+            listBox1.ValueMember = "Key";
             ResetCompOutput();
         }
         private void PopulateCart()
@@ -152,22 +153,22 @@ namespace PriceUI
         {
             locComboBox.Enabled = false;
             locComboBox.SelectedItem = null;
-            List<string> stores = Manager.GetStores(listBox1.SelectedItems.OfType<string>().ToList());
+            List<KeyValuePair<string, string>> stores = Manager.GetStores(listBox1.SelectedItems.OfType<long>().ToList(),null);
             ResetStores(stores);
         }
 
         private void storeRadio_CheckedChanged(object sender, EventArgs e)
         {
-            comboBox1.Enabled = true;
-            comboBox2.Enabled = true;
-            comboBox3.Enabled = true;
+            comboStore1.Enabled = true;
+            comboStore2.Enabled = true;
+            comboStore3.Enabled = true;
         }
 
         private void storeAllRadio_CheckedChanged(object sender, EventArgs e)
         {
-            comboBox1.Enabled = false;
-            comboBox2.Enabled = false;
-            comboBox3.Enabled = false;
+            comboStore1.Enabled = false;
+            comboStore2.Enabled = false;
+            comboStore3.Enabled = false;
         }
 
         private void locSelRadio_CheckedChanged(object sender, EventArgs e)
@@ -175,16 +176,16 @@ namespace PriceUI
             locComboBox.Enabled = true;
 
         }
-        public void ResetStores(List<string> stores)
+        public void ResetStores(List<KeyValuePair<string, string>> stores)
         {
-            comboBox1.DataSource = stores;
-            List<string> stores2 = new List<string>(stores);
-            List<string> stores3 = new List<string>(stores);
-            comboBox2.DataSource = stores2;
-            comboBox3.DataSource = stores3;
-            comboBox1.SelectedItem = null;
-            comboBox2.SelectedItem = null;
-            comboBox3.SelectedItem = null;
+            foreach (ComboBox combo in Controls.OfType<ComboBox>().Where(c => c.Name.Contains("Store")))
+            {
+                List<KeyValuePair<string, string>> currStores = new List<KeyValuePair<string, string>>(stores);
+                combo.DataSource = currStores;
+                combo.SelectedItem = null;
+                combo.DisplayMember = "Value";
+                combo.ValueMember = "Key";
+            }
             storeAllRadio.Checked = true;
         }
         private void locComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -192,7 +193,7 @@ namespace PriceUI
             if (locComboBox.SelectedItem != null &&
                 locComboBox.Enabled == true)
             {
-                List<string> stores = Manager.GetStores(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString());
+                List<KeyValuePair<string, string>> stores = Manager.GetStores(listBox1.SelectedItems.OfType<long>().ToList(), locComboBox.SelectedValue.ToString());
                 ResetStores(stores);
             }
         }
@@ -203,7 +204,7 @@ namespace PriceUI
             locComboBox.DataSource = locations;
             locAllRadio.Checked = true;
             locComboBox.SelectedItem = null;
-            List<string> stores = Manager.GetStores(listBox1.SelectedItems.OfType<string>().ToList());
+            List<KeyValuePair<string, string>> stores = Manager.GetStores(listBox1.SelectedItems.OfType<long>().ToList(),null);
             ResetStores(stores);
         }
 
@@ -246,16 +247,16 @@ namespace PriceUI
             }
             if (!storeAllRadio.Checked)
             {
-                if (comboBox1.SelectedItem == null &&
-                        comboBox2.SelectedItem == null &&
-                        comboBox3.SelectedItem == null)
+                if (comboStore1.SelectedItem == null &&
+                        comboStore2.SelectedItem == null &&
+                        comboStore3.SelectedItem == null)
                 {
                     MessageBox.Show("Please select at least one store");
                     return false;
                 }
-                if (string.Equals(comboBox1.SelectedValue.ToString(), comboBox2.SelectedValue.ToString()) ||
-                    string.Equals(comboBox2.SelectedValue.ToString(), comboBox3.SelectedValue.ToString()) ||
-                    string.Equals(comboBox1.SelectedValue.ToString(), comboBox3.SelectedValue.ToString()))
+                if (string.Equals(comboStore1.SelectedValue.ToString(), comboStore2.SelectedValue.ToString()) ||
+                    string.Equals(comboStore2.SelectedValue.ToString(), comboStore3.SelectedValue.ToString()) ||
+                    string.Equals(comboStore1.SelectedValue.ToString(), comboStore3.SelectedValue.ToString()))
                 {
                     MessageBox.Show("Duplicated stores were selected");
                     return false;
@@ -275,7 +276,7 @@ namespace PriceUI
             for (int i = 1; i <= updatedItems.Count; i++)
             {
                 EnablePanel(i);
-                WriteToPanel(updatedItems[i-1], i);
+                WriteToPanel(updatedItems[i - 1], i);
             }
         }
 

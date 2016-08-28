@@ -137,7 +137,7 @@ namespace PriceLogic
             Cart.UpdateAmount(currItem, amount);
             return Cart.Items;
         }
-        public List<String> GetChains()
+        public List<KeyValuePair<long,string>> GetChains()
         {
             return StoreQuery.GetAllChains();
         }
@@ -145,25 +145,19 @@ namespace PriceLogic
         {
             return StoreQuery.GetLocations(chains);
         }
-        public List<string> GetStores(List<string> chains, string location)
+        public List<KeyValuePair<string, string>> GetStores(List<long> chains, string location)
         {
-            List<KeyValuePair<string, string>> stores = StoreQuery.GetAllStores(chains, location);
-            var result = stores.Select(s => $"{s.Key}-{s.Value}");
-            return result.ToList<string>();
+            List<StoreHeader> idsData = StoreQuery.GetAllStores(chains, location);
+            return idsData.Select(i => new KeyValuePair<string, string>($"{i.ChainId}-{i.StoreId}", $"{i.ChainName}-{i.StoreName}")).ToList();
         }
-        public List<string> GetStores(List<string> chains)
-        {
-            List<KeyValuePair<string, string>> stores = StoreQuery.GetAllStores(chains);
-            var result = stores.Select(s => $"{s.Key}-{s.Value}");
-            return result.ToList<string>();
-        }
+       
         public List<UpdatedCart> CalculateTotal(List<string> stores)
         {
             UpdatedCarts = new List<UpdatedCart>();
             foreach (var item in stores)
             {
                 List<string> storeData = item.Split('-').ToList();
-                IdкValuePair idInfo = StoreQuery.ConvertNameToID(storeData[0], storeData[1]);
+                StoreHeader idInfo = StoreQuery.GetNames(Convert.ToInt64(storeData[0]), Convert.ToInt32(storeData[1]));
                 UpdatedCart currCart = new UpdatedCart(idInfo.Value, idInfo.Key, storeData[1], storeData[0]);
                 UpdateCart(currCart);
             }
@@ -172,12 +166,12 @@ namespace PriceLogic
         public List<UpdatedCart> CalculateTotal(List<string> chains, string location, int productsToFetch)
         {
             UpdatedCarts = new List<UpdatedCart>();
-            List<IdValuePair> itemsToCheck = FetchCheckItems();
-            List<IdValuePair> markedStores = new List<IdValuePair>();
+            List<StoreHeader> itemsToCheck = FetchCheckItems();
+            List<StoreHeader> markedStores = new List<StoreHeader>();
             for (int i = 0; i < chains.Count; i++)
             {
                 long chainId = StoreQuery.GetChainId(chains[i]);
-                IdValuePair idsData = ItemQuery.GetCheapestStore(new List<long>() { chainId }, itemsToCheck, location, markedStores);
+                StoreHeader idsData = ItemQuery.GetCheapestStore(new List<long>() { chainId }, itemsToCheck, location, markedStores);
                 if (idsData != null)
                 {
                     string storeName = StoreQuery.GetStoreName(chainId, idsData.Value);
@@ -189,7 +183,7 @@ namespace PriceLogic
             List<long> chainIds = chains.Select(c => StoreQuery.GetChainId(c)).Distinct().ToList();
             while (UpdatedCarts.Count < productsToFetch)
             {
-                IdValuePair idsData = ItemQuery.GetCheapestStore(chainIds, itemsToCheck, location, markedStores);
+                StoreHeader idsData = ItemQuery.GetCheapestStore(chainIds, itemsToCheck, location, markedStores);
                 if (idsData != null)
                 {
                     string storeName = StoreQuery.GetStoreName(idsData.Key, idsData.Value);
@@ -225,14 +219,14 @@ namespace PriceLogic
             }
             UpdatedCarts.Add(currCart);
         }
-        public List<IdValuePair> FetchCheckItems()
+        public List<StoreHeader> FetchCheckItems()
         {
             var result = Cart.Items.Select(i => new
             {
                 ItemCode = i.ItemCode,
                 ItemType = i.ItemType
             }).Distinct();
-            return result.AsEnumerable().Select(p => new IdValuePair(p.ItemCode, p.ItemType)).ToList();
+            return result.AsEnumerable().Select(p => new StoreHeader(p.ItemCode, p.ItemType)).ToList();
         }
         public void SaveCart(string path)
         {

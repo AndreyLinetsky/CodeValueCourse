@@ -57,7 +57,7 @@
   <ItemGroup>
     <Compile Include="Account.cs" />
     <Compile Include="AccountQuery.cs" />
-    <Compile Include="IdValuePair.cs" />
+    <Compile Include="StoreHeader.cs" />
     <Compile Include="ILoad.cs" />
     <Compile Include="Item.cs" />
     <Compile Include="ItemLoad.cs" />

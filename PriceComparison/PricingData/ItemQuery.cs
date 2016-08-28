@@ -57,7 +57,7 @@ namespace PricingData
                 return result;
             }
         }
-        public IdValuePair GetCheapestStore(List<long> chainIds, List<IdValuePair> items, string location, List<IdValuePair> markedStores)
+        public StoreHeader GetCheapestStore(List<long> chainIds, List<StoreHeader> items, string location, List<StoreHeader> markedStores)
         {
             using (var db = new PricingContext())
             {
@@ -66,7 +66,7 @@ namespace PricingData
                 var bestStore = updItems.GroupBy(i => new { i.ChainID, i.StoreID }).Select(g => new { ChainID = g.Key.ChainID, StoreID = g.Key.StoreID, Count = g.Count(), TotalPrice = g.Sum(g1 => g1.Price) }).OrderByDescending(i => i.Count).ThenBy(i => i.TotalPrice).FirstOrDefault();
                 if(bestStore != null)
                 {
-                    return new IdValuePair(bestStore.ChainID, bestStore.StoreID);
+                    return new StoreHeader(bestStore.ChainID, bestStore.StoreID);
                 }
                 else
                 {
