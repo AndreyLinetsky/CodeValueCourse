@@ -71,7 +71,7 @@ namespace PricingData
                 return db.Stores.Where(s => s.ChainID == chainId && s.StoreID == storeId).Select(s => s.StoreName).FirstOrDefault();
             }
         }
-        public KeyValuePair<long, int> ConvertNameToID(string chainName, string storeName)
+        public IdValuePair ConvertNameToID(string chainName, string storeName)
         {
             using (var db = new PricingContext())
             {
@@ -80,7 +80,7 @@ namespace PricingData
                     ChainID = s.ChainID,
                     StoreID = s.StoreID
                 }).Distinct();
-                var pair = result.AsEnumerable().Select(p => new KeyValuePair<long, int>(p.ChainID, p.StoreID)).FirstOrDefault();
+                var pair = result.Select(p => new IdValuePair(p.ChainID, p.StoreID)).FirstOrDefault();
                 return pair;
             }
         }

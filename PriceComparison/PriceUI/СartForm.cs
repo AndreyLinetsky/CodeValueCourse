@@ -44,7 +44,7 @@ namespace PriceUI
         }
         public void ResetCompOutput()
         {
-            foreach (var panel in Controls.OfType<Panel>())
+            foreach (var panel in Controls.OfType<Panel>().Where(p => p.Name.Contains("compPanel")))
             {
                 foreach (var label in panel.Controls.OfType<Label>())
                 {
@@ -229,7 +229,7 @@ namespace PriceUI
                 {
                     updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
                 }
-                //ShowUpdatedCart(updatedItems);
+                ShowUpdatedCart(updatedItems);
             }
         }
         public bool ValidateFilters()
@@ -263,6 +263,51 @@ namespace PriceUI
                 return false;
             }
             return true;
+        }
+
+        public void ShowUpdatedCart(List<UpdatedCart> updatedItems)
+        {
+            for (int i = 1; i <= updatedItems.Count; i++)
+            {
+                EnablePanel(i);
+                WriteToPanel(updatedItems[i-1], i);
+            }
+        }
+
+        public void EnablePanel(int currNum)
+        {
+            Panel currPanel = (Panel)Controls.Find($"compPanel{currNum}", true).FirstOrDefault();
+            foreach (Control control in currPanel.Controls)
+            {
+                control.Visible = true;
+            }
+        }
+
+        public void WriteToPanel(UpdatedCart currCart, int currNum)
+        {
+            Label panChain = (Label)Controls.Find($"compChain{currNum}", true).FirstOrDefault();
+            panChain.Text = currCart.ChainName;
+            Label panStore = (Label)Controls.Find($"compStore{currNum}", true).FirstOrDefault();
+            panStore.Text = currCart.StoreName;
+            Label panTotal = (Label)Controls.Find($"compTotal{currNum}", true).FirstOrDefault();
+            panTotal.Text = currCart.TotalPrice.ToString();
+            for (int i = 1; i <= currCart.CheapItems.Count; i++)
+            {
+                Label panItem = (Label)Controls.Find($"compItem{i}Ch{currNum}", true).FirstOrDefault();
+                panItem.Text = currCart.CheapItems[i - 1].ItemDesc;
+                Label panPrice = (Label)Controls.Find($"compPrice{i}Ch{currNum}", true).FirstOrDefault();
+                panPrice.Text = currCart.CheapItems[i - 1].Price.ToString();
+            }
+            for (int i = 1; i <= currCart.ExpensiveItems.Count; i++)
+            {
+                Label panItem = (Label)Controls.Find($"compItem{i}Ex{currNum}", true).FirstOrDefault();
+                panItem.Text = currCart.ExpensiveItems[i - 1].ItemDesc;
+                Label panPrice = (Label)Controls.Find($"compPrice{i}Ex{currNum}", true).FirstOrDefault();
+                panPrice.Text = currCart.ExpensiveItems[i - 1].Price.ToString();
+            }
+            string[] missingItems = currCart.Items.Where(i => i.Price == 0).Select(i => i.ItemDesc).ToArray();
+            ComboBox comMissing = (ComboBox)Controls.Find($"compCombo{currNum}", true).FirstOrDefault();
+            comMissing.Items.AddRange(missingItems);
         }
 
         private void saveCartToolStripMenuItem_Click(object sender, EventArgs e)
@@ -308,7 +353,7 @@ namespace PriceUI
             //histForm.ShowDialog();
         }
 
-        
+
     }
 }
 

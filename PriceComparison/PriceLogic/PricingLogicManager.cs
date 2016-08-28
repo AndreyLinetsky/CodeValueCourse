@@ -163,7 +163,7 @@ namespace PriceLogic
             foreach (var item in stores)
             {
                 List<string> storeData = item.Split('-').ToList();
-                KeyValuePair<long, int> idInfo = StoreQuery.ConvertNameToID(storeData[0], storeData[1]);
+                IdValuePair idInfo = StoreQuery.ConvertNameToID(storeData[0], storeData[1]);
                 UpdatedCart currCart = new UpdatedCart(idInfo.Value, idInfo.Key, storeData[1], storeData[0]);
                 UpdateCart(currCart);
             }
@@ -208,7 +208,17 @@ namespace PriceLogic
 
         public void UpdateCart(UpdatedCart currCart)
         {
-            currCart.Items = (Cart.Items.Select(i => i.c);
+            currCart.Items = Cart.Items.Select(i => new ItemGeneral()
+            {
+                Amount = i.Amount,
+                ChainId = i.ChainId,
+                ItemCode = i.ItemCode,
+                ItemDesc = i.ItemDesc,
+                ItemType = i.ItemType,
+                Price = i.Price,
+                Quantity = i.Quantity,
+                UnitQuantity = i.UnitQuantity
+            }).ToList();
             foreach (ItemGeneral item in currCart.Items)
             {
                 item.Price = ItemQuery.GetPrice(currCart.ChainID, currCart.StoreID, item.ItemCode, item.ItemType);
