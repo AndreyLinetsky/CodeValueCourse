@@ -8,7 +8,7 @@ namespace PricingData
 {
     interface ILoad
     {
-        void DataLoad();
+       // Task DataLoad();
         void WriteData(string path);
         void WriteToDb();
     }

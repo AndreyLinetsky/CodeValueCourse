@@ -19,7 +19,7 @@ namespace PriceLogic
             ItemQuery = new ItemQuery();
             StoreQuery = new StoreQuery();
             Cart = new Cart();
-
+        //    LoadData();
             //  Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
             //   StoreLoad str = new StoreLoad(true);
             //   ItemLoad it = new ItemLoad();
@@ -42,16 +42,16 @@ namespace PriceLogic
                 return $"Welcome {User}";
             }
         }
-        public void LoadData()
+        public async void LoadData()
         {
             // Check if full load needed
             // Full load needed
             Database.SetInitializer<PricingContext>(new DropCreateDatabaseIfModelChanges<PricingContext>());
-            //StoreLoad str = new StoreLoad();
-            //  ItemLoad it = new ItemLoad();
+            StoreLoad str = new StoreLoad();
+              ItemLoad it = new ItemLoad();
 
-            //   str.DataLoad();
-            //  it.DataLoad();
+             str.DataLoad();
+              await it.DataLoad();
             //else partial load 
 
         }
@@ -163,7 +163,7 @@ namespace PriceLogic
             foreach (var item in stores)
             {
                 List<string> storeData = item.Split('-').ToList();
-                IdValuePair idInfo = StoreQuery.ConvertNameToID(storeData[0], storeData[1]);
+                IdкValuePair idInfo = StoreQuery.ConvertNameToID(storeData[0], storeData[1]);
                 UpdatedCart currCart = new UpdatedCart(idInfo.Value, idInfo.Key, storeData[1], storeData[0]);
                 UpdateCart(currCart);
             }

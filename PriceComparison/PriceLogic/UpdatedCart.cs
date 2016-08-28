@@ -28,13 +28,13 @@ namespace PriceLogic
         {
             get
             {
-                if (Items.Where(i => i.Price > 0).Count() <= 3)
+                if (Items.Where(i => i.Price > 0).Count() <= ItemsToShow)
                 {
-                    return Items.Where(i => i.Price > 0).OrderBy(i => i.Price * i.Amount).ToList();
+                    return Items.Where(i => i.Price > 0).OrderBy(i => i.Price).ToList();
                 }
                 else
                 {
-                    return Items.Where(i => i.Price > 0).OrderBy(i => i.Price * i.Amount).Take(ItemsToShow).ToList();
+                    return Items.Where(i => i.Price > 0).OrderBy(i => i.Price).Take(ItemsToShow).ToList();
                 }
             }
         }
@@ -42,13 +42,13 @@ namespace PriceLogic
         {
             get
             {
-                if (Items.Where(i => i.Price > 0).Count() <= 3)
+                if (Items.Where(i => i.Price > 0).Count() <= ItemsToShow)
                 {
-                    return Items.Where(i => i.Price > 0).OrderByDescending(i => i.Price * i.Amount).ToList();
+                    return Items.Where(i => i.Price > 0).OrderByDescending(i => i.Price).ToList();
                 }
                 else
                 {
-                    return Items.Where(i => i.Price > 0).OrderByDescending(i => i.Price * i.Amount).Take(ItemsToShow).ToList();
+                    return Items.Where(i => i.Price > 0).OrderByDescending(i => i.Price).Take(ItemsToShow).ToList();
                 }
             }
         }

@@ -53,6 +53,10 @@ namespace PriceUI
                         label.Text = string.Empty;
                     }
                 }
+                foreach (var combo in panel.Controls.OfType<ComboBox>())
+                {
+                    combo.Items.Clear();
+                }
                 foreach (Control control in panel.Controls)
                 {
                     control.Visible = false;
@@ -209,6 +213,7 @@ namespace PriceUI
 
             if (ValidateFilters())
             {
+                ResetCompOutput();
                 if (!storeAllRadio.Checked)
                 {
                     List<string> stores = new List<string>();

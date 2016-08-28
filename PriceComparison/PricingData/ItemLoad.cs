@@ -16,7 +16,7 @@ namespace PricingData
             Items = new List<Item>();
         }
         public List<Item> Items;
-        public void DataLoad()
+        public async Task DataLoad()
         {
             DirectoryInfo storeDir = new DirectoryInfo("items");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
@@ -24,7 +24,7 @@ namespace PricingData
             {
                 WriteData($"items/{file.Name}");
             }
-            WriteToDb();
+            await Task.Run(() => WriteToDb());
         }
         public void WriteData(string path)
         {
@@ -54,7 +54,8 @@ namespace PricingData
                 string date = node.SelectSingleNode("PriceUpdateDate").InnerText;
                 Item currItem = new Item(storeId, chainId, itemCode, itemType, itemDesc, unitQuantity, quantity, price, date);
                 //Prevent duplicates
-                if (!Items.Any(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType))
+                if (currItem.Price > 0 &&
+                    !Items.Any(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && i.ChainID == currItem.ChainID && i.StoreID == currItem.StoreID))
                 {
                     Items.Add(currItem);
                 }
@@ -68,8 +69,6 @@ namespace PricingData
                 db.Items.RemoveRange(dbItems);
                 db.SaveChanges();
                 dbItems.AddRange(Items);
-                var bb = Items.Select(i => i.StoreID).Distinct();
-
                 db.SaveChanges();
                 db.Dispose();
             }

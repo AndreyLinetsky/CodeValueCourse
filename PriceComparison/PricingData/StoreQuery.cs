@@ -75,13 +75,13 @@ namespace PricingData
         {
             using (var db = new PricingContext())
             {
-                var result = db.Stores.Where(s => string.Equals(chainName, s.ChainName) && string.Equals(storeName, s.StoreName)).Select(s => new
+                var result = db.Stores.Where(s => string.Equals(chainName, s.ChainName) && string.Equals(storeName, s.StoreName)).Select(s => new IdValuePair
                 {
-                    ChainID = s.ChainID,
-                    StoreID = s.StoreID
-                }).Distinct();
-                var pair = result.Select(p => new IdValuePair(p.ChainID, p.StoreID)).FirstOrDefault();
-                return pair;
+                    Key = s.ChainID,
+                    Value = s.StoreID
+                }).FirstOrDefault();
+               // var pair = result.Select(p => new IdValuePair(p.ChainID, p.StoreID )).FirstOrDefault();
+                return result;
             }
         }
     }

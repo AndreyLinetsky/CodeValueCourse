@@ -7,22 +7,14 @@ using System.Xml;
 using System.IO;
 using System.Reflection;
 using GoogleMaps.LocationServices;
-
+using System.Threading;
 namespace PricingData
 {
     public class StoreLoad : ILoad
     {
-        public StoreLoad(bool fullLoad)
+        public StoreLoad()
         {
             Stores = new List<Store>();
-            if (fullLoad)
-            {
-                DataLoad();
-            }
-            else
-            {
-                PartialDataload();
-            }
         }
 
         private void PartialDataload()
@@ -31,7 +23,7 @@ namespace PricingData
         }
 
         public List<Store> Stores { get; set; }
-        public void DataLoad()
+        public void  DataLoad()
         {
             DirectoryInfo storeDir = new DirectoryInfo("stores");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
@@ -86,6 +78,7 @@ namespace PricingData
             if (!string.Equals(address, "unknown", StringComparison.OrdinalIgnoreCase) &&
                 !string.IsNullOrWhiteSpace(address))
             {
+                Thread.Sleep(200);
                 GoogleLocationService locationService = new GoogleLocationService();
                 var point = locationService.GetLatLongFromAddress(address);
                 if (point == null)
