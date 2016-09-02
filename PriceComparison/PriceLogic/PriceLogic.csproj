@@ -55,10 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AccountQuery.cs" />
     <Compile Include="Cart.cs" />
-    <Compile Include="ItemGeneral.cs" />
+    <Compile Include="ILoad.cs" />
+    <Compile Include="ItemInfo.cs" />
+    <Compile Include="ItemHeader.cs" />
+    <Compile Include="ItemLoad.cs" />
+    <Compile Include="ItemQuery.cs" />
     <Compile Include="PricingLogicManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StoreHeader.cs" />
+    <Compile Include="StoreLoad.cs" />
+    <Compile Include="StoreQuery.cs" />
     <Compile Include="UpdatedCart.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,9 +77,9 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PricingData\PricingData.csproj">
+    <ProjectReference Include="..\PricingData\PriceData.csproj">
       <Project>{0c59bdfc-28f2-4863-8b68-5decbd71842a}</Project>
-      <Name>PricingData</Name>
+      <Name>PriceData</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

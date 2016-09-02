@@ -8,7 +8,8 @@ using System.IO;
 using System.Reflection;
 using GoogleMaps.LocationServices;
 using System.Threading;
-namespace PricingData
+using PriceData;
+namespace PriceLogic
 {
     public class StoreLoad : ILoad
     {
@@ -30,6 +31,7 @@ namespace PricingData
             foreach (var file in files)
             {
                 WriteData($"stores/{file.Name}");
+                //WriteData(String.Format("stores/{0}",file.Name));
             }
             WriteToDb();
         }

@@ -10,14 +10,14 @@ namespace PriceLogic
     {
         public Cart()
         {
-            Items = new List<ItemGeneral>();
+            Items = new List<ItemHeader>();
         }
-        public List<ItemGeneral> Items { get; set; }
+        public List<ItemHeader> Items { get; set; }
         public int getCurrentIndex(long itemCode, int itemType, long chainId)
         {
             return Items.FindIndex(i => i.ItemCode == itemCode && i.ItemType == itemType && i.ChainId == chainId);
         }
-        public bool Add(ItemGeneral currItem,int amount)
+        public bool Add(ItemHeader currItem,int amount)
         {
             if (getCurrentIndex(currItem.ItemCode, currItem.ItemType, currItem.ChainId) != -1)
             {
@@ -30,11 +30,11 @@ namespace PriceLogic
                 return true;
             }
         }
-        public void Remove(ItemGeneral currItem)
+        public void Remove(ItemHeader currItem)
         {
             Items.Remove(currItem);
         }
-        public void UpdateAmount(ItemGeneral currItem,int amount)
+        public void UpdateAmount(ItemHeader currItem,int amount)
         {
             Items[getCurrentIndex(currItem.ItemCode, currItem.ItemType, currItem.ChainId)].Amount = amount;
         }

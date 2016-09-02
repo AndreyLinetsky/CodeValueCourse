@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceUI", "PriceUI\PriceUI.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceLogic", "PriceLogic\PriceLogic.csproj", "{C230338C-FB83-4B1D-AF90-996F60153401}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PricingData", "PricingData\PricingData.csproj", "{0C59BDFC-28F2-4863-8B68-5DECBD71842A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PriceData", "PricingData\PriceData.csproj", "{0C59BDFC-28F2-4863-8B68-5DECBD71842A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

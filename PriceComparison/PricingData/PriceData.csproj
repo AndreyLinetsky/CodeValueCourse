@@ -56,17 +56,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
-    <Compile Include="AccountQuery.cs" />
-    <Compile Include="StoreHeader.cs" />
-    <Compile Include="ILoad.cs" />
     <Compile Include="Item.cs" />
-    <Compile Include="ItemLoad.cs" />
-    <Compile Include="ItemQuery.cs" />
     <Compile Include="PricingContext.cs" />
     <Compile Include="Store.cs" />
-    <Compile Include="StoreLoad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StoreQuery.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

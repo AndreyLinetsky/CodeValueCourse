@@ -33,7 +33,16 @@ namespace PriceUI
             }
             else
             {
-                MessageBox.Show(Manager.Register(regUser.Text, regPass.Text));
+                if (Manager.Register(regUser.Text, regPass.Text))
+                {
+                    MessageBox.Show($"Account {regUser.Text} was created successfully");
+                    //MessageBox.Show(String.Format("Account {0} already exists",regUser.Text));
+                }
+                else
+                {
+                    MessageBox.Show($"Account {regUser.Text} already exists");
+                    ////MessageBox.Show(String.Format("Account {0} was created successfully", regUser.Text));
+                }
             }
         }
 

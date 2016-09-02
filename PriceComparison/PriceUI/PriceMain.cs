@@ -36,7 +36,6 @@ namespace PriceUI
 
         private void logInToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // comp with guest?
             if (Manager.User != "")
             {
                 MessageBox.Show("You are already logged");
@@ -61,14 +60,15 @@ namespace PriceUI
         }
         public void Login()
         {
-            LoginForm logForm = new LoginForm(Manager);
-            if (logForm.ShowDialog(this) == DialogResult.OK)
+            using (LoginForm logForm = new LoginForm(Manager))
             {
-                label1.Text = Manager.UserMessage;
-                button1.Enabled = true;
-                loadToolStripMenuItem.Enabled = true;
+                if (logForm.ShowDialog(this) == DialogResult.OK)
+                {
+                    label1.Text = $"Welcome {Manager.User}";
+                    button1.Enabled = true;
+                    loadToolStripMenuItem.Enabled = true;
+                }
             }
-            logForm.Dispose();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -85,9 +85,13 @@ namespace PriceUI
                     col.Visible = false;
                 }
                 dataGridView1.Columns["ItemCode"].Visible = true;
-                dataGridView1.Columns["ItemDesc"].Visible = true;
-                viewCartToolStripMenuItem.Enabled = true;
+                dataGridView1.Columns["ItemCode"].Width = 120;
+                dataGridView1.Columns["ItemCode"].HeaderText = "Item Code";
+                dataGridView1.Columns["ItemName"].Visible = true;
+                dataGridView1.Columns["ItemName"].Width = 150;
+                dataGridView1.Columns["ItemName"].HeaderText = "Item Name";
                 dataGridView1.ClearSelection();
+                viewCartToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -99,14 +103,24 @@ namespace PriceUI
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
-                if (currItem != null)
+                ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
+                ItemInfo itemInfo = Manager.GetItemInfo(currItem);
+                if (itemInfo != null)
                 {
-                    priceText.Text = Manager.GetMinPrice(currItem).ToString();
-                    codeText.Text = currItem.ItemCode.ToString();
-                    nameText.Text = currItem.ItemDesc.ToString();
-                    quanText.Text = currItem.Quantity.ToString();
-                    unitText.Text = currItem.UnitQuantity.ToString();
+                    if (itemInfo.ItemType == 1)
+                    {
+                        typeText.Text = "General";
+                    }
+                    else
+                    {
+                        typeText.Text = "Internal";
+                        // chain 
+                        //itemInfo.ChainName
+                    }
+                    codeText.Text = itemInfo.ItemCode.ToString();
+                    nameText.Text = itemInfo.ItemName.ToString();
+                    quanText.Text = itemInfo.Quantity.ToString();
+                    unitText.Text = itemInfo.UnitQuantity.ToString();
                     button2.Enabled = true;
                 }
                 else
@@ -141,7 +155,7 @@ namespace PriceUI
             }
             else
             {
-                ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
+                ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
                 if (!Manager.AddItemToCart(currItem, Convert.ToInt32(numericUpDown1.Value)))
                 {
                     MessageBox.Show("The product is already in cart");
@@ -155,7 +169,7 @@ namespace PriceUI
 
         private void viewCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            СartForm cartForm = new СartForm(Manager,false);
+            СartForm cartForm = new СartForm(Manager, false);
             cartForm.ShowDialog();
 
         }
@@ -165,7 +179,5 @@ namespace PriceUI
             СartForm cartForm = new СartForm(Manager, true);
             cartForm.ShowDialog();
         }
-
-
     }
 }

@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace PricingData
-{
+namespace PriceLogic
+{ 
     interface ILoad
     {
-       // Task DataLoad();
+       void DataLoad();
         void WriteData(string path);
         void WriteToDb();
     }

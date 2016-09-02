@@ -6,25 +6,28 @@ using System.Threading.Tasks;
 using System.Xml;
 using System.IO;
 using System.Reflection;
-
-namespace PricingData
+using PriceData;
+namespace PriceLogic
 {
     public class ItemLoad : ILoad
     {
         public ItemLoad()
         {
             Items = new List<Item>();
+            Reset = true;
         }
         public List<Item> Items;
-        public async Task DataLoad()
+        public bool Reset { get; set; }
+        public void DataLoad()
         {
             DirectoryInfo storeDir = new DirectoryInfo("items");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
             foreach (var file in files)
             {
                 WriteData($"items/{file.Name}");
+                //WriteData(string.Format("items/{0}",file.Name));
+                WriteToDb();
             }
-            await Task.Run(() => WriteToDb());
         }
         public void WriteData(string path)
         {
@@ -66,8 +69,12 @@ namespace PricingData
             using (var db = new PricingContext())
             {
                 var dbItems = db.Set<Item>();
-                db.Items.RemoveRange(dbItems);
-                db.SaveChanges();
+                if (Reset)
+                {
+                    db.Items.RemoveRange(dbItems);
+                    db.SaveChanges();
+                    Reset = false;
+                }
                 dbItems.AddRange(Items);
                 db.SaveChanges();
                 db.Dispose();

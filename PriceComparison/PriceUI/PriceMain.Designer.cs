@@ -41,7 +41,7 @@
             this.searchText = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.priceText = new System.Windows.Forms.Label();
+            this.typeText = new System.Windows.Forms.Label();
             this.unitText = new System.Windows.Forms.Label();
             this.quanText = new System.Windows.Forms.Label();
             this.nameText = new System.Windows.Forms.Label();
@@ -85,7 +85,7 @@
             // 
             this.viewCartToolStripMenuItem.Enabled = false;
             this.viewCartToolStripMenuItem.Name = "viewCartToolStripMenuItem";
-            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.viewCartToolStripMenuItem.Text = "View Cart";
             this.viewCartToolStripMenuItem.Click += new System.EventHandler(this.viewCartToolStripMenuItem_Click);
             // 
@@ -93,7 +93,7 @@
             // 
             this.loadToolStripMenuItem.Enabled = false;
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.loadToolStripMenuItem.Text = "Load Cart";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
@@ -133,22 +133,25 @@
             this.dataGridView1.AllowUserToAddRows = false;
             this.dataGridView1.AllowUserToDeleteRows = false;
             this.dataGridView1.AllowUserToOrderColumns = true;
+            this.dataGridView1.AllowUserToResizeColumns = false;
+            this.dataGridView1.AllowUserToResizeRows = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(170, 60);
+            this.dataGridView1.Location = new System.Drawing.Point(133, 60);
             this.dataGridView1.MultiSelect = false;
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.ReadOnly = true;
+            this.dataGridView1.RowHeadersVisible = false;
             this.dataGridView1.RowTemplate.Height = 24;
             this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(237, 287);
+            this.dataGridView1.Size = new System.Drawing.Size(294, 287);
             this.dataGridView1.TabIndex = 5;
             this.dataGridView1.SelectionChanged += new System.EventHandler(this.dataGridView1_SelectionChanged);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(24, 120);
+            this.label2.Location = new System.Drawing.Point(12, 125);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(101, 17);
             this.label2.TabIndex = 10;
@@ -156,14 +159,14 @@
             // 
             // searchText
             // 
-            this.searchText.Location = new System.Drawing.Point(27, 154);
+            this.searchText.Location = new System.Drawing.Point(15, 161);
             this.searchText.Name = "searchText";
             this.searchText.Size = new System.Drawing.Size(100, 22);
             this.searchText.TabIndex = 11;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(27, 200);
+            this.button1.Location = new System.Drawing.Point(15, 205);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 29);
             this.button1.TabIndex = 12;
@@ -173,7 +176,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.priceText);
+            this.panel1.Controls.Add(this.typeText);
             this.panel1.Controls.Add(this.unitText);
             this.panel1.Controls.Add(this.quanText);
             this.panel1.Controls.Add(this.nameText);
@@ -186,19 +189,18 @@
             this.panel1.Controls.Add(this.label7);
             this.panel1.Controls.Add(this.label8);
             this.panel1.Controls.Add(this.label3);
-            this.panel1.Location = new System.Drawing.Point(423, 60);
+            this.panel1.Location = new System.Drawing.Point(433, 60);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(345, 287);
+            this.panel1.Size = new System.Drawing.Size(335, 287);
             this.panel1.TabIndex = 13;
-            
             // 
-            // priceText
+            // typeText
             // 
-            this.priceText.AutoSize = true;
-            this.priceText.Location = new System.Drawing.Point(103, 146);
-            this.priceText.Name = "priceText";
-            this.priceText.Size = new System.Drawing.Size(0, 17);
-            this.priceText.TabIndex = 19;
+            this.typeText.AutoSize = true;
+            this.typeText.Location = new System.Drawing.Point(103, 146);
+            this.typeText.Name = "typeText";
+            this.typeText.Size = new System.Drawing.Size(0, 17);
+            this.typeText.TabIndex = 19;
             // 
             // unitText
             // 
@@ -254,9 +256,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(12, 146);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(91, 17);
+            this.label6.Size = new System.Drawing.Size(74, 17);
             this.label6.TabIndex = 10;
-            this.label6.Text = "Lowest price:";
+            this.label6.Text = "Item Type:";
             // 
             // label5
             // 
@@ -354,7 +356,7 @@
         private System.Windows.Forms.Label nameText;
         private System.Windows.Forms.Label codeText;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label priceText;
+        private System.Windows.Forms.Label typeText;
         private System.Windows.Forms.ToolStripMenuItem viewCartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
     }

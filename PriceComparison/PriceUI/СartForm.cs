@@ -33,9 +33,11 @@ namespace PriceUI
         {
             PopulateCart();
             List<KeyValuePair<long, string>> chains = Manager.GetChains();
+            listBox1.SelectedIndexChanged -= listBox1_SelectedIndexChanged;
             listBox1.DataSource = chains;
             listBox1.DisplayMember = "Value";
             listBox1.ValueMember = "Key";
+            listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             ResetCompOutput();
         }
         private void PopulateCart()
@@ -78,10 +80,10 @@ namespace PriceUI
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
+                ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
                 if (currItem != null)
                 {
-                    List<ItemGeneral> newItems = Manager.RemoveItemFromCart(currItem);
+                    List<ItemHeader> newItems = Manager.RemoveItemFromCart(currItem);
                     RefreshCart(newItems);
                     MessageBox.Show("Product  was removed successfully");
                 }
@@ -103,7 +105,7 @@ namespace PriceUI
                 }
                 else
                 {
-                    ItemGeneral currItem = dataGridView1.CurrentRow.DataBoundItem as ItemGeneral;
+                    ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
                     if (currItem != null)
                     {
                         if (currItem.Amount == Convert.ToInt32(numericUpDown1.Value))
@@ -112,7 +114,7 @@ namespace PriceUI
                         }
                         else
                         {
-                            List<ItemGeneral> newItems = Manager.UpdateCart(currItem, Convert.ToInt32(numericUpDown1.Value));
+                            List<ItemHeader> newItems = Manager.UpdateCart(currItem, Convert.ToInt32(numericUpDown1.Value));
                             RefreshCart(newItems);
                             MessageBox.Show("Product was updated successfully");
                         }
@@ -124,7 +126,7 @@ namespace PriceUI
                 MessageBox.Show("Please select Product");
             }
         }
-        public void RefreshCart(List<ItemGeneral> newItems)
+        public void RefreshCart(List<ItemHeader> newItems)
         {
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = newItems;
@@ -139,7 +141,7 @@ namespace PriceUI
                 col.Visible = false;
             }
             dataGridView1.Columns["ItemCode"].Visible = true;
-            dataGridView1.Columns["ItemDesc"].Visible = true;
+            dataGridView1.Columns["ItemName"].Visible = true;
             dataGridView1.Columns["Amount"].Visible = true;
         }
 
@@ -148,12 +150,15 @@ namespace PriceUI
             this.Close();
         }
 
-
+        public List<long> GetSelectedChains()
+        {
+            return listBox1.SelectedItems.OfType<KeyValuePair<long, string>>().Select(i => i.Key).ToList();
+        }
         private void locAllRadio_CheckedChanged(object sender, EventArgs e)
         {
             locComboBox.Enabled = false;
             locComboBox.SelectedItem = null;
-            List<KeyValuePair<string, string>> stores = Manager.GetStores(listBox1.SelectedItems.OfType<long>().ToList(),null);
+            List<KeyValuePair<string, string>> stores = Manager.GetStores(GetSelectedChains(), null);
             ResetStores(stores);
         }
 
@@ -174,17 +179,16 @@ namespace PriceUI
         private void locSelRadio_CheckedChanged(object sender, EventArgs e)
         {
             locComboBox.Enabled = true;
-
         }
         public void ResetStores(List<KeyValuePair<string, string>> stores)
         {
-            foreach (ComboBox combo in Controls.OfType<ComboBox>().Where(c => c.Name.Contains("Store")))
+            foreach (var comboBox in storePanel.Controls.OfType<ComboBox>())
             {
                 List<KeyValuePair<string, string>> currStores = new List<KeyValuePair<string, string>>(stores);
-                combo.DataSource = currStores;
-                combo.SelectedItem = null;
-                combo.DisplayMember = "Value";
-                combo.ValueMember = "Key";
+                comboBox.DataSource = currStores;
+                comboBox.SelectedItem = null;
+                comboBox.DisplayMember = "Value";
+                comboBox.ValueMember = "Key";
             }
             storeAllRadio.Checked = true;
         }
@@ -193,18 +197,18 @@ namespace PriceUI
             if (locComboBox.SelectedItem != null &&
                 locComboBox.Enabled == true)
             {
-                List<KeyValuePair<string, string>> stores = Manager.GetStores(listBox1.SelectedItems.OfType<long>().ToList(), locComboBox.SelectedValue.ToString());
+                List<KeyValuePair<string, string>> stores = Manager.GetStores(GetSelectedChains(), locComboBox.SelectedValue.ToString());
                 ResetStores(stores);
             }
         }
 
         private void listBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            List<string> locations = Manager.GetLocations(listBox1.SelectedItems.OfType<string>().ToList());
+            List<string> locations = Manager.GetLocations(GetSelectedChains());
             locComboBox.DataSource = locations;
             locAllRadio.Checked = true;
             locComboBox.SelectedItem = null;
-            List<KeyValuePair<string, string>> stores = Manager.GetStores(listBox1.SelectedItems.OfType<long>().ToList(),null);
+            List<KeyValuePair<string, string>> stores = Manager.GetStores(GetSelectedChains(), null);
             ResetStores(stores);
         }
 
@@ -218,9 +222,10 @@ namespace PriceUI
                 if (!storeAllRadio.Checked)
                 {
                     List<string> stores = new List<string>();
-                    foreach (var comboBox in panel1.Controls.OfType<ComboBox>())
+                    foreach (var comboBox in storePanel.Controls.OfType<ComboBox>())
                     {
-                        if (comboBox.SelectedItem != null)
+                        if (comboBox.SelectedItem != null &&
+                            !stores.Contains(comboBox.SelectedValue.ToString()))
                         {
                             stores.Add(comboBox.SelectedValue.ToString());
                         }
@@ -229,18 +234,18 @@ namespace PriceUI
                 }
                 else if (locAllRadio.Checked)
                 {
-                    updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), null, ProductsToFetch);
+                    updatedItems = Manager.CalculateTotal(GetSelectedChains(), null, ProductsToFetch);
                 }
                 else
                 {
-                    updatedItems = Manager.CalculateTotal(listBox1.SelectedItems.OfType<string>().ToList(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
+                    updatedItems = Manager.CalculateTotal(GetSelectedChains(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
                 }
                 ShowUpdatedCart(updatedItems);
             }
         }
         public bool ValidateFilters()
         {
-            if (listBox1.SelectedItems.OfType<string>().ToList().Count < 1)
+            if (listBox1.SelectedItems.Count < 1)
             {
                 MessageBox.Show("Please select at least one chain");
                 return false;
@@ -252,13 +257,6 @@ namespace PriceUI
                         comboStore3.SelectedItem == null)
                 {
                     MessageBox.Show("Please select at least one store");
-                    return false;
-                }
-                if (string.Equals(comboStore1.SelectedValue.ToString(), comboStore2.SelectedValue.ToString()) ||
-                    string.Equals(comboStore2.SelectedValue.ToString(), comboStore3.SelectedValue.ToString()) ||
-                    string.Equals(comboStore1.SelectedValue.ToString(), comboStore3.SelectedValue.ToString()))
-                {
-                    MessageBox.Show("Duplicated stores were selected");
                     return false;
                 }
             }
@@ -300,21 +298,56 @@ namespace PriceUI
             for (int i = 1; i <= currCart.CheapItems.Count; i++)
             {
                 Label panItem = (Label)Controls.Find($"compItem{i}Ch{currNum}", true).FirstOrDefault();
-                panItem.Text = currCart.CheapItems[i - 1].ItemDesc;
+                panItem.Text = currCart.CheapItems[i - 1].ItemName;
                 Label panPrice = (Label)Controls.Find($"compPrice{i}Ch{currNum}", true).FirstOrDefault();
                 panPrice.Text = currCart.CheapItems[i - 1].Price.ToString();
             }
             for (int i = 1; i <= currCart.ExpensiveItems.Count; i++)
             {
                 Label panItem = (Label)Controls.Find($"compItem{i}Ex{currNum}", true).FirstOrDefault();
-                panItem.Text = currCart.ExpensiveItems[i - 1].ItemDesc;
+                panItem.Text = currCart.ExpensiveItems[i - 1].ItemName;
                 Label panPrice = (Label)Controls.Find($"compPrice{i}Ex{currNum}", true).FirstOrDefault();
                 panPrice.Text = currCart.ExpensiveItems[i - 1].Price.ToString();
             }
-            string[] missingItems = currCart.Items.Where(i => i.Price == 0).Select(i => i.ItemDesc).ToArray();
+            string[] missingItems = currCart.Items.Where(i => i.Price == 0).Select(i => i.ItemName).ToArray();
             ComboBox comMissing = (ComboBox)Controls.Find($"compCombo{currNum}", true).FirstOrDefault();
             comMissing.Items.AddRange(missingItems);
         }
+        //public void EnablePanel(int currNum)
+        //{
+        //    Panel currPanel = (Panel)Controls.Find(String.Format("compPanel{0}", currNum), true).FirstOrDefault();
+        //    foreach (Control control in currPanel.Controls)
+        //    {
+        //        control.Visible = true;
+        //    }
+        //}
+
+        //public void WriteToPanel(UpdatedCart currCart, int currNum)
+        //{
+        //    Label panChain = (Label)Controls.Find(String.Format("compChain{0}", currNum), true).FirstOrDefault();
+        //    panChain.Text = currCart.ChainName;
+        //    Label panStore = (Label)Controls.Find(String.Format("compStore{0}", currNum), true).FirstOrDefault();
+        //    panStore.Text = currCart.StoreName;
+        //    Label panTotal = (Label)Controls.Find(String.Format("compTotal{0}", currNum), true).FirstOrDefault();
+        //    panTotal.Text = currCart.TotalPrice.ToString();
+        //    for (int i = 1; i <= currCart.CheapItems.Count; i++)
+        //    {
+        //        Label panItem = (Label)Controls.Find(String.Format("compItem{0}Ch{1}", i, currNum), true).FirstOrDefault();
+        //        panItem.Text = currCart.CheapItems[i - 1].ItemDesc;
+        //        Label panPrice = (Label)Controls.Find(String.Format("compPrice{0}Ch{1}", i, currNum), true).FirstOrDefault();
+        //        panPrice.Text = currCart.CheapItems[i - 1].Price.ToString();
+        //    }
+        //    for (int i = 1; i <= currCart.ExpensiveItems.Count; i++)
+        //    {
+        //        Label panItem = (Label)Controls.Find(String.Format("compItem{0}Ex{1}", i, currNum), true).FirstOrDefault();
+        //        panItem.Text = currCart.ExpensiveItems[i - 1].ItemDesc;
+        //        Label panPrice = (Label)Controls.Find(String.Format("compPrice{0}Ex{1}", i, currNum), true).FirstOrDefault();
+        //        panPrice.Text = currCart.ExpensiveItems[i - 1].Price.ToString();
+        //    }
+        //    string[] missingItems = currCart.Items.Where(i => i.Price == 0).Select(i => i.ItemDesc).ToArray();
+        //    ComboBox comMissing = (ComboBox)Controls.Find(String.Format("compCombo{0}", currNum), true).FirstOrDefault();
+        //    comMissing.Items.AddRange(missingItems);
+        //}
 
         private void saveCartToolStripMenuItem_Click(object sender, EventArgs e)
         {

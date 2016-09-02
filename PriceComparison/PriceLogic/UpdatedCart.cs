@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using PricingData;
+using PriceData;
 
 namespace PriceLogic
 {
@@ -11,20 +11,20 @@ namespace PriceLogic
     {
         public UpdatedCart(int storeId, long chainId, string storeName, string chainName)
         {
-            Items = new List<ItemGeneral>();
+            Items = new List<ItemHeader>();
             StoreID = storeId;
             StoreName = storeName;
             ChainID = chainId;
             ChainName = chainName;
         }
-        public List<ItemGeneral> Items { get; set; }
+        public List<ItemHeader> Items { get; set; }
         public string StoreName { get; set; }
         public string ChainName { get; set; }
         public int StoreID { get; set; }
         public long ChainID { get; set; }
         public int ItemsToShow { get; } = 3;
 
-        public List<ItemGeneral> CheapItems
+        public List<ItemHeader> CheapItems
         {
             get
             {
@@ -38,7 +38,7 @@ namespace PriceLogic
                 }
             }
         }
-        public List<ItemGeneral> ExpensiveItems
+        public List<ItemHeader> ExpensiveItems
         {
             get
             {
@@ -59,7 +59,7 @@ namespace PriceLogic
                 return Items.Select(i => i.Price * i.Amount).Sum();
             }
         }
-        public void Add(ItemGeneral item)
+        public void Add(ItemHeader item)
         {
             Items.Add(item);
         }
