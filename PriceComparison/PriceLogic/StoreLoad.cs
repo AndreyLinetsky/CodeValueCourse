@@ -24,7 +24,7 @@ namespace PriceLogic
         }
 
         public List<Store> Stores { get; set; }
-        public void  DataLoad()
+        public void DataLoad()
         {
             DirectoryInfo storeDir = new DirectoryInfo("stores");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
@@ -63,11 +63,9 @@ namespace PriceLogic
                 int storeId = Convert.ToInt32(node.SelectSingleNode("StoreId").InnerText);
                 int storeType = Convert.ToInt32(node.SelectSingleNode("StoreType").InnerText);
                 string storeName = node.SelectSingleNode("StoreName").InnerText;
-                string address = node.SelectSingleNode("Address").InnerText;
                 string city = node.SelectSingleNode("City").InnerText;
-                string zip = node.SelectSingleNode("ZipCode").InnerText;
                 string location = GetStoreLocation(city);
-                Store currStore = new Store(storeId, chainId, storeType, chainName, storeName, address, city, zip, date, location);
+                Store currStore = new Store(storeId, chainId, storeType, chainName, storeName, city, date, location);
                 //Prevent duplicates
                 if (!Stores.Any(s => s.StoreID == currStore.StoreID && s.ChainID == currStore.ChainID))
                 {

@@ -32,7 +32,20 @@ namespace PriceUI
             viewCartToolStripMenuItem.Enabled = false;
             loadCartToolStripMenuItem.Enabled = false;
         }
-
+        public void ResetItemData()
+        {
+            foreach (Control control in panel1.Controls)
+            {
+                if (control.Name.Contains("Text"))
+                {
+                    control.Text = "";
+                }
+            }
+            numericUpDown1.Value = 0;
+            button2.Enabled = false;
+            chainLabel.Visible = false;
+            chainText.Visible = false;
+        }
         private void logInToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Manager.User != "")
@@ -84,10 +97,10 @@ namespace PriceUI
                 }
                 dataGridView1.Columns["ItemCode"].Visible = true;
                 dataGridView1.Columns["ItemCode"].Width = 120;
-                dataGridView1.Columns["ItemCode"].HeaderText = "Item Code";
+                dataGridView1.Columns["ItemCode"].HeaderText = "Code";
                 dataGridView1.Columns["ItemName"].Visible = true;
                 dataGridView1.Columns["ItemName"].Width = 150;
-                dataGridView1.Columns["ItemName"].HeaderText = "Item Name";
+                dataGridView1.Columns["ItemName"].HeaderText = "Name";
                 dataGridView1.ClearSelection();
                 viewCartToolStripMenuItem.Enabled = true;
             }
@@ -134,20 +147,7 @@ namespace PriceUI
                 ResetItemData();
             }
         }
-        public void ResetItemData()
-        {
-            foreach (Control control in panel1.Controls)
-            {
-                if (control.Name.Contains("Text"))
-                {
-                    control.Text = "";
-                }
-            }
-            numericUpDown1.Value = 0;
-            button2.Enabled = false;
-            chainLabel.Visible = false;
-            chainText.Visible = false;
-        }
+
 
         private void button2_Click(object sender, EventArgs e)
         {
@@ -172,15 +172,18 @@ namespace PriceUI
 
         private void viewCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            СartForm cartForm = new СartForm(Manager, false);
-            cartForm.ShowDialog();
-
+            using (СartForm cartForm = new СartForm(Manager, false))
+            {
+                cartForm.ShowDialog();
+            }
         }
 
         private void loadCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            СartForm cartForm = new СartForm(Manager, true);
-            cartForm.ShowDialog();
+            using (СartForm cartForm = new СartForm(Manager, true))
+            {
+                cartForm.ShowDialog();
+            }
         }
     }
 }

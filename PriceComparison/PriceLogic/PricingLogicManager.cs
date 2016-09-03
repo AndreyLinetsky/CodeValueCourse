@@ -188,9 +188,9 @@ namespace PriceLogic
                 foreach (ItemHeader currItem in Cart.Items)
                 {
                     writer.WriteStartElement("Item");
-                    writer.WriteElementString("Item Code", currItem.ItemCode.ToString());
-                    writer.WriteElementString("Item Type", currItem.ItemType.ToString());
-                    writer.WriteElementString("Item Name", currItem.ItemName);
+                    writer.WriteElementString("ItemCode", currItem.ItemCode.ToString());
+                    writer.WriteElementString("ItemType", currItem.ItemType.ToString());
+                    writer.WriteElementString("ItemName", currItem.ItemName);
                     writer.WriteElementString("ChainId", currItem.ChainId.ToString());
                     writer.WriteElementString("Price", currItem.Price.ToString());
                     writer.WriteElementString("Amount", currItem.Amount.ToString());
@@ -208,12 +208,12 @@ namespace PriceLogic
             List<ItemHeader> newItems = new List<ItemHeader>();
             foreach (XmlNode node in dataNodes)
             {
-                int itemType = Convert.ToInt32(node.SelectSingleNode("Item Type").InnerText);
-                long itemCode = Convert.ToInt64(node.SelectSingleNode("Item Code").InnerText);
-                string itemName = node.SelectSingleNode("Item Name").InnerText;
+                int itemType = Convert.ToInt32(node.SelectSingleNode("ItemType").InnerText);
+                long itemCode = Convert.ToInt64(node.SelectSingleNode("ItemCode").InnerText);
+                string itemName = node.SelectSingleNode("ItemName").InnerText;
+                long chainId = Convert.ToInt64(node.SelectSingleNode("ChainId").InnerText);
                 decimal price = Convert.ToDecimal(node.SelectSingleNode("Price").InnerText);
                 int amount = Convert.ToInt32(node.SelectSingleNode("Amount").InnerText);
-                long chainId = Convert.ToInt64(node.SelectSingleNode("ChainId").InnerText);
                 ItemHeader currItem = new ItemHeader(itemCode, itemType, itemName, chainId, amount, price);
                 newItems.Add(currItem);
             }

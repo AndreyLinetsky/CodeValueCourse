@@ -40,6 +40,13 @@
             this.searchText = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chainText = new System.Windows.Forms.TextBox();
+            this.unitText = new System.Windows.Forms.TextBox();
+            this.quanText = new System.Windows.Forms.TextBox();
+            this.nameText = new System.Windows.Forms.TextBox();
+            this.codeText = new System.Windows.Forms.TextBox();
+            this.typeText = new System.Windows.Forms.TextBox();
+            this.chainLabel = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -48,13 +55,6 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
-            this.chainLabel = new System.Windows.Forms.Label();
-            this.typeText = new System.Windows.Forms.TextBox();
-            this.codeText = new System.Windows.Forms.TextBox();
-            this.nameText = new System.Windows.Forms.TextBox();
-            this.quanText = new System.Windows.Forms.TextBox();
-            this.unitText = new System.Windows.Forms.TextBox();
-            this.chainText = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -86,7 +86,7 @@
             // 
             this.viewCartToolStripMenuItem.Enabled = false;
             this.viewCartToolStripMenuItem.Name = "viewCartToolStripMenuItem";
-            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.viewCartToolStripMenuItem.Text = "View Cart";
             this.viewCartToolStripMenuItem.Click += new System.EventHandler(this.viewCartToolStripMenuItem_Click);
             // 
@@ -94,7 +94,7 @@
             // 
             this.loadCartToolStripMenuItem.Enabled = false;
             this.loadCartToolStripMenuItem.Name = "loadCartToolStripMenuItem";
-            this.loadCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.loadCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.loadCartToolStripMenuItem.Text = "Load Cart";
             this.loadCartToolStripMenuItem.Click += new System.EventHandler(this.loadCartToolStripMenuItem_Click);
             // 
@@ -110,14 +110,14 @@
             // logInToolStripMenuItem
             // 
             this.logInToolStripMenuItem.Name = "logInToolStripMenuItem";
-            this.logInToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.logInToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.logInToolStripMenuItem.Text = "Log In";
             this.logInToolStripMenuItem.Click += new System.EventHandler(this.logInToolStripMenuItem_Click);
             // 
             // logOutToolStripMenuItem
             // 
             this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.logOutToolStripMenuItem.Text = "Log Out";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
             // 
@@ -188,8 +188,65 @@
             this.panel1.Controls.Add(this.label3);
             this.panel1.Location = new System.Drawing.Point(433, 60);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(335, 287);
+            this.panel1.Size = new System.Drawing.Size(323, 287);
             this.panel1.TabIndex = 13;
+            // 
+            // chainText
+            // 
+            this.chainText.Location = new System.Drawing.Point(92, 176);
+            this.chainText.Name = "chainText";
+            this.chainText.ReadOnly = true;
+            this.chainText.Size = new System.Drawing.Size(152, 22);
+            this.chainText.TabIndex = 26;
+            // 
+            // unitText
+            // 
+            this.unitText.Location = new System.Drawing.Point(92, 120);
+            this.unitText.Name = "unitText";
+            this.unitText.ReadOnly = true;
+            this.unitText.Size = new System.Drawing.Size(152, 22);
+            this.unitText.TabIndex = 25;
+            // 
+            // quanText
+            // 
+            this.quanText.Location = new System.Drawing.Point(92, 92);
+            this.quanText.Name = "quanText";
+            this.quanText.ReadOnly = true;
+            this.quanText.Size = new System.Drawing.Size(152, 22);
+            this.quanText.TabIndex = 24;
+            // 
+            // nameText
+            // 
+            this.nameText.Location = new System.Drawing.Point(92, 64);
+            this.nameText.Name = "nameText";
+            this.nameText.ReadOnly = true;
+            this.nameText.Size = new System.Drawing.Size(152, 22);
+            this.nameText.TabIndex = 23;
+            // 
+            // codeText
+            // 
+            this.codeText.Location = new System.Drawing.Point(92, 38);
+            this.codeText.Name = "codeText";
+            this.codeText.ReadOnly = true;
+            this.codeText.Size = new System.Drawing.Size(152, 22);
+            this.codeText.TabIndex = 22;
+            // 
+            // typeText
+            // 
+            this.typeText.Location = new System.Drawing.Point(92, 147);
+            this.typeText.Name = "typeText";
+            this.typeText.ReadOnly = true;
+            this.typeText.Size = new System.Drawing.Size(152, 22);
+            this.typeText.TabIndex = 21;
+            // 
+            // chainLabel
+            // 
+            this.chainLabel.AutoSize = true;
+            this.chainLabel.Location = new System.Drawing.Point(12, 181);
+            this.chainLabel.Name = "chainLabel";
+            this.chainLabel.Size = new System.Drawing.Size(48, 17);
+            this.chainLabel.TabIndex = 20;
+            this.chainLabel.Text = "Chain:";
             // 
             // numericUpDown1
             // 
@@ -262,63 +319,6 @@
             this.label3.Size = new System.Drawing.Size(99, 20);
             this.label3.TabIndex = 0;
             this.label3.Text = "Item Details";
-            // 
-            // chainLabel
-            // 
-            this.chainLabel.AutoSize = true;
-            this.chainLabel.Location = new System.Drawing.Point(12, 181);
-            this.chainLabel.Name = "chainLabel";
-            this.chainLabel.Size = new System.Drawing.Size(48, 17);
-            this.chainLabel.TabIndex = 20;
-            this.chainLabel.Text = "Chain:";
-            // 
-            // typeText
-            // 
-            this.typeText.Location = new System.Drawing.Point(92, 147);
-            this.typeText.Name = "typeText";
-            this.typeText.ReadOnly = true;
-            this.typeText.Size = new System.Drawing.Size(152, 22);
-            this.typeText.TabIndex = 21;
-            // 
-            // codeText
-            // 
-            this.codeText.Location = new System.Drawing.Point(92, 38);
-            this.codeText.Name = "codeText";
-            this.codeText.ReadOnly = true;
-            this.codeText.Size = new System.Drawing.Size(152, 22);
-            this.codeText.TabIndex = 22;
-            // 
-            // nameText
-            // 
-            this.nameText.Location = new System.Drawing.Point(92, 64);
-            this.nameText.Name = "nameText";
-            this.nameText.ReadOnly = true;
-            this.nameText.Size = new System.Drawing.Size(152, 22);
-            this.nameText.TabIndex = 23;
-            // 
-            // quanText
-            // 
-            this.quanText.Location = new System.Drawing.Point(92, 92);
-            this.quanText.Name = "quanText";
-            this.quanText.ReadOnly = true;
-            this.quanText.Size = new System.Drawing.Size(152, 22);
-            this.quanText.TabIndex = 24;
-            // 
-            // unitText
-            // 
-            this.unitText.Location = new System.Drawing.Point(92, 120);
-            this.unitText.Name = "unitText";
-            this.unitText.ReadOnly = true;
-            this.unitText.Size = new System.Drawing.Size(152, 22);
-            this.unitText.TabIndex = 25;
-            // 
-            // chainText
-            // 
-            this.chainText.Location = new System.Drawing.Point(92, 176);
-            this.chainText.Name = "chainText";
-            this.chainText.ReadOnly = true;
-            this.chainText.Size = new System.Drawing.Size(152, 22);
-            this.chainText.TabIndex = 26;
             // 
             // PriceMain
             // 

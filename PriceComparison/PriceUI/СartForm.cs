@@ -22,16 +22,13 @@ namespace PriceUI
             {
                 LoadCart();
             }
-            else
-            {
-                ResetUI();
-            }
+            ResetUI();
         }
         public PricingLogicManager Manager { get; set; }
         public int ProductsToFetch { get; } = 3;
         public void ResetUI()
         {
-            PopulateCart();
+            InitCart(Manager.GetCartItems());
             List<KeyValuePair<long, string>> chains = Manager.GetChains();
             listBox1.SelectedIndexChanged -= listBox1_SelectedIndexChanged;
             listBox1.DataSource = chains;
@@ -40,11 +37,7 @@ namespace PriceUI
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             ResetCompOutput();
         }
-        private void PopulateCart()
-        {
-            dataGridView1.DataSource = Manager.GetCartItems();
-            InitCart();
-        }
+
         public void ResetCompOutput()
         {
             foreach (var panel in Controls.OfType<Panel>().Where(p => p.Name.Contains("compPanel")))
@@ -66,17 +59,8 @@ namespace PriceUI
                 }
             }
         }
-        public void EnableCompare()
-        {
-            foreach (var panel in Controls.OfType<Panel>())
-            {
-                foreach (Control control in panel.Controls)
-                {
-                    control.Visible = true;
-                }
-            }
-        }
-        private void button1_Click(object sender, EventArgs e)
+
+        private void removeButton_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -84,7 +68,7 @@ namespace PriceUI
                 if (currItem != null)
                 {
                     List<ItemHeader> newItems = Manager.RemoveItemFromCart(currItem);
-                    RefreshCart(newItems);
+                    InitCart(newItems);
                     MessageBox.Show("Product  was removed successfully");
                 }
             }
@@ -94,7 +78,7 @@ namespace PriceUI
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void updateButton_Click(object sender, EventArgs e)
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
@@ -115,7 +99,7 @@ namespace PriceUI
                         else
                         {
                             List<ItemHeader> newItems = Manager.UpdateCart(currItem, Convert.ToInt32(numericUpDown1.Value));
-                            RefreshCart(newItems);
+                            InitCart(newItems);
                             MessageBox.Show("Product was updated successfully");
                         }
                     }
@@ -126,23 +110,24 @@ namespace PriceUI
                 MessageBox.Show("Please select Product");
             }
         }
-        public void RefreshCart(List<ItemHeader> newItems)
+
+        public void InitCart(List<ItemHeader> newItems)
         {
             dataGridView1.DataSource = null;
             dataGridView1.DataSource = newItems;
-            InitCart();
-            dataGridView1.Update();
-            dataGridView1.ClearSelection();
-        }
-        public void InitCart()
-        {
             foreach (DataGridViewColumn col in dataGridView1.Columns)
             {
                 col.Visible = false;
             }
             dataGridView1.Columns["ItemCode"].Visible = true;
+            dataGridView1.Columns["ItemCode"].Width = 120;
+            dataGridView1.Columns["ItemCode"].HeaderText = "Code";
             dataGridView1.Columns["ItemName"].Visible = true;
+            dataGridView1.Columns["ItemName"].Width = 150;
+            dataGridView1.Columns["ItemName"].HeaderText = "Name";
             dataGridView1.Columns["Amount"].Visible = true;
+            dataGridView1.Columns["Amount"].Width = 60;
+            dataGridView1.Columns["Amount"].HeaderText = "Amount";
         }
 
         private void exitCartToolStripMenuItem_Click(object sender, EventArgs e)
@@ -161,7 +146,22 @@ namespace PriceUI
             List<KeyValuePair<string, string>> stores = Manager.GetStores(GetSelectedChains(), null);
             ResetStores(stores);
         }
-
+        public void ResetStores(List<KeyValuePair<string, string>> stores)
+        {
+            foreach (var comboBox in storePanel.Controls.OfType<ComboBox>())
+            {
+                List<KeyValuePair<string, string>> currStores = new List<KeyValuePair<string, string>>(stores);
+                comboBox.DataSource = currStores;
+                comboBox.SelectedItem = null;
+                comboBox.DisplayMember = "Value";
+                comboBox.ValueMember = "Key";
+            }
+            storeAllRadio.Checked = true;
+        }
+        private void locSelRadio_CheckedChanged(object sender, EventArgs e)
+        {
+            locComboBox.Enabled = true;
+        }
         private void storeRadio_CheckedChanged(object sender, EventArgs e)
         {
             comboStore1.Enabled = true;
@@ -176,22 +176,6 @@ namespace PriceUI
             comboStore3.Enabled = false;
         }
 
-        private void locSelRadio_CheckedChanged(object sender, EventArgs e)
-        {
-            locComboBox.Enabled = true;
-        }
-        public void ResetStores(List<KeyValuePair<string, string>> stores)
-        {
-            foreach (var comboBox in storePanel.Controls.OfType<ComboBox>())
-            {
-                List<KeyValuePair<string, string>> currStores = new List<KeyValuePair<string, string>>(stores);
-                comboBox.DataSource = currStores;
-                comboBox.SelectedItem = null;
-                comboBox.DisplayMember = "Value";
-                comboBox.ValueMember = "Key";
-            }
-            storeAllRadio.Checked = true;
-        }
         private void locComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (locComboBox.SelectedItem != null &&
@@ -212,7 +196,7 @@ namespace PriceUI
             ResetStores(stores);
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void compareButton_Click(object sender, EventArgs e)
         {
             List<UpdatedCart> updatedItems = new List<UpdatedCart>();
 
@@ -248,6 +232,11 @@ namespace PriceUI
             if (listBox1.SelectedItems.Count < 1)
             {
                 MessageBox.Show("Please select at least one chain");
+                return false;
+            }
+            if (dataGridView1.Rows.Count < 1)
+            {
+                MessageBox.Show("The cart is empty");
                 return false;
             }
             if (!storeAllRadio.Checked)
@@ -352,7 +341,7 @@ namespace PriceUI
         private void saveCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.InitialDirectory = @"C:\";
+            saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             saveFileDialog.Title = "Save Cart";
             saveFileDialog.CheckPathExists = true;
             saveFileDialog.DefaultExt = "xml";
@@ -368,11 +357,12 @@ namespace PriceUI
         private void loadCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoadCart();
+            ResetUI();
         }
         public void LoadCart()
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.InitialDirectory = @"C:\";
+            openFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
             openFileDialog.Title = "Load Cart";
             openFileDialog.CheckFileExists = true;
             openFileDialog.CheckPathExists = true;
@@ -382,17 +372,14 @@ namespace PriceUI
             {
                 string path = openFileDialog.FileName;
                 Manager.LoadCart(path);
-                ResetUI();
             }
         }
 
-        private void exportHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void histButton_Click(object sender, EventArgs e)
         {
             //ItemHistForm histForm = new histForm(Manager);
             //histForm.ShowDialog();
         }
-
-
     }
 }
 
