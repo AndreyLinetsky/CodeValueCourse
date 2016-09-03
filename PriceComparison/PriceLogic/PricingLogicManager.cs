@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using PriceData;
 using System.IO;
 using System.Xml;
-
+using OfficeOpenXml;
 namespace PriceLogic
 {
     public class PricingLogicManager
@@ -219,6 +219,10 @@ namespace PriceLogic
             }
             Cart.Items.Clear();
             Cart.Items.AddRange(newItems);
+        }
+        public void SaveComparison(string path)
+        {
+            exc
         }
     }
 }

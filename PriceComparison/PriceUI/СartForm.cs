@@ -224,7 +224,14 @@ namespace PriceUI
                 {
                     updatedItems = Manager.CalculateTotal(GetSelectedChains(), locComboBox.SelectedValue.ToString(), ProductsToFetch);
                 }
-                ShowUpdatedCart(updatedItems);
+                if (updatedItems.Count > 0)
+                {
+                    ShowUpdatedCart(updatedItems);
+                }
+                else
+                {
+                    MessageBox.Show("No results were found");
+                }
             }
         }
         public bool ValidateFilters()
@@ -278,25 +285,25 @@ namespace PriceUI
 
         public void WriteToPanel(UpdatedCart currCart, int currNum)
         {
-            Label panChain = (Label)Controls.Find($"compChain{currNum}", true).FirstOrDefault();
-            panChain.Text = currCart.ChainName;
-            Label panStore = (Label)Controls.Find($"compStore{currNum}", true).FirstOrDefault();
-            panStore.Text = currCart.StoreName;
-            Label panTotal = (Label)Controls.Find($"compTotal{currNum}", true).FirstOrDefault();
-            panTotal.Text = currCart.TotalPrice.ToString();
+            TextBox txtChain = (TextBox)Controls.Find($"compChain{currNum}", true).FirstOrDefault();
+            txtChain.Text = currCart.ChainName;
+            TextBox txtStore = (TextBox)Controls.Find($"compStore{currNum}", true).FirstOrDefault();
+            txtStore.Text = currCart.StoreName;
+            TextBox txtTotal = (TextBox)Controls.Find($"compTotal{currNum}", true).FirstOrDefault();
+            txtTotal.Text = currCart.TotalPrice.ToString();
             for (int i = 1; i <= currCart.CheapItems.Count; i++)
             {
-                Label panItem = (Label)Controls.Find($"compItem{i}Ch{currNum}", true).FirstOrDefault();
-                panItem.Text = currCart.CheapItems[i - 1].ItemName;
-                Label panPrice = (Label)Controls.Find($"compPrice{i}Ch{currNum}", true).FirstOrDefault();
-                panPrice.Text = currCart.CheapItems[i - 1].Price.ToString();
+                TextBox txtItem = (TextBox)Controls.Find($"compItem{i}Ch{currNum}", true).FirstOrDefault();
+                txtItem.Text = currCart.CheapItems[i - 1].ItemName;
+                TextBox txtPrice = (TextBox)Controls.Find($"compPrice{i}Ch{currNum}", true).FirstOrDefault();
+                txtPrice.Text = currCart.CheapItems[i - 1].Price.ToString();
             }
             for (int i = 1; i <= currCart.ExpensiveItems.Count; i++)
             {
-                Label panItem = (Label)Controls.Find($"compItem{i}Ex{currNum}", true).FirstOrDefault();
-                panItem.Text = currCart.ExpensiveItems[i - 1].ItemName;
-                Label panPrice = (Label)Controls.Find($"compPrice{i}Ex{currNum}", true).FirstOrDefault();
-                panPrice.Text = currCart.ExpensiveItems[i - 1].Price.ToString();
+                TextBox txtItem = (TextBox)Controls.Find($"compItem{i}Ex{currNum}", true).FirstOrDefault();
+                txtItem.Text = currCart.ExpensiveItems[i - 1].ItemName;
+                TextBox txtPrice = (TextBox)Controls.Find($"compPrice{i}Ex{currNum}", true).FirstOrDefault();
+                txtPrice.Text = currCart.ExpensiveItems[i - 1].Price.ToString();
             }
             string[] missingItems = currCart.Items.Where(i => i.Price == 0).Select(i => i.ItemName).ToArray();
             ComboBox comMissing = (ComboBox)Controls.Find($"compCombo{currNum}", true).FirstOrDefault();
@@ -313,24 +320,24 @@ namespace PriceUI
 
         //public void WriteToPanel(UpdatedCart currCart, int currNum)
         //{
-        //    Label panChain = (Label)Controls.Find(String.Format("compChain{0}", currNum), true).FirstOrDefault();
+        //    TextBox panChain = (TextBox)Controls.Find(String.Format("compChain{0}", currNum), true).FirstOrDefault();
         //    panChain.Text = currCart.ChainName;
-        //    Label panStore = (Label)Controls.Find(String.Format("compStore{0}", currNum), true).FirstOrDefault();
+        //    TextBox panStore = (TextBox)Controls.Find(String.Format("compStore{0}", currNum), true).FirstOrDefault();
         //    panStore.Text = currCart.StoreName;
-        //    Label panTotal = (Label)Controls.Find(String.Format("compTotal{0}", currNum), true).FirstOrDefault();
+        //    TextBox panTotal = (TextBox)Controls.Find(String.Format("compTotal{0}", currNum), true).FirstOrDefault();
         //    panTotal.Text = currCart.TotalPrice.ToString();
         //    for (int i = 1; i <= currCart.CheapItems.Count; i++)
         //    {
-        //        Label panItem = (Label)Controls.Find(String.Format("compItem{0}Ch{1}", i, currNum), true).FirstOrDefault();
+        //        TextBox panItem = (TextBox)Controls.Find(String.Format("compItem{0}Ch{1}", i, currNum), true).FirstOrDefault();
         //        panItem.Text = currCart.CheapItems[i - 1].ItemDesc;
-        //        Label panPrice = (Label)Controls.Find(String.Format("compPrice{0}Ch{1}", i, currNum), true).FirstOrDefault();
+        //        TextBox panPrice = (TextBox)Controls.Find(String.Format("compPrice{0}Ch{1}", i, currNum), true).FirstOrDefault();
         //        panPrice.Text = currCart.CheapItems[i - 1].Price.ToString();
         //    }
         //    for (int i = 1; i <= currCart.ExpensiveItems.Count; i++)
         //    {
-        //        Label panItem = (Label)Controls.Find(String.Format("compItem{0}Ex{1}", i, currNum), true).FirstOrDefault();
+        //        TextBox panItem = (TextBox)Controls.Find(String.Format("compItem{0}Ex{1}", i, currNum), true).FirstOrDefault();
         //        panItem.Text = currCart.ExpensiveItems[i - 1].ItemDesc;
-        //        Label panPrice = (Label)Controls.Find(String.Format("compPrice{0}Ex{1}", i, currNum), true).FirstOrDefault();
+        //        TextBox panPrice = (TextBox)Controls.Find(String.Format("compPrice{0}Ex{1}", i, currNum), true).FirstOrDefault();
         //        panPrice.Text = currCart.ExpensiveItems[i - 1].Price.ToString();
         //    }
         //    string[] missingItems = currCart.Items.Where(i => i.Price == 0).Select(i => i.ItemDesc).ToArray();
@@ -375,11 +382,36 @@ namespace PriceUI
             }
         }
 
-        private void histButton_Click(object sender, EventArgs e)
+        private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            //ItemHistForm histForm = new histForm(Manager);
-            //histForm.ShowDialog();
+            if(compChain1.Text == string.Empty)
+            {
+                MessageBox.Show("No stores were compared");
+            }
+            else
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                saveFileDialog.Title = "Save Comparison";
+                saveFileDialog.CheckPathExists = true;
+                saveFileDialog.DefaultExt = "xls";
+                saveFileDialog.Filter = "XLS-File | *.xls";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    string path = saveFileDialog.FileName;
+                    Manager.SaveComparison(path);
+                    MessageBox.Show("Comparison was saved");
+                }
+            }
         }
+
+        //private void histButton_Click(object sender, EventArgs e)
+        //{
+        //    using (HistForm histForm = new histForm(Manager))
+        //    {
+        //        histForm.ShowDialog();
+        //    }
+        //}
     }
 }
 
