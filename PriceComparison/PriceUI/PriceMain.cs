@@ -24,14 +24,13 @@ namespace PriceUI
         public PricingLogicManager Manager { get; set; }
         public void ResetForm()
         {
-            label1.Text = "Please login or register";
             button1.Enabled = false;
             ResetItemData();
             searchText.Text = string.Empty;
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
             viewCartToolStripMenuItem.Enabled = false;
-            loadToolStripMenuItem.Enabled = false;
+            loadCartToolStripMenuItem.Enabled = false;
         }
 
         private void logInToolStripMenuItem_Click(object sender, EventArgs e)
@@ -64,9 +63,8 @@ namespace PriceUI
             {
                 if (logForm.ShowDialog(this) == DialogResult.OK)
                 {
-                    label1.Text = $"Welcome {Manager.User}";
                     button1.Enabled = true;
-                    loadToolStripMenuItem.Enabled = true;
+                    loadCartToolStripMenuItem.Enabled = true;
                 }
             }
         }
@@ -107,20 +105,23 @@ namespace PriceUI
                 ItemInfo itemInfo = Manager.GetItemInfo(currItem);
                 if (itemInfo != null)
                 {
-                    if (itemInfo.ItemType == 1)
+                    if (itemInfo.ItemType != 0)
                     {
-                        typeText.Text = "General";
+                        typeText.Text = "כללי";
+                        chainLabel.Visible = false;
+                        chainText.Visible = false;
                     }
                     else
                     {
-                        typeText.Text = "Internal";
-                        // chain 
-                        //itemInfo.ChainName
+                        typeText.Text = "פנימי";
+                        chainLabel.Visible = true;
+                        chainText.Visible = true;
+                        chainText.Text = itemInfo.ChainName;
                     }
                     codeText.Text = itemInfo.ItemCode.ToString();
-                    nameText.Text = itemInfo.ItemName.ToString();
-                    quanText.Text = itemInfo.Quantity.ToString();
-                    unitText.Text = itemInfo.UnitQuantity.ToString();
+                    nameText.Text = itemInfo.ItemName;
+                    quanText.Text = itemInfo.Quantity;
+                    unitText.Text = itemInfo.UnitQuantity;
                     button2.Enabled = true;
                 }
                 else
@@ -144,6 +145,8 @@ namespace PriceUI
             }
             numericUpDown1.Value = 0;
             button2.Enabled = false;
+            chainLabel.Visible = false;
+            chainText.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -174,7 +177,7 @@ namespace PriceUI
 
         }
 
-        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        private void loadCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
             СartForm cartForm = new СartForm(Manager, true);
             cartForm.ShowDialog();

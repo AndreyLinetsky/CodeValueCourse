@@ -31,21 +31,15 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.cartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewCartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.loadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.loadCartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label1 = new System.Windows.Forms.Label();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.searchText = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.typeText = new System.Windows.Forms.Label();
-            this.unitText = new System.Windows.Forms.Label();
-            this.quanText = new System.Windows.Forms.Label();
-            this.nameText = new System.Windows.Forms.Label();
-            this.codeText = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.button2 = new System.Windows.Forms.Button();
             this.label6 = new System.Windows.Forms.Label();
@@ -54,6 +48,13 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.chainLabel = new System.Windows.Forms.Label();
+            this.typeText = new System.Windows.Forms.TextBox();
+            this.codeText = new System.Windows.Forms.TextBox();
+            this.nameText = new System.Windows.Forms.TextBox();
+            this.quanText = new System.Windows.Forms.TextBox();
+            this.unitText = new System.Windows.Forms.TextBox();
+            this.chainText = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -76,7 +77,7 @@
             // 
             this.cartToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.viewCartToolStripMenuItem,
-            this.loadToolStripMenuItem});
+            this.loadCartToolStripMenuItem});
             this.cartToolStripMenuItem.Name = "cartToolStripMenuItem";
             this.cartToolStripMenuItem.Size = new System.Drawing.Size(48, 24);
             this.cartToolStripMenuItem.Text = "Cart";
@@ -85,17 +86,17 @@
             // 
             this.viewCartToolStripMenuItem.Enabled = false;
             this.viewCartToolStripMenuItem.Name = "viewCartToolStripMenuItem";
-            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
+            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.viewCartToolStripMenuItem.Text = "View Cart";
             this.viewCartToolStripMenuItem.Click += new System.EventHandler(this.viewCartToolStripMenuItem_Click);
             // 
-            // loadToolStripMenuItem
+            // loadCartToolStripMenuItem
             // 
-            this.loadToolStripMenuItem.Enabled = false;
-            this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
-            this.loadToolStripMenuItem.Text = "Load Cart";
-            this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
+            this.loadCartToolStripMenuItem.Enabled = false;
+            this.loadCartToolStripMenuItem.Name = "loadCartToolStripMenuItem";
+            this.loadCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.loadCartToolStripMenuItem.Text = "Load Cart";
+            this.loadCartToolStripMenuItem.Click += new System.EventHandler(this.loadCartToolStripMenuItem_Click);
             // 
             // userToolStripMenuItem
             // 
@@ -109,24 +110,16 @@
             // logInToolStripMenuItem
             // 
             this.logInToolStripMenuItem.Name = "logInToolStripMenuItem";
-            this.logInToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.logInToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.logInToolStripMenuItem.Text = "Log In";
             this.logInToolStripMenuItem.Click += new System.EventHandler(this.logInToolStripMenuItem_Click);
             // 
             // logOutToolStripMenuItem
             // 
             this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.logOutToolStripMenuItem.Text = "Log Out";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(24, 42);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(0, 17);
-            this.label1.TabIndex = 1;
             // 
             // dataGridView1
             // 
@@ -151,9 +144,10 @@
             // label2
             // 
             this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.Location = new System.Drawing.Point(12, 125);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(101, 17);
+            this.label2.Size = new System.Drawing.Size(106, 18);
             this.label2.TabIndex = 10;
             this.label2.Text = "Seach Product";
             // 
@@ -176,11 +170,14 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.typeText);
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.chainText);
             this.panel1.Controls.Add(this.unitText);
             this.panel1.Controls.Add(this.quanText);
             this.panel1.Controls.Add(this.nameText);
             this.panel1.Controls.Add(this.codeText);
+            this.panel1.Controls.Add(this.typeText);
+            this.panel1.Controls.Add(this.chainLabel);
             this.panel1.Controls.Add(this.numericUpDown1);
             this.panel1.Controls.Add(this.button2);
             this.panel1.Controls.Add(this.label6);
@@ -194,56 +191,16 @@
             this.panel1.Size = new System.Drawing.Size(335, 287);
             this.panel1.TabIndex = 13;
             // 
-            // typeText
-            // 
-            this.typeText.AutoSize = true;
-            this.typeText.Location = new System.Drawing.Point(103, 146);
-            this.typeText.Name = "typeText";
-            this.typeText.Size = new System.Drawing.Size(0, 17);
-            this.typeText.TabIndex = 19;
-            // 
-            // unitText
-            // 
-            this.unitText.AutoSize = true;
-            this.unitText.Location = new System.Drawing.Point(103, 119);
-            this.unitText.Name = "unitText";
-            this.unitText.Size = new System.Drawing.Size(0, 17);
-            this.unitText.TabIndex = 18;
-            // 
-            // quanText
-            // 
-            this.quanText.AutoSize = true;
-            this.quanText.Location = new System.Drawing.Point(103, 92);
-            this.quanText.Name = "quanText";
-            this.quanText.Size = new System.Drawing.Size(0, 17);
-            this.quanText.TabIndex = 17;
-            // 
-            // nameText
-            // 
-            this.nameText.AutoSize = true;
-            this.nameText.Location = new System.Drawing.Point(103, 65);
-            this.nameText.Name = "nameText";
-            this.nameText.Size = new System.Drawing.Size(0, 17);
-            this.nameText.TabIndex = 16;
-            // 
-            // codeText
-            // 
-            this.codeText.AutoSize = true;
-            this.codeText.Location = new System.Drawing.Point(103, 38);
-            this.codeText.Name = "codeText";
-            this.codeText.Size = new System.Drawing.Size(0, 17);
-            this.codeText.TabIndex = 15;
-            // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(135, 221);
+            this.numericUpDown1.Location = new System.Drawing.Point(135, 230);
             this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(41, 22);
+            this.numericUpDown1.Size = new System.Drawing.Size(37, 22);
             this.numericUpDown1.TabIndex = 14;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(15, 220);
+            this.button2.Location = new System.Drawing.Point(15, 230);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(92, 23);
             this.button2.TabIndex = 13;
@@ -254,7 +211,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 146);
+            this.label6.Location = new System.Drawing.Point(12, 150);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(74, 17);
             this.label6.TabIndex = 10;
@@ -299,11 +256,69 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(67, 12);
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(131, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(81, 17);
+            this.label3.Size = new System.Drawing.Size(99, 20);
             this.label3.TabIndex = 0;
             this.label3.Text = "Item Details";
+            // 
+            // chainLabel
+            // 
+            this.chainLabel.AutoSize = true;
+            this.chainLabel.Location = new System.Drawing.Point(12, 181);
+            this.chainLabel.Name = "chainLabel";
+            this.chainLabel.Size = new System.Drawing.Size(48, 17);
+            this.chainLabel.TabIndex = 20;
+            this.chainLabel.Text = "Chain:";
+            // 
+            // typeText
+            // 
+            this.typeText.Location = new System.Drawing.Point(92, 147);
+            this.typeText.Name = "typeText";
+            this.typeText.ReadOnly = true;
+            this.typeText.Size = new System.Drawing.Size(152, 22);
+            this.typeText.TabIndex = 21;
+            // 
+            // codeText
+            // 
+            this.codeText.Location = new System.Drawing.Point(92, 38);
+            this.codeText.Name = "codeText";
+            this.codeText.ReadOnly = true;
+            this.codeText.Size = new System.Drawing.Size(152, 22);
+            this.codeText.TabIndex = 22;
+            // 
+            // nameText
+            // 
+            this.nameText.Location = new System.Drawing.Point(92, 64);
+            this.nameText.Name = "nameText";
+            this.nameText.ReadOnly = true;
+            this.nameText.Size = new System.Drawing.Size(152, 22);
+            this.nameText.TabIndex = 23;
+            // 
+            // quanText
+            // 
+            this.quanText.Location = new System.Drawing.Point(92, 92);
+            this.quanText.Name = "quanText";
+            this.quanText.ReadOnly = true;
+            this.quanText.Size = new System.Drawing.Size(152, 22);
+            this.quanText.TabIndex = 24;
+            // 
+            // unitText
+            // 
+            this.unitText.Location = new System.Drawing.Point(92, 120);
+            this.unitText.Name = "unitText";
+            this.unitText.ReadOnly = true;
+            this.unitText.Size = new System.Drawing.Size(152, 22);
+            this.unitText.TabIndex = 25;
+            // 
+            // chainText
+            // 
+            this.chainText.Location = new System.Drawing.Point(92, 176);
+            this.chainText.Name = "chainText";
+            this.chainText.ReadOnly = true;
+            this.chainText.Size = new System.Drawing.Size(152, 22);
+            this.chainText.TabIndex = 26;
             // 
             // PriceMain
             // 
@@ -315,7 +330,6 @@
             this.Controls.Add(this.searchText);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.label1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "PriceMain";
@@ -338,7 +352,6 @@
         private System.Windows.Forms.ToolStripMenuItem userToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logInToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox searchText;
@@ -351,13 +364,15 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label unitText;
-        private System.Windows.Forms.Label quanText;
-        private System.Windows.Forms.Label nameText;
-        private System.Windows.Forms.Label codeText;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
-        private System.Windows.Forms.Label typeText;
         private System.Windows.Forms.ToolStripMenuItem viewCartToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadCartToolStripMenuItem;
+        private System.Windows.Forms.Label chainLabel;
+        private System.Windows.Forms.TextBox typeText;
+        private System.Windows.Forms.TextBox codeText;
+        private System.Windows.Forms.TextBox nameText;
+        private System.Windows.Forms.TextBox quanText;
+        private System.Windows.Forms.TextBox unitText;
+        private System.Windows.Forms.TextBox chainText;
     }
 }

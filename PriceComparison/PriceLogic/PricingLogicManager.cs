@@ -171,7 +171,7 @@ namespace PriceLogic
             }).ToList();
             foreach (ItemHeader item in currCart.Items)
             {
-                if (item.ItemType == 1 ||
+                if (item.ItemType != 0 ||
                     item.ChainId == currCart.ChainID)
                 {
                     item.Price = ItemQuery.GetPrice(currCart.ChainID, currCart.StoreID, item.ItemCode, item.ItemType);

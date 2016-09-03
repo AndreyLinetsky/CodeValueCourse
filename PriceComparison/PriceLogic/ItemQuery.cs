@@ -42,7 +42,7 @@ namespace PriceLogic
                     StoreSource = s
                 }).Where(j => (j.StoreSource.Location == location || location == null) &&
                 chainIds.Contains(j.StoreSource.ChainID)).ToList();
-                var filteredItems = filteredStores.Where(i => !markedStores.Any(s => s.ChainId == i.StoreSource.ChainID && s.StoreId == i.StoreSource.StoreID) && itemsToCheck.Any(s => s.ItemCode == i.ItemSource.ItemCode && s.ItemType == i.ItemSource.ItemType)).Select(i => new
+                var filteredItems = filteredStores.Where(i => !markedStores.Any(s => s.ChainId == i.StoreSource.ChainID && s.StoreId == i.StoreSource.StoreID) && itemsToCheck.Any(s => s.ItemCode == i.ItemSource.ItemCode && s.ItemType == i.ItemSource.ItemType && (i.ItemSource.ItemType != 0 || i.ItemSource.ChainID == s.ChainId))).Select(i => new
                 {
                     ChainID = i.ItemSource.ChainID,
                     StoreID = i.ItemSource.StoreID,
