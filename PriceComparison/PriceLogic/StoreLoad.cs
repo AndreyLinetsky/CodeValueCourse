@@ -88,14 +88,17 @@ namespace PriceLogic
                 if (point.Longitude < 35.0)
 
                 {
-                    if (point.Latitude < 32)
+                    if (point.Latitude < 31.9)
                     {
                         return "South";
                     }
-
-                    if (point.Latitude < 32.5)
+                    if (point.Latitude < 32.14)
                     {
                         return "Merkaz";
+                    }
+                    if (point.Latitude < 32.5)
+                    {
+                        return "Sharon";
                     }
                     return "North";
                 }

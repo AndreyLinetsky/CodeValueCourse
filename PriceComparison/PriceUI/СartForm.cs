@@ -42,11 +42,11 @@ namespace PriceUI
         {
             foreach (var panel in Controls.OfType<Panel>().Where(p => p.Name.Contains("compPanel")))
             {
-                foreach (var label in panel.Controls.OfType<Label>())
+                foreach (var textBox in panel.Controls.OfType<TextBox>())
                 {
-                    if (label.Name.Contains("comp"))
+                    if (textBox.Name.Contains("comp"))
                     {
-                        label.Text = string.Empty;
+                        textBox.Text = string.Empty;
                     }
                 }
                 foreach (var combo in panel.Controls.OfType<ComboBox>())
@@ -394,8 +394,8 @@ namespace PriceUI
                 saveFileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
                 saveFileDialog.Title = "Save Comparison";
                 saveFileDialog.CheckPathExists = true;
-                saveFileDialog.DefaultExt = "xls";
-                saveFileDialog.Filter = "XLS-File | *.xls";
+                saveFileDialog.DefaultExt = "xlsx";
+                saveFileDialog.Filter = "XLSX-File | *.xlsx";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     string path = saveFileDialog.FileName;

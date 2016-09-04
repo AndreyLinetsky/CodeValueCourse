@@ -8,6 +8,9 @@ using PriceData;
 using System.IO;
 using System.Xml;
 using OfficeOpenXml;
+using OfficeOpenXml.Style;
+using System.Drawing;
+
 namespace PriceLogic
 {
     public class PricingLogicManager
@@ -222,7 +225,86 @@ namespace PriceLogic
         }
         public void SaveComparison(string path)
         {
-            exc
+            using (var package = new ExcelPackage())
+            {
+                var workbook = package.Workbook;
+                var worksheet = workbook.Worksheets.Add("Comparison");
+                // Set row headers
+                int currCol = 1;
+                var chainCell = worksheet.Cells[1, currCol];
+                chainCell.Value = "Chain";
+                var storeCell = worksheet.Cells[2, currCol];
+                storeCell.Value = "Store";
+                worksheet.Cells[3, 1, 5, 1].Merge = true;
+                var cheapCell = worksheet.Cells[3, currCol];
+                cheapCell.Value = "Cheapest";
+                worksheet.Cells[6, 1, 8, 1].Merge = true;
+                var exCell = worksheet.Cells[6, currCol];
+                exCell.Value = "Most Expensive";
+                var totalCell = worksheet.Cells[9, currCol];
+                totalCell.Value = "Total Price";
+                totalCell.Merge = true;
+                int maxMissingItems = UpdatedCarts.Select(c => c.Items.Where(i => i.Price == 0).Count()).Max();
+                worksheet.Cells[10, currCol, 9 + maxMissingItems, currCol].Merge = true;
+                var allMissingCell = worksheet.Cells[10, currCol];
+                allMissingCell.Value = "Missing Items";
+                worksheet.Column(currCol).Width = 14;
+                worksheet.Column(currCol).Style.Font.Bold = true;
+                worksheet.Column(currCol).Style.VerticalAlignment = ExcelVerticalAlignment.Top;
+                worksheet.Column(currCol).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                currCol++;
+                // Fill data
+                foreach (UpdatedCart currCart in UpdatedCarts)
+                {
+                    worksheet.Cells[1, currCol, 1, currCol + 1].Merge = true;
+                    var chainNameCell = worksheet.Cells[1, currCol];
+                    chainNameCell.Value = currCart.ChainName;
+                    chainNameCell.Style.Font.Size++;
+                    chainNameCell.Style.Font.Bold = true;
+                    worksheet.Cells[2, currCol, 2, currCol + 1].Merge = true;
+                    var storeNameCell = worksheet.Cells[2, currCol];
+                    storeNameCell.Value = currCart.StoreName;
+                    storeNameCell.Style.Font.Size++;
+                    storeNameCell.Style.Font.Bold = true;
+                    for (int i = 3; i < 3 + currCart.CheapItems.Count; i++)
+                    {
+                        var cheapNameCell = worksheet.Cells[i, currCol];
+                        cheapNameCell.Value = currCart.CheapItems[i - 3].ItemName;
+                        var cheapPriceCell = worksheet.Cells[i, currCol + 1];
+                        cheapPriceCell.Value = currCart.CheapItems[i - 3].Price;
+                    }
+                    for (int i = 6; i < 6 + currCart.ExpensiveItems.Count; i++)
+                    {
+                        var expNameCell = worksheet.Cells[i, currCol];
+                        expNameCell.Value = currCart.ExpensiveItems[i - 6].ItemName;
+                        var expPriceCell = worksheet.Cells[i, currCol + 1];
+                        expPriceCell.Value = currCart.ExpensiveItems[i - 6].Price;
+                    }
+                    worksheet.Cells[9, currCol, 9, currCol + 1].Merge = true;
+                    var priceCell = worksheet.Cells[9, currCol];
+                    priceCell.Value = currCart.TotalPrice;
+                    List<ItemHeader> missingItems = currCart.Items.Where(i => i.Price == 0).ToList();
+                    for (int i = 10; i < 10 + missingItems.Count; i++)
+                    {
+                        worksheet.Cells[i, currCol, i, currCol + 1].Merge = true;
+                        var missingCell = worksheet.Cells[i, currCol];
+                        missingCell.Value = missingItems[i - 10].ItemName;
+                    }
+                    worksheet.Column(currCol).Width = 20;
+                    worksheet.Column(currCol + 1).Width = 7;
+                    worksheet.Column(currCol + 2).Width = 4;
+                    worksheet.Column(currCol + 2).Style.Fill.PatternType = ExcelFillStyle.LightGray;
+                    worksheet.Column(currCol).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    worksheet.Column(currCol + 1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Left;
+                    currCol += 3;
+                }
+                package.SaveAs(new System.IO.FileInfo(path));
+            }
+        }
+        public void DownloadFiles()
+        {
+            FileDownloader downloader = new FileDownloader();
+
         }
     }
 }
