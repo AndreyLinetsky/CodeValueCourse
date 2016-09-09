@@ -22,7 +22,7 @@ namespace PriceLogic
             ItemQuery = new ItemQuery();
             StoreQuery = new StoreQuery();
             Cart = new Cart();
-            //    LoadData();
+            LoadData();
             //  Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
             //   StoreLoad str = new StoreLoad(true);
             //   ItemLoad it = new ItemLoad();
@@ -41,12 +41,12 @@ namespace PriceLogic
         {
             // Check if full load needed
             // Full load needed
-            Database.SetInitializer<PricingContext>(new DropCreateDatabaseIfModelChanges<PricingContext>());
+            Database.SetInitializer<PricingContext>(new CreateDatabaseIfNotExists<PricingContext>());
             StoreLoad str = new StoreLoad();
             ItemLoad it = new ItemLoad();
 
-            // str.DataLoad();
-            //it.DataLoad();
+            str.DataLoad();
+            it.DataLoad();
             //else partial load 
 
         }
@@ -301,10 +301,10 @@ namespace PriceLogic
                 package.SaveAs(new System.IO.FileInfo(path));
             }
         }
-        public void DownloadFiles()
-        {
-            FileDownloader downloader = new FileDownloader();
+        //public void DownloadFiles()
+        //{
+        //    FileDownloader downloader = new FileDownloader();
 
-        }
+        //}
     }
 }

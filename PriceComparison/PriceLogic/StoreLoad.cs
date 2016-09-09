@@ -125,12 +125,16 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
+                db.Configuration.AutoDetectChangesEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
                 var dbStores = db.Set<Store>();
-                db.Stores.RemoveRange(dbStores);
-                db.SaveChanges();
+                if (db.Set<Store>().Any())
+                {
+                    db.Stores.RemoveRange(dbStores);
+                    db.SaveChanges();
+                }
                 dbStores.AddRange(Stores);
                 db.SaveChanges();
-                db.Dispose();
             }
         }
     }

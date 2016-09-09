@@ -14,20 +14,21 @@ namespace PriceLogic
         public ItemLoad()
         {
             Items = new List<Item>();
-            Reset = true;
         }
         public List<Item> Items;
-        public bool Reset { get; set; }
+
         public void DataLoad()
         {
             DirectoryInfo storeDir = new DirectoryInfo("items");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
+            ResetDb();
             foreach (var file in files)
             {
                 WriteData($"items/{file.Name}");
                 //WriteData(string.Format("items/{0}",file.Name));
-                WriteToDb();
+               
             }
+            WriteToDb();
         }
         public void WriteData(string path)
         {
@@ -64,20 +65,27 @@ namespace PriceLogic
                 }
             }
         }
-        public void WriteToDb()
+        public void ResetDb()
         {
             using (var db = new PricingContext())
             {
                 var dbItems = db.Set<Item>();
-                if (Reset)
+                if (db.Set<Item>().Any())
                 {
                     db.Items.RemoveRange(dbItems);
                     db.SaveChanges();
-                    Reset = false;
                 }
+            }
+        }
+        public void WriteToDb()
+        {
+            using (var db = new PricingContext())
+            {
+                db.Configuration.AutoDetectChangesEnabled = false;
+                db.Configuration.ValidateOnSaveEnabled = false;
+                var dbItems = db.Set<Item>();
                 dbItems.AddRange(Items);
                 db.SaveChanges();
-                db.Dispose();
             }
         }
     }
