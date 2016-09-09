@@ -7,6 +7,8 @@ using System.Xml;
 using System.IO;
 using System.Reflection;
 using PriceData;
+using System.Xml.Linq;
+
 namespace PriceLogic
 {
     public class ItemLoad : ILoad
@@ -21,70 +23,56 @@ namespace PriceLogic
         {
             DirectoryInfo storeDir = new DirectoryInfo("items");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
-            ResetDb();
             foreach (var file in files)
             {
                 WriteData($"items/{file.Name}");
                 //WriteData(string.Format("items/{0}",file.Name));
-               
+
             }
             WriteToDb();
         }
         public void WriteData(string path)
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(path);
-            XmlNodeList dataNodes = xmlDoc.GetElementsByTagName("StoreId");
-            int storeId = 0;
-            foreach (XmlNode node in dataNodes)
+            var doc = XDocument.Load(path);
+
+            long chainId = long.Parse(doc.Root.Element("ChainId").Value);
+            int storeId = int.Parse(doc.Root.Element("StoreId").Value);
+            // Write data only if the store exists
+            if (CheckStore(chainId, storeId))
             {
-                storeId = Convert.ToInt32(node.InnerText);
-            }
-            dataNodes = xmlDoc.GetElementsByTagName("ChainId");
-            long chainId = 0;
-            foreach (XmlNode node in dataNodes)
-            {
-                chainId = Convert.ToInt64(node.InnerText);
-            }
-            dataNodes = xmlDoc.SelectNodes("/Root/Items/Item");
-            foreach (XmlNode node in dataNodes)
-            {
-                int itemType = Convert.ToInt32(node.SelectSingleNode("ItemType").InnerText);
-                long itemCode = Convert.ToInt64(node.SelectSingleNode("ItemCode").InnerText);
-                string itemDesc = node.SelectSingleNode("ItemName").InnerText;
-                string unitQuantity = node.SelectSingleNode("UnitQty").InnerText;
-                string quantity = node.SelectSingleNode("Quantity").InnerText;
-                decimal price = Convert.ToDecimal(node.SelectSingleNode("ItemPrice").InnerText);
-                string date = node.SelectSingleNode("PriceUpdateDate").InnerText;
-                Item currItem = new Item(storeId, chainId, itemCode, itemType, itemDesc, unitQuantity, quantity, price, date);
-                //Prevent duplicates
-                if (currItem.Price > 0 &&
-                    !Items.Any(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && i.ChainID == currItem.ChainID && i.StoreID == currItem.StoreID))
+                var currItems = doc.Descendants("ItemCode")
+                .Select(price => price.Parent)
+                .Select(item => new Item()
                 {
-                    Items.Add(currItem);
-                }
+                    StoreID = storeId,
+                    ChainID = chainId,
+                    ItemCode = long.Parse(item.Element("ItemCode").Value),
+                    ItemType = int.Parse(item.Element("ItemType").Value),
+                    ItemName = item.Element("ItemName").Value,
+                    UnitQuantity = item.Element("UnitQty").Value,
+                    Quantity = item.Element("Quantity").Value,
+                    Price = decimal.Parse(item.Element("ItemPrice").Value),
+                    LastUpdateDate = DateTime.Parse(item.Element("PriceUpdateDate").Value)
+                });
+                Items.AddRange(currItems);
             }
         }
-        public void ResetDb()
+        public bool CheckStore(long chainId, int storeId)
         {
             using (var db = new PricingContext())
             {
-                var dbItems = db.Set<Item>();
-                if (db.Set<Item>().Any())
-                {
-                    db.Items.RemoveRange(dbItems);
-                    db.SaveChanges();
-                }
+                return db.Stores.Any(s => s.ChainID == chainId && s.StoreID == storeId);
             }
         }
+
         public void WriteToDb()
         {
             using (var db = new PricingContext())
             {
+                var distinctItems = Items.GroupBy(i => new { i.ChainID, i.StoreID, i.ItemCode }).Select(g => g.FirstOrDefault());
                 db.Configuration.AutoDetectChangesEnabled = false;
                 db.Configuration.ValidateOnSaveEnabled = false;
-                var dbItems = db.Set<Item>();
-                dbItems.AddRange(Items);
+                db.Items.AddRange(distinctItems);
                 db.SaveChanges();
             }
         }

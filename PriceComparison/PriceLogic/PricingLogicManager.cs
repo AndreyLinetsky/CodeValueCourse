@@ -10,6 +10,7 @@ using System.Xml;
 using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
+using OfficeOpenXml.Drawing.Chart;
 
 namespace PriceLogic
 {
@@ -22,7 +23,7 @@ namespace PriceLogic
             ItemQuery = new ItemQuery();
             StoreQuery = new StoreQuery();
             Cart = new Cart();
-            LoadData();
+            //LoadData();
             //  Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
             //   StoreLoad str = new StoreLoad(true);
             //   ItemLoad it = new ItemLoad();
@@ -41,7 +42,7 @@ namespace PriceLogic
         {
             // Check if full load needed
             // Full load needed
-            Database.SetInitializer<PricingContext>(new CreateDatabaseIfNotExists<PricingContext>());
+            Database.SetInitializer(new CreateDatabaseIfNotExists<PricingContext>());
             StoreLoad str = new StoreLoad();
             ItemLoad it = new ItemLoad();
 
@@ -76,7 +77,7 @@ namespace PriceLogic
             {
                 ItemCode = i.ItemCode,
                 ItemType = i.ItemType,
-                ItemName = i.ItemDesc,
+                ItemName = i.ItemName,
                 ChainId = i.ChainID,
                 Amount = 0,
                 Price = 0
@@ -301,10 +302,44 @@ namespace PriceLogic
                 package.SaveAs(new System.IO.FileInfo(path));
             }
         }
-        //public void DownloadFiles()
-        //{
-        //    FileDownloader downloader = new FileDownloader();
+        public List<KeyValuePair<string, string>> GetItemStores(ItemHeader currItem)
+        {
+            var storeIds = ItemQuery.GetStores(currItem);
+            var storeData = storeIds.Select(s => StoreQuery.GetStoreHeader(s.Key, s.Value)).ToList();
+            return storeData.Select(i => new KeyValuePair<string, string>($"{i.ChainId}-{i.StoreId}", $"{i.ChainName}-{i.StoreName}")).ToList();
+        }
+        public void SaveItemHistory(string currStore, ItemHeader currItem, string path)
+        {
+            using (var package = new ExcelPackage())
+            {
+                List<string> storeId = currStore.Split('-').ToList();
+                StoreHeader storeData = StoreQuery.GetStoreHeader(Convert.ToInt64(storeId[0]), Convert.ToInt32(storeId[1]));
+                List<KeyValuePair<DateTime, decimal>> priceHist = ItemQuery.GetItemHistory(currItem, storeData);
+                var workbook = package.Workbook;
+                var worksheet = workbook.Worksheets.Add("ItemHistory");
+                int currRow = 1;
+                var dateHeadCell = worksheet.Cells[currRow, 1];
+                dateHeadCell.Value = "Date";
+                var priceHeadCell = worksheet.Cells[currRow, 2];
+                priceHeadCell.Value = "Price";
+                foreach (var record in priceHist)
+                {
+                    currRow++;
+                    var dateCell = worksheet.Cells[currRow, 1];
+                    dateCell.Value = record.Key.Date.ToString("dd/MM/yyyy");
+                    var priceCell = worksheet.Cells[currRow, 2];
+                    priceCell.Value = record.Value;
+                }
+                var chart = worksheet.Drawings.AddChart("chart", eChartType.ColumnClustered);
+                var series = chart.Series.Add($"B2:B{currRow}", $"A2:A{currRow}");
+                series.Header = "Price";
+                package.SaveAs(new System.IO.FileInfo(path));
+            }
+            //public void DownloadFiles()
+            //{
+            //    FileDownloader downloader = new FileDownloader();
 
-        //}
+            //}
+        }
     }
 }

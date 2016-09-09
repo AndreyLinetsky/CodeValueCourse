@@ -17,6 +17,7 @@ namespace PriceData
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Item> Items { get; set; }
         public DbSet<Store> Stores { get; set; }
+        public DbSet<HistoryItem> HistoryItems { get; set; }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -24,14 +25,11 @@ namespace PriceData
             modelBuilder.Entity<Store>().HasKey(st => new { st.ChainID, st.StoreID });
             // Turn off autogeneration in database
             modelBuilder.Entity<Store>()
-                        .Property(st =>st.StoreID)
+                        .Property(st => st.StoreID)
                         .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            modelBuilder.Entity<Item>().HasKey(it => new { it.ItemID,it.ChainID, it.StoreID });
-            // Turn off autogeneration in database
-            modelBuilder.Entity<Item>()
-                        .Property(it => it.ItemID)
-                        .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            modelBuilder.Entity<Item>().HasKey(it => new { it.ChainID, it.StoreID, it.ItemCode, it.ItemType });
+            modelBuilder.Entity<HistoryItem>().HasKey(it => new { it.ChainID, it.StoreID, it.ItemCode, it.ItemType, it.LastUpdateDate });
         }
 
     }

@@ -128,6 +128,7 @@ namespace PriceUI
             dataGridView1.Columns["Amount"].Visible = true;
             dataGridView1.Columns["Amount"].Width = 60;
             dataGridView1.Columns["Amount"].HeaderText = "Amount";
+            dataGridView1.ClearSelection();
         }
 
         private void exitCartToolStripMenuItem_Click(object sender, EventArgs e)
@@ -384,7 +385,7 @@ namespace PriceUI
 
         private void exportToolStripMenuItem1_Click(object sender, EventArgs e)
         {
-            if(compChain1.Text == string.Empty)
+            if (compChain1.Text == string.Empty)
             {
                 MessageBox.Show("No stores were compared");
             }
@@ -405,13 +406,32 @@ namespace PriceUI
             }
         }
 
-        //private void histButton_Click(object sender, EventArgs e)
-        //{
-        //    using (HistForm histForm = new histForm(Manager))
-        //    {
-        //        histForm.ShowDialog();
-        //    }
-        //}
+        private void histButton_Click(object sender, EventArgs e)
+        {
+            if (dataGridView1.SelectedRows.Count > 0)
+            {
+                ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
+                if (currItem != null)
+                {
+                    var itemStores = Manager.GetItemStores(currItem);
+                    if (itemStores.Count > 0)
+                    {
+                        using (HistForm histForm = new HistForm(Manager, itemStores,currItem))
+                        {
+                            histForm.ShowDialog();
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("No history exists for this product");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please select product");
+            }
+        }
     }
 }
 

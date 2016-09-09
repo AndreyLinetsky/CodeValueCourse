@@ -43,8 +43,6 @@
             this.chainText = new System.Windows.Forms.TextBox();
             this.unitText = new System.Windows.Forms.TextBox();
             this.quanText = new System.Windows.Forms.TextBox();
-            this.nameText = new System.Windows.Forms.TextBox();
-            this.codeText = new System.Windows.Forms.TextBox();
             this.typeText = new System.Windows.Forms.TextBox();
             this.chainLabel = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -52,9 +50,11 @@
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.codeText = new System.Windows.Forms.TextBox();
+            this.nameText = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -215,22 +215,6 @@
             this.quanText.Size = new System.Drawing.Size(152, 22);
             this.quanText.TabIndex = 24;
             // 
-            // nameText
-            // 
-            this.nameText.Location = new System.Drawing.Point(92, 64);
-            this.nameText.Name = "nameText";
-            this.nameText.ReadOnly = true;
-            this.nameText.Size = new System.Drawing.Size(152, 22);
-            this.nameText.TabIndex = 23;
-            // 
-            // codeText
-            // 
-            this.codeText.Location = new System.Drawing.Point(92, 38);
-            this.codeText.Name = "codeText";
-            this.codeText.ReadOnly = true;
-            this.codeText.Size = new System.Drawing.Size(152, 22);
-            this.codeText.TabIndex = 22;
-            // 
             // typeText
             // 
             this.typeText.Location = new System.Drawing.Point(92, 147);
@@ -292,14 +276,15 @@
             this.label4.TabIndex = 8;
             this.label4.Text = "Units:";
             // 
-            // label7
+            // label3
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 65);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(79, 17);
-            this.label7.TabIndex = 6;
-            this.label7.Text = "Item Name:";
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(131, 0);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(99, 20);
+            this.label3.TabIndex = 0;
+            this.label3.Text = "Item Details";
             // 
             // label8
             // 
@@ -310,15 +295,30 @@
             this.label8.TabIndex = 5;
             this.label8.Text = "Item Code:";
             // 
-            // label3
+            // label7
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(131, 0);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(99, 20);
-            this.label3.TabIndex = 0;
-            this.label3.Text = "Item Details";
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 65);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(79, 17);
+            this.label7.TabIndex = 6;
+            this.label7.Text = "Item Name:";
+            // 
+            // codeText
+            // 
+            this.codeText.Location = new System.Drawing.Point(92, 38);
+            this.codeText.Name = "codeText";
+            this.codeText.ReadOnly = true;
+            this.codeText.Size = new System.Drawing.Size(152, 22);
+            this.codeText.TabIndex = 22;
+            // 
+            // nameText
+            // 
+            this.nameText.Location = new System.Drawing.Point(92, 64);
+            this.nameText.Name = "nameText";
+            this.nameText.ReadOnly = true;
+            this.nameText.Size = new System.Drawing.Size(152, 22);
+            this.nameText.TabIndex = 23;
             // 
             // PriceMain
             // 
@@ -362,17 +362,17 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
         private System.Windows.Forms.ToolStripMenuItem viewCartToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadCartToolStripMenuItem;
         private System.Windows.Forms.Label chainLabel;
         private System.Windows.Forms.TextBox typeText;
-        private System.Windows.Forms.TextBox codeText;
-        private System.Windows.Forms.TextBox nameText;
         private System.Windows.Forms.TextBox quanText;
         private System.Windows.Forms.TextBox unitText;
         private System.Windows.Forms.TextBox chainText;
+        private System.Windows.Forms.TextBox nameText;
+        private System.Windows.Forms.TextBox codeText;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.Label label8;
     }
 }

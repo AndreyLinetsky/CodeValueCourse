@@ -36,13 +36,13 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.Register = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
-            this.regUser = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.regPass = new System.Windows.Forms.TextBox();
             this.regConf = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
+            this.button2 = new System.Windows.Forms.Button();
+            this.regPass = new System.Windows.Forms.TextBox();
+            this.regUser = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.label5 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.Login.SuspendLayout();
             this.Register.SuspendLayout();
@@ -133,49 +133,6 @@
             this.Register.Text = "Register";
             this.Register.UseVisualStyleBackColor = true;
             // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(144, 120);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 27);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Register";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // regUser
-            // 
-            this.regUser.Location = new System.Drawing.Point(132, 12);
-            this.regUser.Name = "regUser";
-            this.regUser.Size = new System.Drawing.Size(100, 22);
-            this.regUser.TabIndex = 8;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(43, 12);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(73, 17);
-            this.label5.TabIndex = 6;
-            this.label5.Text = "Username";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(43, 50);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(69, 17);
-            this.label4.TabIndex = 7;
-            this.label4.Text = "Password";
-            // 
-            // regPass
-            // 
-            this.regPass.Location = new System.Drawing.Point(132, 50);
-            this.regPass.Name = "regPass";
-            this.regPass.Size = new System.Drawing.Size(100, 22);
-            this.regPass.TabIndex = 9;
-            this.regPass.UseSystemPasswordChar = true;
-            // 
             // regConf
             // 
             this.regConf.Location = new System.Drawing.Point(132, 82);
@@ -193,6 +150,49 @@
             this.label6.TabIndex = 12;
             this.label6.Text = "Confirm";
             // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(144, 120);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 27);
+            this.button2.TabIndex = 10;
+            this.button2.Text = "Register";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // regPass
+            // 
+            this.regPass.Location = new System.Drawing.Point(132, 50);
+            this.regPass.Name = "regPass";
+            this.regPass.Size = new System.Drawing.Size(100, 22);
+            this.regPass.TabIndex = 9;
+            this.regPass.UseSystemPasswordChar = true;
+            // 
+            // regUser
+            // 
+            this.regUser.Location = new System.Drawing.Point(132, 12);
+            this.regUser.Name = "regUser";
+            this.regUser.Size = new System.Drawing.Size(100, 22);
+            this.regUser.TabIndex = 8;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(43, 50);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(69, 17);
+            this.label4.TabIndex = 7;
+            this.label4.Text = "Password";
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(43, 12);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(73, 17);
+            this.label5.TabIndex = 6;
+            this.label5.Text = "Username";
+            // 
             // LoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -200,7 +200,7 @@
             this.ClientSize = new System.Drawing.Size(282, 229);
             this.Controls.Add(this.tabControl1);
             this.Name = "LoginForm";
-            this.Text = "LoginForm";
+            this.Text = "Login";
             this.tabControl1.ResumeLayout(false);
             this.Login.ResumeLayout(false);
             this.Login.PerformLayout();

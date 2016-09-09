@@ -12,7 +12,7 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
-                return db.Items.Where(i => i.ItemDesc.Contains(input)).GroupBy(i => i.ItemCode).Select(g => g.FirstOrDefault()).ToList();
+                return db.Items.Where(i => i.ItemName.Contains(input)).GroupBy(i => i.ItemCode).Select(g => g.FirstOrDefault()).ToList();
             }
         }
 
@@ -21,15 +21,31 @@ namespace PriceLogic
             using (var db = new PricingContext())
             {
                 return db.Items.Where(i => i.ItemCode == header.ItemCode && i.ItemType == header.ItemType && i.ChainID == header.ChainId)
-                     .Select(i => new { i.ItemCode, i.ItemDesc, i.ItemType, i.Quantity, i.UnitQuantity }).AsEnumerable()
-                     .Select(i => new ItemInfo(i.ItemCode, i.ItemDesc, i.ItemType, null, i.UnitQuantity, i.Quantity)).FirstOrDefault();
+                     .Select(i => new { i.ItemCode, i.ItemName, i.ItemType, i.Quantity, i.UnitQuantity }).AsEnumerable()
+                     .Select(i => new ItemInfo(i.ItemCode, i.ItemName, i.ItemType, null, i.UnitQuantity, i.Quantity)).FirstOrDefault();
             }
         }
         public decimal GetPrice(long chainId, int storeId, long itemCode, int itemType)
         {
             using (var db = new PricingContext())
             {
-                return db.Items.Where(i => i.ItemCode == itemCode && i.ItemType == itemType && i.StoreID == storeId && i.ChainID == chainId).Select(t => t.Price).FirstOrDefault();
+                return db.Items.Where(i => i.ItemCode == itemCode && i.ItemType == itemType && i.StoreID == storeId && i.ChainID == chainId).Select(i => i.Price).FirstOrDefault();
+            }
+        }
+        public List<KeyValuePair<DateTime, decimal>> GetItemHistory(ItemHeader currItem, StoreHeader currStore)
+        {
+            using (var db = new PricingContext())
+            {
+                return db.HistoryItems.Where(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && i.StoreID == currStore.StoreId && i.ChainID == currStore.ChainId).Select(i => new { Date = i.LastUpdateDate, Price = i.Price })
+                    .AsEnumerable().Select(i => new KeyValuePair<DateTime, decimal>(i.Date, i.Price)).ToList();
+            }
+        }
+        public List<KeyValuePair<long, int>> GetStores(ItemHeader currItem)
+        {
+            using (var db = new PricingContext())
+            {
+                return db.HistoryItems.Where(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && (currItem.ItemType != 0 || i.ChainID == currItem.ChainId)).Select(i => new { Chain = i.ChainID, Store = i.StoreID }).Distinct()
+                    .AsEnumerable().Select(i => new KeyValuePair<long, int>(i.Chain, i.Store)).ToList();
             }
         }
         public KeyValuePair<long, int> GetCheapestStore(List<long> chainIds, List<ItemHeader> itemsToCheck, string location, List<StoreHeader> markedStores)

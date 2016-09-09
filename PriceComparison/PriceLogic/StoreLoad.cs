@@ -9,6 +9,8 @@ using System.Reflection;
 using GoogleMaps.LocationServices;
 using System.Threading;
 using PriceData;
+using System.Xml.Linq;
+
 namespace PriceLogic
 {
     public class StoreLoad : ILoad
@@ -18,16 +20,12 @@ namespace PriceLogic
             Stores = new List<Store>();
         }
 
-        private void PartialDataload()
-        {
-            throw new NotImplementedException();
-        }
-
         public List<Store> Stores { get; set; }
         public void DataLoad()
         {
             DirectoryInfo storeDir = new DirectoryInfo("stores");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
+            ResetDb();
             foreach (var file in files)
             {
                 WriteData($"stores/{file.Name}");
@@ -37,41 +35,24 @@ namespace PriceLogic
         }
         public void WriteData(string path)
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(path);
-            XmlNodeList dataNodes = xmlDoc.GetElementsByTagName("ChainName");
-            string chainName = "";
-            foreach (XmlNode node in dataNodes)
-            {
-                chainName = node.InnerText;
-            }
-            dataNodes = xmlDoc.GetElementsByTagName("ChainId");
-            long chainId = 0;
-            foreach (XmlNode node in dataNodes)
-            {
-                chainId = Convert.ToInt64(node.InnerText);
-            }
-            dataNodes = xmlDoc.GetElementsByTagName("LastUpdateDate");
-            string date = "";
-            foreach (XmlNode node in dataNodes)
-            {
-                date = node.InnerText;
-            }
-            dataNodes = xmlDoc.SelectNodes("/Root/SubChains/SubChain/Stores/Store");
-            foreach (XmlNode node in dataNodes)
-            {
-                int storeId = Convert.ToInt32(node.SelectSingleNode("StoreId").InnerText);
-                int storeType = Convert.ToInt32(node.SelectSingleNode("StoreType").InnerText);
-                string storeName = node.SelectSingleNode("StoreName").InnerText;
-                string city = node.SelectSingleNode("City").InnerText;
-                string location = GetStoreLocation(city);
-                Store currStore = new Store(storeId, chainId, storeType, chainName, storeName, city, date, location);
-                //Prevent duplicates
-                if (!Stores.Any(s => s.StoreID == currStore.StoreID && s.ChainID == currStore.ChainID))
+            var doc = XDocument.Load(path);
+
+            long chainId = long.Parse(doc.Root.Element("ChainId").Value);
+            string chainName = doc.Root.Element("ChainName").Value;
+            string lastUpdateDate = doc.Root.Element("LastUpdateDate").Value;
+            var currStores = doc.Descendants("StoreId")
+                .Select(s => s.Parent)
+                .Select(store => new Store()
                 {
-                    Stores.Add(currStore);
-                }
-            }
+                    StoreID = int.Parse(store.Element("StoreId").Value),
+                    ChainID = chainId,
+                    ChainName = chainName,
+                    StoreName = store.Element("StoreName").Value,
+                    City = store.Element("City").Value,
+                    LastUpdateDate = lastUpdateDate,
+                    Location = GetStoreLocation(store.Element("City").Value)
+                });
+            Stores.AddRange(currStores);
         }
         public string GetStoreLocation(string address)
         {
@@ -121,19 +102,44 @@ namespace PriceLogic
                 return string.Empty;
             }
         }
+        public void ResetDb()
+        {
+            using (var db = new PricingContext())
+            {
+                if (db.Stores.Any())
+                {
+                    var filteredNewItems = db.Items.Where(i => !db.HistoryItems.Any(hist => hist.ChainID == i.ChainID && hist.StoreID == i.StoreID && i.ItemCode == hist.ItemCode &&
+                     i.ItemType == hist.ItemType && DateTime.Compare(hist.LastUpdateDate, i.LastUpdateDate) >= 0)).Select(i => new 
+                     {
+                         ChainID = i.ChainID,
+                         StoreID = i.StoreID,
+                         ItemCode = i.ItemCode,
+                         ItemType = i.ItemType,
+                         LastUpdateDate = i.LastUpdateDate,
+                         Price = i.Price
+                     }).ToList();
+                    var convertedToHistItems = filteredNewItems.Select(i => new HistoryItem()
+                    {
+                        ChainID = i.ChainID,
+                        StoreID = i.StoreID,
+                        ItemCode = i.ItemCode,
+                        ItemType = i.ItemType,
+                        LastUpdateDate = i.LastUpdateDate,
+                        Price = i.Price
+                    }).ToList();
+                    db.HistoryItems.AddRange(convertedToHistItems);
+                    db.Stores.RemoveRange(db.Stores);
+                    db.SaveChanges();
+                }
+            }
+        }
         public void WriteToDb()
         {
             using (var db = new PricingContext())
             {
                 db.Configuration.AutoDetectChangesEnabled = false;
                 db.Configuration.ValidateOnSaveEnabled = false;
-                var dbStores = db.Set<Store>();
-                if (db.Set<Store>().Any())
-                {
-                    db.Stores.RemoveRange(dbStores);
-                    db.SaveChanges();
-                }
-                dbStores.AddRange(Stores);
+                db.Stores.AddRange(Stores);
                 db.SaveChanges();
             }
         }
