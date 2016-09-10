@@ -22,6 +22,7 @@ namespace PriceLogic
             AccQuery = new AccountQuery();
             ItemQuery = new ItemQuery();
             StoreQuery = new StoreQuery();
+            HistItemQuery = new HistItemQuery();
             Cart = new Cart();
             //LoadData();
             //  Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
@@ -35,6 +36,7 @@ namespace PriceLogic
         public AccountQuery AccQuery { get; set; }
         public ItemQuery ItemQuery { get; set; }
         public StoreQuery StoreQuery { get; set; }
+        public HistItemQuery HistItemQuery { get; set; }
         public Cart Cart { get; set; }
         public List<UpdatedCart> UpdatedCarts { get; set; }
         public string User { get; set; }
@@ -304,7 +306,7 @@ namespace PriceLogic
         }
         public List<KeyValuePair<string, string>> GetItemStores(ItemHeader currItem)
         {
-            var storeIds = ItemQuery.GetStores(currItem);
+            var storeIds = HistItemQuery.GetStores(currItem);
             var storeData = storeIds.Select(s => StoreQuery.GetStoreHeader(s.Key, s.Value)).ToList();
             return storeData.Select(i => new KeyValuePair<string, string>($"{i.ChainId}-{i.StoreId}", $"{i.ChainName}-{i.StoreName}")).ToList();
         }
@@ -314,7 +316,7 @@ namespace PriceLogic
             {
                 List<string> storeId = currStore.Split('-').ToList();
                 StoreHeader storeData = StoreQuery.GetStoreHeader(Convert.ToInt64(storeId[0]), Convert.ToInt32(storeId[1]));
-                List<KeyValuePair<DateTime, decimal>> priceHist = ItemQuery.GetItemHistory(currItem, storeData);
+                List<KeyValuePair<DateTime, decimal>> priceHist = HistItemQuery.GetItemHistory(currItem, storeData);
                 var workbook = package.Workbook;
                 var worksheet = workbook.Worksheets.Add("ItemHistory");
                 int currRow = 1;

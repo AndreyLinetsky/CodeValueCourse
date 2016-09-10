@@ -62,6 +62,7 @@
     <Compile Include="AccountQuery.cs" />
     <Compile Include="Cart.cs" />
     <Compile Include="FileDownloader.cs" />
+    <Compile Include="HistItemQuery.cs" />
     <Compile Include="ILoad.cs" />
     <Compile Include="ItemInfo.cs" />
     <Compile Include="ItemHeader.cs" />

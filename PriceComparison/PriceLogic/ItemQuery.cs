@@ -32,37 +32,17 @@ namespace PriceLogic
                 return db.Items.Where(i => i.ItemCode == itemCode && i.ItemType == itemType && i.StoreID == storeId && i.ChainID == chainId).Select(i => i.Price).FirstOrDefault();
             }
         }
-        public List<KeyValuePair<DateTime, decimal>> GetItemHistory(ItemHeader currItem, StoreHeader currStore)
-        {
-            using (var db = new PricingContext())
-            {
-                return db.HistoryItems.Where(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && i.StoreID == currStore.StoreId && i.ChainID == currStore.ChainId).Select(i => new { Date = i.LastUpdateDate, Price = i.Price })
-                    .AsEnumerable().Select(i => new KeyValuePair<DateTime, decimal>(i.Date, i.Price)).ToList();
-            }
-        }
-        public List<KeyValuePair<long, int>> GetStores(ItemHeader currItem)
-        {
-            using (var db = new PricingContext())
-            {
-                return db.HistoryItems.Where(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && (currItem.ItemType != 0 || i.ChainID == currItem.ChainId)).Select(i => new { Chain = i.ChainID, Store = i.StoreID }).Distinct()
-                    .AsEnumerable().Select(i => new KeyValuePair<long, int>(i.Chain, i.Store)).ToList();
-            }
-        }
+
         public KeyValuePair<long, int> GetCheapestStore(List<long> chainIds, List<ItemHeader> itemsToCheck, string location, List<StoreHeader> markedStores)
         {
             using (var db = new PricingContext())
             {
-                var filteredStores = db.Items.Join(db.Stores, i => new { i.ChainID, i.StoreID }, s => new { s.ChainID, s.StoreID }, (i, s) => new
+                var filteredStores = db.Items.Where(i => (i.Store.Location == location || location == null) && chainIds.Contains(i.ChainID)).ToList();
+                var filteredItems = filteredStores.Where(i => !markedStores.Any(s => s.ChainId == i.ChainID && s.StoreId == i.StoreID) && itemsToCheck.Any(s => s.ItemCode == i.ItemCode && s.ItemType == i.ItemType && (i.ItemType != 0 || i.ChainID == s.ChainId))).Select(i => new
                 {
-                    ItemSource = i,
-                    StoreSource = s
-                }).Where(j => (j.StoreSource.Location == location || location == null) &&
-                chainIds.Contains(j.StoreSource.ChainID)).ToList();
-                var filteredItems = filteredStores.Where(i => !markedStores.Any(s => s.ChainId == i.StoreSource.ChainID && s.StoreId == i.StoreSource.StoreID) && itemsToCheck.Any(s => s.ItemCode == i.ItemSource.ItemCode && s.ItemType == i.ItemSource.ItemType && (i.ItemSource.ItemType != 0 || i.ItemSource.ChainID == s.ChainId))).Select(i => new
-                {
-                    ChainID = i.ItemSource.ChainID,
-                    StoreID = i.ItemSource.StoreID,
-                    Price = i.ItemSource.Price * itemsToCheck.Where(s => s.ItemCode == i.ItemSource.ItemCode && s.ItemType == i.ItemSource.ItemType).Select(s => s.Amount).FirstOrDefault()
+                    ChainID = i.ChainID,
+                    StoreID = i.StoreID,
+                    Price = i.Price * itemsToCheck.Where(s => s.ItemCode == i.ItemCode && s.ItemType == i.ItemType).Select(s => s.Amount).FirstOrDefault()
                 }).ToList();
                 var bestStore = filteredItems.GroupBy(i => new { i.ChainID, i.StoreID }).Select(g => new { ChainID = g.Key.ChainID, StoreID = g.Key.StoreID, Count = g.Count(), TotalPrice = g.Sum(g1 => g1.Price) }).OrderByDescending(i => i.Count).ThenBy(i => i.TotalPrice).FirstOrDefault();
                 if (bestStore != null)
