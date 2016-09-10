@@ -34,6 +34,7 @@ namespace PriceUI
             listBox1.DataSource = chains;
             listBox1.DisplayMember = "Value";
             listBox1.ValueMember = "Key";
+            listBox1.SelectedItem = null;
             listBox1.SelectedIndexChanged += listBox1_SelectedIndexChanged;
             ResetCompOutput();
         }

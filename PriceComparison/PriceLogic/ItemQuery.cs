@@ -37,7 +37,8 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
-                var filteredStores = db.Items.Where(i => (i.Store.Location == location || location == null) && chainIds.Contains(i.ChainID)).ToList();
+                List<long> itemCodes = itemsToCheck.Select(i => i.ItemCode).ToList();
+                var filteredStores = db.Items.Where(i => (i.Store.Location == location || location == null) && chainIds.Contains(i.ChainID) && itemCodes.Contains(i.ItemCode)).ToList();
                 var filteredItems = filteredStores.Where(i => !markedStores.Any(s => s.ChainId == i.ChainID && s.StoreId == i.StoreID) && itemsToCheck.Any(s => s.ItemCode == i.ItemCode && s.ItemType == i.ItemType && (i.ItemType != 0 || i.ChainID == s.ChainId))).Select(i => new
                 {
                     ChainID = i.ChainID,
