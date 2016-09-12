@@ -11,20 +11,20 @@ namespace PriceLogic
     {
         public UpdatedCart(int storeId, long chainId, string storeName, string chainName)
         {
-            Items = new List<ItemHeader>();
+            Items = new List<CartItem>();
             StoreID = storeId;
             StoreName = storeName;
             ChainID = chainId;
             ChainName = chainName;
         }
-        public List<ItemHeader> Items { get; set; }
+        public List<CartItem> Items { get; set; }
         public string StoreName { get; set; }
         public string ChainName { get; set; }
         public int StoreID { get; set; }
         public long ChainID { get; set; }
         public int ItemsToShow { get; } = 3;
 
-        public List<ItemHeader> CheapItems
+        public List<CartItem> CheapItems
         {
             get
             {
@@ -38,7 +38,7 @@ namespace PriceLogic
                 }
             }
         }
-        public List<ItemHeader> ExpensiveItems
+        public List<CartItem> ExpensiveItems
         {
             get
             {
@@ -58,10 +58,6 @@ namespace PriceLogic
             {
                 return Items.Select(i => i.Price * i.Amount).Sum();
             }
-        }
-        public void Add(ItemHeader item)
-        {
-            Items.Add(item);
         }
     }
 }

@@ -24,6 +24,5 @@ namespace PriceLogic
         public string ChainName { get; set; }
         public string UnitQuantity { get; set; }
         public string Quantity { get; set; }
-
     }
 }

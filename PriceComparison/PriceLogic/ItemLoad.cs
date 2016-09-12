@@ -13,35 +13,40 @@ namespace PriceLogic
 {
     public class ItemLoad : ILoad
     {
-        public ItemLoad()
-        {
-            Items = new List<Item>();
-        }
         public List<Item> Items;
 
         public void DataLoad()
         {
-            DirectoryInfo storeDir = new DirectoryInfo("items");
+            Items = new List<Item>();
+            DirectoryInfo storeDir = new DirectoryInfo("FullItems");
             List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
             foreach (var file in files)
             {
-                WriteData($"items/{file.Name}");
-                //WriteData(string.Format("items/{0}",file.Name));
-
+                WriteData($"{storeDir.Name}/{file.Name}");
             }
             WriteToDb();
+        }
+        public void PartialDataLoad()
+        {
+            Items = new List<Item>();
+            DirectoryInfo storeDir = new DirectoryInfo("PartialItems");
+            List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
+            foreach (var file in files)
+            {
+                WriteData($"{storeDir.Name}/{file.Name}");
+            }
+            WriteToDbPartial();
         }
         public void WriteData(string path)
         {
             var doc = XDocument.Load(path);
-
             long chainId = long.Parse(doc.Root.Element("ChainId").Value);
             int storeId = int.Parse(doc.Root.Element("StoreId").Value);
             // Write data only if the store exists
             if (CheckStore(chainId, storeId))
             {
                 var currItems = doc.Descendants("ItemCode")
-                .Select(price => price.Parent)
+                .Select(ItemCode => ItemCode.Parent)
                 .Select(item => new Item()
                 {
                     StoreID = storeId,
@@ -53,7 +58,7 @@ namespace PriceLogic
                     Quantity = item.Element("Quantity").Value,
                     Price = decimal.Parse(item.Element("ItemPrice").Value),
                     LastUpdateDate = DateTime.Parse(item.Element("PriceUpdateDate").Value)
-                });
+                }).OrderBy(i => i.LastUpdateDate);
                 Items.AddRange(currItems);
             }
         }
@@ -65,11 +70,39 @@ namespace PriceLogic
             }
         }
 
+        public void WriteToDbPartial()
+        {
+            using (var db = new PricingContext())
+            {
+                foreach (var item in Items)
+                {
+                    if(item.ItemCode == 633824913432)
+                    {
+
+                    }
+                    Item currItem = db.Items.Find(item.StoreID, item.ChainID, item.ItemCode, item.ItemType);
+                    if (currItem != null)
+                    {
+                        HistoryItem histItem = db.HistoryItems.Find(currItem.StoreID, currItem.ChainID, currItem.ItemCode, currItem.ItemType, currItem.LastUpdateDate);
+                        if (histItem == null)
+                        {
+                            db.HistoryItems.Add(new HistoryItem(currItem.StoreID, currItem.ChainID, currItem.ItemCode, currItem.ItemType, currItem.Price, currItem.LastUpdateDate));
+                        }
+                        db.Entry(currItem).CurrentValues.SetValues(item);
+                    }
+                    else
+                    {
+                        db.Items.Add(item);
+                    }
+                }
+                db.SaveChanges();
+            }
+        }
         public void WriteToDb()
         {
             using (var db = new PricingContext())
             {
-                var distinctItems = Items.GroupBy(i => new { i.ChainID, i.StoreID, i.ItemCode }).Select(g => g.FirstOrDefault());
+                var distinctItems = Items.GroupBy(i => new { i.ChainID, i.StoreID, i.ItemCode, i.ItemType }).Select(g => g.FirstOrDefault());
                 db.Configuration.AutoDetectChangesEnabled = false;
                 db.Configuration.ValidateOnSaveEnabled = false;
                 db.Items.AddRange(distinctItems);

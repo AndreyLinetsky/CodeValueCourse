@@ -11,6 +11,7 @@ using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System.Drawing;
 using OfficeOpenXml.Drawing.Chart;
+using System.Xml.Linq;
 
 namespace PriceLogic
 {
@@ -18,40 +19,43 @@ namespace PriceLogic
     {
         public PricingLogicManager()
         {
-            User = "";
+            User = string.Empty;
             AccQuery = new AccountQuery();
             ItemQuery = new ItemQuery();
             StoreQuery = new StoreQuery();
             HistItemQuery = new HistItemQuery();
-            Cart = new Cart();
-            //LoadData();
-            //  Database.SetInitializer<PricingContext>(new DropCreateDatabaseAlways<PricingContext>());
-            //   StoreLoad str = new StoreLoad(true);
-            //   ItemLoad it = new ItemLoad();
-
-
-            //     it.DataLoad();
+            userCart = new Cart();
+            SetupDb();
         }
 
         public AccountQuery AccQuery { get; set; }
         public ItemQuery ItemQuery { get; set; }
         public StoreQuery StoreQuery { get; set; }
         public HistItemQuery HistItemQuery { get; set; }
-        public Cart Cart { get; set; }
+        public Cart userCart { get; set; }
         public List<UpdatedCart> UpdatedCarts { get; set; }
         public string User { get; set; }
+        public void SetupDb()
+        {
+            using (var db = new PricingContext())
+            {
+                if (!db.Database.Exists())
+                {
+                    Database.SetInitializer(new CreateDatabaseIfNotExists<PricingContext>());
+                }
+                else
+                {
+                    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<PricingContext>());
+                }
+            }
+        }
         public void LoadData()
         {
-            // Check if full load needed
-            // Full load needed
-            Database.SetInitializer(new CreateDatabaseIfNotExists<PricingContext>());
             StoreLoad str = new StoreLoad();
             ItemLoad it = new ItemLoad();
-
             str.DataLoad();
             it.DataLoad();
-            //else partial load 
-
+            it.PartialDataLoad();
         }
         public bool Register(string user, string password)
         {
@@ -69,13 +73,18 @@ namespace PriceLogic
         }
         public void Logout()
         {
-            User = "";
-            Cart = new Cart();
+            User = string.Empty;
+            userCart.Reset();
         }
-        public List<ItemHeader> GetItems(string input)
+        public List<CartItem> GetItems(string input, bool includeInnerItems)
         {
-            List<Item> items = ItemQuery.FilterItems(input);
-            return items.OrderBy(i => i.ItemCode).Select(i => new ItemHeader()
+            List<Item> items = ItemQuery.FilterGeneralItems(input);
+            if (includeInnerItems)
+            {
+                items.AddRange(ItemQuery.FilterInnerItems(input));
+            }
+
+            return items.OrderBy(i => i.ItemCode).Select(i => new CartItem()
             {
                 ItemCode = i.ItemCode,
                 ItemType = i.ItemType,
@@ -85,29 +94,25 @@ namespace PriceLogic
                 Price = 0
             }).ToList();
         }
-        public ItemInfo GetItemInfo(ItemHeader header)
+        public ItemInfo GetItemInfo(CartItem currItem)
         {
-            ItemInfo itemInfo = ItemQuery.GetInfo(header);
-            itemInfo.ChainName = StoreQuery.GetAllChains().Where(c => c.Key == header.ChainId).Select(c => c.Value).FirstOrDefault();
-            return itemInfo;
+            return ItemQuery.GetItemInfo(currItem);
         }
-        public bool AddItemToCart(ItemHeader currItem, int amount)
+        public bool AddItemToCart(CartItem currItem, int amount)
         {
-            return Cart.Add(currItem, amount);
+            return userCart.Add(currItem, amount);
         }
-        public List<ItemHeader> GetCartItems()
+        public List<CartItem> GetCartItems()
         {
-            return Cart.Items;
+            return userCart.Items;
         }
-        public List<ItemHeader> RemoveItemFromCart(ItemHeader currItem)
+        public void RemoveItemFromCart(CartItem currItem)
         {
-            Cart.Remove(currItem);
-            return Cart.Items;
+            userCart.Remove(currItem);
         }
-        public List<ItemHeader> UpdateCart(ItemHeader currItem, int amount)
+        public void UpdateCart(CartItem currItem, int amount)
         {
-            Cart.UpdateAmount(currItem, amount);
-            return Cart.Items;
+            userCart.UpdateAmount(currItem, amount);
         }
         public List<KeyValuePair<long, string>> GetChains()
         {
@@ -121,7 +126,6 @@ namespace PriceLogic
         {
             List<StoreHeader> storeData = StoreQuery.GetStores(chains, location);
             return storeData.Select(i => new KeyValuePair<string, string>($"{i.ChainId}-{i.StoreId}", $"{i.ChainName}-{i.StoreName}")).ToList();
-            //return storeData.Select(i => new KeyValuePair<string, string>(String.Format("{0}-{1}", i.ChainId, i.StoreId), String.Format("{0}-{1}", i.ChainName, i.StoreName))).ToList();
         }
 
         public List<UpdatedCart> CalculateTotal(List<string> stores)
@@ -131,8 +135,7 @@ namespace PriceLogic
             {
                 List<string> storeId = item.Split('-').ToList();
                 StoreHeader storeData = StoreQuery.GetStoreHeader(Convert.ToInt64(storeId[0]), Convert.ToInt32(storeId[1]));
-                UpdatedCart currCart = new UpdatedCart(storeData.StoreId, storeData.ChainId, storeData.StoreName, storeData.ChainName);
-                UpdateCart(currCart);
+                UpdateCart(storeData);
             }
             return UpdatedCarts;
         }
@@ -140,33 +143,43 @@ namespace PriceLogic
         {
             UpdatedCarts = new List<UpdatedCart>();
             List<StoreHeader> markedStores = new List<StoreHeader>();
-            KeyValuePair<long, int> idData = new KeyValuePair<long, int>();
-            for (int i = 0; i < productsToFetch; i++)
+            List<KeyValuePair<long, int>> idData = new List<KeyValuePair<long, int>>();
+            int uniqueFetchs;
+            if (chains.Count >= productsToFetch)
             {
-                if (i < chains.Count)
+                uniqueFetchs = productsToFetch;
+            }
+            else
+            {
+                uniqueFetchs = chains.Count;
+            }
+            for (int i = 0; i < uniqueFetchs; i++)
+            {
+                idData = ItemQuery.GetCheapestStore(new List<long>() { chains[i] }, userCart.Items, location, markedStores, 1);
+                if (idData.Count > 0)
                 {
-                    idData = ItemQuery.GetCheapestStore(new List<long>() { chains[i] }, Cart.Items, location, markedStores);
-                }
-                else
-                {
-                    idData = ItemQuery.GetCheapestStore(chains, Cart.Items, location, markedStores);
-                }
-
-                if (idData.Key != 0 &&
-                    idData.Value != 0)
-                {
-                    StoreHeader storeData = StoreQuery.GetStoreHeader(idData.Key, idData.Value);
-                    UpdatedCart currCart = new UpdatedCart(storeData.StoreId, storeData.ChainId, storeData.StoreName, storeData.ChainName);
-                    UpdateCart(currCart);
+                    StoreHeader storeData = StoreQuery.GetStoreHeader(idData.First().Key, idData.First().Value);
+                    UpdateCart(storeData);
                     markedStores.Add(storeData);
+                }
+            }
+            if (UpdatedCarts.Count > 0 &&
+                UpdatedCarts.Count < productsToFetch)
+            {
+                idData = ItemQuery.GetCheapestStore(chains, userCart.Items, location, markedStores, productsToFetch - UpdatedCarts.Count);
+                foreach (var id in idData)
+                {
+                    StoreHeader storeData = StoreQuery.GetStoreHeader(id.Key, id.Value);
+                    UpdateCart(storeData);
                 }
             }
             return UpdatedCarts.OrderBy(c => c.TotalPrice).ToList();
         }
 
-        public void UpdateCart(UpdatedCart currCart)
+        public void UpdateCart(StoreHeader storeData)
         {
-            currCart.Items = Cart.Items.Select(i => new ItemHeader()
+            UpdatedCart currCart = new UpdatedCart(storeData.StoreId, storeData.ChainId, storeData.StoreName, storeData.ChainName);
+            currCart.Items = userCart.Items.Select(i => new CartItem()
             {
                 ItemCode = i.ItemCode,
                 ItemType = i.ItemType,
@@ -175,7 +188,7 @@ namespace PriceLogic
                 Amount = i.Amount,
                 Price = 0
             }).ToList();
-            foreach (ItemHeader item in currCart.Items)
+            foreach (CartItem item in currCart.Items)
             {
                 if (item.ItemType != 0 ||
                     item.ChainId == currCart.ChainID)
@@ -191,7 +204,7 @@ namespace PriceLogic
             {
                 writer.WriteStartDocument();
                 writer.WriteStartElement("Cart");
-                foreach (ItemHeader currItem in Cart.Items)
+                foreach (CartItem currItem in userCart.Items)
                 {
                     writer.WriteStartElement("Item");
                     writer.WriteElementString("ItemCode", currItem.ItemCode.ToString());
@@ -208,23 +221,18 @@ namespace PriceLogic
         }
         public void LoadCart(string path)
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(path);
-            XmlNodeList dataNodes = xmlDoc.SelectNodes("/Cart/Item");
-            List<ItemHeader> newItems = new List<ItemHeader>();
-            foreach (XmlNode node in dataNodes)
-            {
-                int itemType = Convert.ToInt32(node.SelectSingleNode("ItemType").InnerText);
-                long itemCode = Convert.ToInt64(node.SelectSingleNode("ItemCode").InnerText);
-                string itemName = node.SelectSingleNode("ItemName").InnerText;
-                long chainId = Convert.ToInt64(node.SelectSingleNode("ChainId").InnerText);
-                decimal price = Convert.ToDecimal(node.SelectSingleNode("Price").InnerText);
-                int amount = Convert.ToInt32(node.SelectSingleNode("Amount").InnerText);
-                ItemHeader currItem = new ItemHeader(itemCode, itemType, itemName, chainId, amount, price);
-                newItems.Add(currItem);
-            }
-            Cart.Items.Clear();
-            Cart.Items.AddRange(newItems);
+            var doc = XDocument.Load(path);
+            var currItems = doc.Descendants("Item")
+                .Select(item => new CartItem()
+                {
+                    ItemCode = long.Parse(item.Element("ItemCode").Value),
+                    ItemType = int.Parse(item.Element("ItemType").Value),
+                    ItemName = item.Element("ItemName").Value,
+                    ChainId = long.Parse(item.Element("ChainId").Value),
+                    Price = decimal.Parse(item.Element("Price").Value),
+                    Amount = int.Parse(item.Element("Amount").Value),
+                }).ToList();
+            userCart.Reload(currItems);
         }
         public void SaveComparison(string path)
         {
@@ -286,7 +294,7 @@ namespace PriceLogic
                     worksheet.Cells[9, currCol, 9, currCol + 1].Merge = true;
                     var priceCell = worksheet.Cells[9, currCol];
                     priceCell.Value = currCart.TotalPrice;
-                    List<ItemHeader> missingItems = currCart.Items.Where(i => i.Price == 0).ToList();
+                    List<CartItem> missingItems = currCart.Items.Where(i => i.Price == 0).ToList();
                     for (int i = 10; i < 10 + missingItems.Count; i++)
                     {
                         worksheet.Cells[i, currCol, i, currCol + 1].Merge = true;
@@ -304,19 +312,19 @@ namespace PriceLogic
                 package.SaveAs(new System.IO.FileInfo(path));
             }
         }
-        public List<KeyValuePair<string, string>> GetItemStores(ItemHeader currItem)
+        public List<KeyValuePair<string, string>> GetItemStores(CartItem currItem)
         {
             var storeIds = HistItemQuery.GetStores(currItem);
             var storeData = storeIds.Select(s => StoreQuery.GetStoreHeader(s.Key, s.Value)).ToList();
             return storeData.Select(i => new KeyValuePair<string, string>($"{i.ChainId}-{i.StoreId}", $"{i.ChainName}-{i.StoreName}")).ToList();
         }
-        public void SaveItemHistory(string currStore, ItemHeader currItem, string path)
+        public void SaveItemHistory(string currStore, CartItem currItem, string path)
         {
             using (var package = new ExcelPackage())
             {
                 List<string> storeId = currStore.Split('-').ToList();
                 StoreHeader storeData = StoreQuery.GetStoreHeader(Convert.ToInt64(storeId[0]), Convert.ToInt32(storeId[1]));
-                List<KeyValuePair<DateTime, decimal>> priceHist = HistItemQuery.GetItemHistory(currItem, storeData);
+                var priceHist = HistItemQuery.GetItemHistory(currItem, storeData);
                 var workbook = package.Workbook;
                 var worksheet = workbook.Worksheets.Add("ItemHistory");
                 int currRow = 1;
@@ -332,16 +340,11 @@ namespace PriceLogic
                     var priceCell = worksheet.Cells[currRow, 2];
                     priceCell.Value = record.Value;
                 }
-                var chart = worksheet.Drawings.AddChart("chart", eChartType.ColumnClustered);
+                var chart = worksheet.Drawings.AddChart("chart", eChartType.ColumnStacked);
                 var series = chart.Series.Add($"B2:B{currRow}", $"A2:A{currRow}");
                 series.Header = "Price";
                 package.SaveAs(new System.IO.FileInfo(path));
             }
-            //public void DownloadFiles()
-            //{
-            //    FileDownloader downloader = new FileDownloader();
-
-            //}
         }
     }
 }

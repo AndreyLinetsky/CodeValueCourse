@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace PriceLogic
 {
-    public class ItemHeader
+    public class CartItem
     {
-        public ItemHeader(long itemCode, int itemType, string itemName, long chainId, int amount, decimal price)
+        public CartItem(long itemCode, int itemType, string itemName, long chainId, int amount, decimal price)
         {
             ItemCode = itemCode;
             ItemType = itemType;
@@ -18,7 +18,7 @@ namespace PriceLogic
             Price = price;
         }
 
-        public ItemHeader()
+        public CartItem()
         {
         }
 

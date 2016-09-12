@@ -30,7 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.Login = new System.Windows.Forms.TabPage();
-            this.button1 = new System.Windows.Forms.Button();
+            this.logBut = new System.Windows.Forms.Button();
             this.logPass = new System.Windows.Forms.TextBox();
             this.logUser = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -38,7 +38,7 @@
             this.Register = new System.Windows.Forms.TabPage();
             this.regConf = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
+            this.regBut = new System.Windows.Forms.Button();
             this.regPass = new System.Windows.Forms.TextBox();
             this.regUser = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -60,7 +60,7 @@
             // 
             // Login
             // 
-            this.Login.Controls.Add(this.button1);
+            this.Login.Controls.Add(this.logBut);
             this.Login.Controls.Add(this.logPass);
             this.Login.Controls.Add(this.logUser);
             this.Login.Controls.Add(this.label2);
@@ -73,15 +73,15 @@
             this.Login.Text = "Login";
             this.Login.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // logBut
             // 
-            this.button1.Location = new System.Drawing.Point(123, 84);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 27);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Login";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.logBut.Location = new System.Drawing.Point(125, 93);
+            this.logBut.Name = "logBut";
+            this.logBut.Size = new System.Drawing.Size(75, 27);
+            this.logBut.TabIndex = 4;
+            this.logBut.Text = "Login";
+            this.logBut.UseVisualStyleBackColor = true;
+            this.logBut.Click += new System.EventHandler(this.logBut_Click);
             // 
             // logPass
             // 
@@ -120,7 +120,7 @@
             // 
             this.Register.Controls.Add(this.regConf);
             this.Register.Controls.Add(this.label6);
-            this.Register.Controls.Add(this.button2);
+            this.Register.Controls.Add(this.regBut);
             this.Register.Controls.Add(this.regPass);
             this.Register.Controls.Add(this.regUser);
             this.Register.Controls.Add(this.label4);
@@ -135,7 +135,7 @@
             // 
             // regConf
             // 
-            this.regConf.Location = new System.Drawing.Point(132, 82);
+            this.regConf.Location = new System.Drawing.Point(112, 87);
             this.regConf.Name = "regConf";
             this.regConf.Size = new System.Drawing.Size(100, 22);
             this.regConf.TabIndex = 13;
@@ -144,25 +144,25 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(43, 82);
+            this.label6.Location = new System.Drawing.Point(19, 87);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(56, 17);
             this.label6.TabIndex = 12;
             this.label6.Text = "Confirm";
             // 
-            // button2
+            // regBut
             // 
-            this.button2.Location = new System.Drawing.Point(144, 120);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 27);
-            this.button2.TabIndex = 10;
-            this.button2.Text = "Register";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.regBut.Location = new System.Drawing.Point(125, 128);
+            this.regBut.Name = "regBut";
+            this.regBut.Size = new System.Drawing.Size(75, 27);
+            this.regBut.TabIndex = 10;
+            this.regBut.Text = "Register";
+            this.regBut.UseVisualStyleBackColor = true;
+            this.regBut.Click += new System.EventHandler(this.regBut_Click);
             // 
             // regPass
             // 
-            this.regPass.Location = new System.Drawing.Point(132, 50);
+            this.regPass.Location = new System.Drawing.Point(112, 50);
             this.regPass.Name = "regPass";
             this.regPass.Size = new System.Drawing.Size(100, 22);
             this.regPass.TabIndex = 9;
@@ -170,7 +170,7 @@
             // 
             // regUser
             // 
-            this.regUser.Location = new System.Drawing.Point(132, 12);
+            this.regUser.Location = new System.Drawing.Point(112, 12);
             this.regUser.Name = "regUser";
             this.regUser.Size = new System.Drawing.Size(100, 22);
             this.regUser.TabIndex = 8;
@@ -178,7 +178,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(43, 50);
+            this.label4.Location = new System.Drawing.Point(19, 50);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(69, 17);
             this.label4.TabIndex = 7;
@@ -187,7 +187,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(43, 12);
+            this.label5.Location = new System.Drawing.Point(19, 12);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(73, 17);
             this.label5.TabIndex = 6;
@@ -215,12 +215,12 @@
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage Login;
         private System.Windows.Forms.TabPage Register;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button logBut;
         private System.Windows.Forms.TextBox logPass;
         private System.Windows.Forms.TextBox logUser;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button regBut;
         private System.Windows.Forms.TextBox regUser;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox regConf;

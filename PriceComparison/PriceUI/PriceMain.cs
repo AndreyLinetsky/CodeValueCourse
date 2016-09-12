@@ -24,31 +24,27 @@ namespace PriceUI
         public PricingLogicManager Manager { get; set; }
         public void ResetForm()
         {
-            button1.Enabled = false;
+            searchBut.Enabled = false;
+            itemChkBox.Enabled = false;
             ResetItemData();
             searchText.Text = string.Empty;
             dataGridView1.DataSource = null;
             dataGridView1.Refresh();
             viewCartToolStripMenuItem.Enabled = false;
             loadCartToolStripMenuItem.Enabled = false;
+            welcomeBox.Text = "Please login";
         }
         public void ResetItemData()
         {
-            foreach (Control control in panel1.Controls)
-            {
-                if (control.Name.Contains("Text"))
-                {
-                    control.Text = "";
-                }
-            }
+            panel1.Controls.OfType<TextBox>().ToList().ForEach(t => t.Text = string.Empty);
             numericUpDown1.Value = 0;
-            button2.Enabled = false;
+            addBut.Enabled = false;
             chainLabel.Visible = false;
             chainText.Visible = false;
         }
         private void logInToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Manager.User != "")
+            if (Manager.User != string.Empty)
             {
                 MessageBox.Show("You are already logged");
             }
@@ -60,7 +56,7 @@ namespace PriceUI
 
         private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Manager.User == "")
+            if (Manager.User == string.Empty)
             {
                 MessageBox.Show("You are not logged");
             }
@@ -76,13 +72,16 @@ namespace PriceUI
             {
                 if (logForm.ShowDialog(this) == DialogResult.OK)
                 {
-                    button1.Enabled = true;
+                    searchBut.Enabled = true;
+                    viewCartToolStripMenuItem.Enabled = true;
                     loadCartToolStripMenuItem.Enabled = true;
+                    itemChkBox.Enabled = true;
+                    welcomeBox.Text = $"Welcome {Manager.User}";
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void searchBut_Click(object sender, EventArgs e)
         {
             if (string.IsNullOrWhiteSpace(searchText.Text))
             {
@@ -90,7 +89,7 @@ namespace PriceUI
             }
             else
             {
-                dataGridView1.DataSource = Manager.GetItems(searchText.Text);
+                dataGridView1.DataSource = Manager.GetItems(searchText.Text, itemChkBox.Checked);
                 foreach (DataGridViewColumn col in dataGridView1.Columns)
                 {
                     col.Visible = false;
@@ -102,7 +101,6 @@ namespace PriceUI
                 dataGridView1.Columns["ItemName"].Width = 150;
                 dataGridView1.Columns["ItemName"].HeaderText = "Name";
                 dataGridView1.ClearSelection();
-                viewCartToolStripMenuItem.Enabled = true;
             }
         }
 
@@ -114,19 +112,19 @@ namespace PriceUI
         {
             if (dataGridView1.SelectedRows.Count > 0)
             {
-                ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
+                CartItem currItem = dataGridView1.CurrentRow.DataBoundItem as CartItem;
                 ItemInfo itemInfo = Manager.GetItemInfo(currItem);
                 if (itemInfo != null)
                 {
                     if (itemInfo.ItemType != 0)
                     {
-                        typeText.Text = "כללי";
+                        typeText.Text = "General";
                         chainLabel.Visible = false;
                         chainText.Visible = false;
                     }
                     else
                     {
-                        typeText.Text = "פנימי";
+                        typeText.Text = "Internal";
                         chainLabel.Visible = true;
                         chainText.Visible = true;
                         chainText.Text = itemInfo.ChainName;
@@ -135,11 +133,12 @@ namespace PriceUI
                     nameText.Text = itemInfo.ItemName;
                     quanText.Text = itemInfo.Quantity;
                     unitText.Text = itemInfo.UnitQuantity;
-                    button2.Enabled = true;
+                    addBut.Enabled = true;
                 }
                 else
                 {
                     ResetItemData();
+                    MessageBox.Show("Error! Please reselect item");
                 }
             }
             else
@@ -149,7 +148,7 @@ namespace PriceUI
         }
 
 
-        private void button2_Click(object sender, EventArgs e)
+        private void addBut_Click(object sender, EventArgs e)
         {
             if (numericUpDown1.Value < 1 ||
                 numericUpDown1.Value > 100)
@@ -158,23 +157,38 @@ namespace PriceUI
             }
             else
             {
-                ItemHeader currItem = dataGridView1.CurrentRow.DataBoundItem as ItemHeader;
-                if (!Manager.AddItemToCart(currItem, Convert.ToInt32(numericUpDown1.Value)))
+                CartItem currItem = dataGridView1.CurrentRow.DataBoundItem as CartItem;
+                if (currItem != null)
                 {
-                    MessageBox.Show("The product is already in cart");
+                    if (!Manager.AddItemToCart(currItem, Convert.ToInt32(numericUpDown1.Value)))
+                    {
+                        MessageBox.Show("The product is already in cart");
+                    }
+                    else
+                    {
+                        MessageBox.Show("The product was added successfully");
+                    }
                 }
                 else
                 {
-                    MessageBox.Show("The product was added successfully");
+                    ResetItemData();
+                    MessageBox.Show("Error! Please reselect item");
                 }
             }
         }
 
         private void viewCartToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            using (СartForm cartForm = new СartForm(Manager, false))
+            if (Manager.userCart.Items.Count > 0)
             {
-                cartForm.ShowDialog();
+                using (СartForm cartForm = new СartForm(Manager, false))
+                {
+                    cartForm.ShowDialog();
+                }
+            }
+            else
+            {
+                MessageBox.Show("There are no items in the cart");
             }
         }
 
@@ -184,6 +198,16 @@ namespace PriceUI
             {
                 cartForm.ShowDialog();
             }
+        }
+
+        private async void updateDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Data is loading,please wait");
+            progressBar1.Visible = true;
+            progressBar1.Style = ProgressBarStyle.Marquee;
+            await Task.Run(() => Manager.LoadData());
+            progressBar1.Visible = false;
+            MessageBox.Show("Data loading is finished");
         }
     }
 }

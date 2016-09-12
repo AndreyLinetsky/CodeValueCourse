@@ -8,7 +8,7 @@ namespace PriceLogic
 {
     public class HistItemQuery
     {
-        public List<KeyValuePair<DateTime, decimal>> GetItemHistory(ItemHeader currItem, StoreHeader currStore)
+        public List<KeyValuePair<DateTime, decimal>> GetItemHistory(CartItem currItem, StoreHeader currStore)
         {
             using (var db = new PricingContext())
             {
@@ -16,7 +16,7 @@ namespace PriceLogic
                     .AsEnumerable().Select(i => new KeyValuePair<DateTime, decimal>(i.Date, i.Price)).ToList();
             }
         }
-        public List<KeyValuePair<long, int>> GetStores(ItemHeader currItem)
+        public List<KeyValuePair<long, int>> GetStores(CartItem currItem)
         {
             using (var db = new PricingContext())
             {

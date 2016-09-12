@@ -13,7 +13,7 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
-                if (!db.Accounts.Any(a => a.Name == user))
+                if (!db.Accounts.Any(a => a.UserID == user))
                 {
                     Account newAccount = new Account(user, password);
                     db.Accounts.Add(newAccount);
@@ -27,7 +27,7 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
-                return db.Accounts.Any(a => a.Name == user && a.Password == password);
+                return db.Accounts.Any(a => a.UserID == user && a.Password == password);
             }
         }
     }

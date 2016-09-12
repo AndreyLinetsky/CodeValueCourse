@@ -19,7 +19,7 @@ namespace PriceUI
             Manager = manager;
         }
         public PricingLogicManager Manager { get; set; }
-        private void button2_Click(object sender, EventArgs e)
+        private void regBut_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrWhiteSpace(regUser.Text) ||
                 String.IsNullOrWhiteSpace(regPass.Text) ||
@@ -36,17 +36,15 @@ namespace PriceUI
                 if (Manager.Register(regUser.Text, regPass.Text))
                 {
                     MessageBox.Show($"Account {regUser.Text} was created successfully");
-                    //MessageBox.Show(String.Format("Account {0} already exists",regUser.Text));
                 }
                 else
                 {
                     MessageBox.Show($"Account {regUser.Text} already exists");
-                    ////MessageBox.Show(String.Format("Account {0} was created successfully", regUser.Text));
                 }
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void logBut_Click(object sender, EventArgs e)
         {
             if (String.IsNullOrWhiteSpace(logUser.Text) ||
                 String.IsNullOrWhiteSpace(logPass.Text))

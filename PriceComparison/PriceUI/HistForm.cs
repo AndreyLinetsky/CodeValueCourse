@@ -13,7 +13,7 @@ namespace PriceUI
 {
     public partial class HistForm : Form
     {
-        public HistForm(PricingLogicManager manager, List<KeyValuePair<string, string>> stores, ItemHeader currItem)
+        public HistForm(PricingLogicManager manager, List<KeyValuePair<string, string>> stores, CartItem currItem)
         {
             InitializeComponent();
             Manager = manager;
@@ -32,8 +32,8 @@ namespace PriceUI
         }
         public PricingLogicManager Manager { get; set; }
         public List<KeyValuePair<string, string>> Stores { get; set; }
-        public ItemHeader CurrentItem { get; set; }
-        private void button1_Click(object sender, EventArgs e)
+        public CartItem CurrentItem { get; set; }
+        private void histBut_Click(object sender, EventArgs e)
         {
             if (storeComboBox.SelectedItem == null)
             {

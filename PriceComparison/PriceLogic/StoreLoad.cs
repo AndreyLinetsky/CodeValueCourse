@@ -29,7 +29,6 @@ namespace PriceLogic
             foreach (var file in files)
             {
                 WriteData($"stores/{file.Name}");
-                //WriteData(String.Format("stores/{0}",file.Name));
             }
             WriteToDb();
         }
@@ -39,19 +38,17 @@ namespace PriceLogic
 
             long chainId = long.Parse(doc.Root.Element("ChainId").Value);
             string chainName = doc.Root.Element("ChainName").Value;
-            string lastUpdateDate = doc.Root.Element("LastUpdateDate").Value;
             var currStores = doc.Descendants("StoreId")
-                .Select(s => s.Parent)
-                .Select(store => new Store()
-                {
-                    StoreID = int.Parse(store.Element("StoreId").Value),
-                    ChainID = chainId,
-                    ChainName = chainName,
-                    StoreName = store.Element("StoreName").Value,
-                    City = store.Element("City").Value,
-                    LastUpdateDate = lastUpdateDate,
-                    Location = GetStoreLocation(store.Element("City").Value)
-                });
+               .Select(s => s.Parent)
+               .Select(store => new Store()
+               {
+                   StoreID = int.Parse(store.Element("StoreId").Value),
+                   ChainID = chainId,
+                   ChainName = chainName,
+                   StoreName = store.Element("StoreName").Value,
+                   City = store.Element("City").Value,
+                   Location = GetStoreLocation(store.Element("City").Value)
+               });
             Stores.AddRange(currStores);
         }
         public string GetStoreLocation(string address)
@@ -109,7 +106,7 @@ namespace PriceLogic
                 if (db.Stores.Any())
                 {
                     var filteredNewItems = db.Items.Where(i => !db.HistoryItems.Any(hist => hist.ChainID == i.ChainID && hist.StoreID == i.StoreID && i.ItemCode == hist.ItemCode &&
-                     i.ItemType == hist.ItemType && DateTime.Compare(hist.LastUpdateDate, i.LastUpdateDate) >= 0)).Select(i => new 
+                     i.ItemType == hist.ItemType && DateTime.Compare(hist.LastUpdateDate, i.LastUpdateDate) >= 0)).Select(i => new
                      {
                          ChainID = i.ChainID,
                          StoreID = i.StoreID,
@@ -137,8 +134,8 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
-                db.Configuration.AutoDetectChangesEnabled = false;
-                db.Configuration.ValidateOnSaveEnabled = false;
+               // db.Configuration.AutoDetectChangesEnabled = false;
+               // db.Configuration.ValidateOnSaveEnabled = false;
                 db.Stores.AddRange(Stores);
                 db.SaveChanges();
             }

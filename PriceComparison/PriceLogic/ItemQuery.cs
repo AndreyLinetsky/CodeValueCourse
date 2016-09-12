@@ -8,21 +8,28 @@ namespace PriceLogic
 {
     public class ItemQuery
     {
-        public List<Item> FilterItems(string input)
+        public List<Item> FilterGeneralItems(string input)
         {
             using (var db = new PricingContext())
             {
-                return db.Items.Where(i => i.ItemName.Contains(input)).GroupBy(i => i.ItemCode).Select(g => g.FirstOrDefault()).ToList();
+                return db.Items.Where(i => i.ItemName.Contains(input) && i.ItemType != 0).GroupBy(i => i.ItemCode).Select(g => g.FirstOrDefault()).ToList();
+            }
+        }
+        public List<Item> FilterInnerItems(string input)
+        {
+            using (var db = new PricingContext())
+            {
+                return db.Items.Where(i => i.ItemName.Contains(input) && i.ItemType == 0).GroupBy(i => new { i.ChainID, i.ItemCode, i.ItemType }).Select(g => g.FirstOrDefault()).ToList();
             }
         }
 
-        public ItemInfo GetInfo(ItemHeader header)
+        public ItemInfo GetItemInfo(CartItem currItem)
         {
             using (var db = new PricingContext())
             {
-                return db.Items.Where(i => i.ItemCode == header.ItemCode && i.ItemType == header.ItemType && i.ChainID == header.ChainId)
-                     .Select(i => new { i.ItemCode, i.ItemName, i.ItemType, i.Quantity, i.UnitQuantity }).AsEnumerable()
-                     .Select(i => new ItemInfo(i.ItemCode, i.ItemName, i.ItemType, null, i.UnitQuantity, i.Quantity)).FirstOrDefault();
+                return db.Items.Where(i => i.ItemCode == currItem.ItemCode && i.ItemType == currItem.ItemType && i.ChainID == currItem.ChainId)
+                     .Select(i => new { i.ItemCode, i.ItemName, i.ItemType, i.Store.ChainName, i.Quantity, i.UnitQuantity }).AsEnumerable()
+                     .Select(i => new ItemInfo(i.ItemCode, i.ItemName, i.ItemType, i.ChainName, i.UnitQuantity, i.Quantity)).FirstOrDefault();
             }
         }
         public decimal GetPrice(long chainId, int storeId, long itemCode, int itemType)
@@ -33,7 +40,7 @@ namespace PriceLogic
             }
         }
 
-        public KeyValuePair<long, int> GetCheapestStore(List<long> chainIds, List<ItemHeader> itemsToCheck, string location, List<StoreHeader> markedStores)
+        public List<KeyValuePair<long, int>> GetCheapestStore(List<long> chainIds, List<CartItem> itemsToCheck, string location, List<StoreHeader> markedStores, int itemsToFetch)
         {
             using (var db = new PricingContext())
             {
@@ -43,17 +50,10 @@ namespace PriceLogic
                 {
                     ChainID = i.ChainID,
                     StoreID = i.StoreID,
-                    Price = i.Price * itemsToCheck.Where(s => s.ItemCode == i.ItemCode && s.ItemType == i.ItemType).Select(s => s.Amount).FirstOrDefault()
+                    Price = i.Price * itemsToCheck.Where(s => s.ItemCode == i.ItemCode && s.ItemType == i.ItemType && (i.ItemType != 0 || i.ChainID == s.ChainId)).Select(s => s.Amount).FirstOrDefault()
                 }).ToList();
-                var bestStore = filteredItems.GroupBy(i => new { i.ChainID, i.StoreID }).Select(g => new { ChainID = g.Key.ChainID, StoreID = g.Key.StoreID, Count = g.Count(), TotalPrice = g.Sum(g1 => g1.Price) }).OrderByDescending(i => i.Count).ThenBy(i => i.TotalPrice).FirstOrDefault();
-                if (bestStore != null)
-                {
-                    return new KeyValuePair<long, int>(bestStore.ChainID, bestStore.StoreID);
-                }
-                else
-                {
-                    return new KeyValuePair<long, int>(0, 0);
-                }
+                var bestStore = filteredItems.GroupBy(i => new { i.ChainID, i.StoreID }).Select(g => new { ChainID = g.Key.ChainID, StoreID = g.Key.StoreID, Count = g.Count(), TotalPrice = g.Sum(g1 => g1.Price) }).OrderByDescending(i => i.Count).ThenBy(i => i.TotalPrice).Take(itemsToFetch);
+                return bestStore.Select(s => new KeyValuePair<long, int>(s.ChainID, s.StoreID)).ToList();
             }
         }
     }

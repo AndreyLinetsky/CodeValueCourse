@@ -12,13 +12,12 @@ namespace PriceData
         {
 
         }
-        public Account(string name, string password)
+        public Account(string userId, string password)
         {
-            Name = name;
+            UserID = userId;
             Password = password;
         }
-        public int ID { get; set; }
-        public string Name { get; set; }
+        public string UserID { get; set; }
         public string Password { get; set; }
     }
 }

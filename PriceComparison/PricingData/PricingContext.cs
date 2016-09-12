@@ -28,8 +28,9 @@ namespace PriceData
                         .Property(st => st.StoreID)
                         .HasDatabaseGeneratedOption(DatabaseGeneratedOption.None);
 
-            modelBuilder.Entity<Item>().HasKey(it => new { it.ChainID, it.StoreID, it.ItemCode, it.ItemType });
-            modelBuilder.Entity<HistoryItem>().HasKey(it => new { it.ChainID, it.StoreID, it.ItemCode, it.ItemType, it.LastUpdateDate });
+            modelBuilder.Entity<Item>().HasKey(it => new { it.StoreID, it.ChainID, it.ItemCode, it.ItemType});
+            modelBuilder.Entity<HistoryItem>().HasKey(it => new { it.StoreID, it.ChainID,  it.ItemCode, it.ItemType, it.LastUpdateDate });
+            modelBuilder.Entity<Account>().HasKey(ac => ac.UserID);
         }
 
     }
