@@ -10,10 +10,11 @@ using GoogleMaps.LocationServices;
 using System.Threading;
 using PriceData;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace PriceLogic
 {
-    public class StoreLoad : ILoad
+    public class StoreLoad
     {
         public StoreLoad()
         {
@@ -21,21 +22,40 @@ namespace PriceLogic
         }
 
         public List<Store> Stores { get; set; }
-        public void DataLoad()
+        public bool DataLoad()
         {
-            DirectoryInfo storeDir = new DirectoryInfo("stores");
-            List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
-            ResetDb();
-            foreach (var file in files)
+            DirectoryInfo storeDir = new DirectoryInfo("Stores");
+            if (storeDir.Exists)
             {
-                WriteData($"{storeDir}/{file.Name}");
+                string fileName = string.Concat("Log", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
+                FileStream fileLog = new FileStream(fileName, FileMode.Append);
+                Trace.Listeners.Add(new TextWriterTraceListener(fileLog));
+                List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
+                ResetDb();
+                foreach (var file in files)
+                {
+                    try
+                    {
+                        WriteData($"{storeDir}/{file.Name}");
+                    }
+                    catch (XmlException ex)
+                    {
+                        Trace.WriteLine($"{storeDir.Name}/{file.Name} - {ex.Message}");
+                    }
+                }
+                Trace.Flush();
+                fileLog.Close();
+                WriteToDb();
+                return true;
             }
-            WriteToDb();
+            else
+            {
+                return false;
+            }
         }
         public void WriteData(string path)
         {
             var doc = XDocument.Load(path);
-            //fxi chk xml
             long chainId = long.Parse(doc.Root.Element("ChainId").Value);
             string chainName = doc.Root.Element("ChainName").Value;
             var currStores = doc.Descendants("StoreId")

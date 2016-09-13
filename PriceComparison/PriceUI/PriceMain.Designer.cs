@@ -35,6 +35,8 @@
             this.userToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logInToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.updateDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.label2 = new System.Windows.Forms.Label();
             this.searchText = new System.Windows.Forms.TextBox();
@@ -58,9 +60,8 @@
             this.itemChkBox = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.welcomeBox = new System.Windows.Forms.TextBox();
-            this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.updateDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.updatePartialDataToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.panel1.SuspendLayout();
@@ -94,7 +95,7 @@
             // 
             this.viewCartToolStripMenuItem.Enabled = false;
             this.viewCartToolStripMenuItem.Name = "viewCartToolStripMenuItem";
-            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.viewCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.viewCartToolStripMenuItem.Text = "View Cart";
             this.viewCartToolStripMenuItem.Click += new System.EventHandler(this.viewCartToolStripMenuItem_Click);
             // 
@@ -102,7 +103,7 @@
             // 
             this.loadCartToolStripMenuItem.Enabled = false;
             this.loadCartToolStripMenuItem.Name = "loadCartToolStripMenuItem";
-            this.loadCartToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.loadCartToolStripMenuItem.Size = new System.Drawing.Size(148, 26);
             this.loadCartToolStripMenuItem.Text = "Load Cart";
             this.loadCartToolStripMenuItem.Click += new System.EventHandler(this.loadCartToolStripMenuItem_Click);
             // 
@@ -118,16 +119,32 @@
             // logInToolStripMenuItem
             // 
             this.logInToolStripMenuItem.Name = "logInToolStripMenuItem";
-            this.logInToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.logInToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.logInToolStripMenuItem.Text = "Log In";
             this.logInToolStripMenuItem.Click += new System.EventHandler(this.logInToolStripMenuItem_Click);
             // 
             // logOutToolStripMenuItem
             // 
             this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(137, 26);
             this.logOutToolStripMenuItem.Text = "Log Out";
             this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
+            // 
+            // updateToolStripMenuItem
+            // 
+            this.updateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updateDataToolStripMenuItem,
+            this.updatePartialDataToolStripMenuItem});
+            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(70, 24);
+            this.updateToolStripMenuItem.Text = "Update";
+            // 
+            // updateDataToolStripMenuItem
+            // 
+            this.updateDataToolStripMenuItem.Name = "updateDataToolStripMenuItem";
+            this.updateDataToolStripMenuItem.Size = new System.Drawing.Size(214, 26);
+            this.updateDataToolStripMenuItem.Text = "Setup Daily Data";
+            this.updateDataToolStripMenuItem.Click += new System.EventHandler(this.updateDataToolStripMenuItem_Click);
             // 
             // dataGridView1
             // 
@@ -360,21 +377,6 @@
             this.welcomeBox.Size = new System.Drawing.Size(193, 17);
             this.welcomeBox.TabIndex = 27;
             // 
-            // updateToolStripMenuItem
-            // 
-            this.updateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.updateDataToolStripMenuItem});
-            this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(70, 24);
-            this.updateToolStripMenuItem.Text = "Update";
-            // 
-            // updateDataToolStripMenuItem
-            // 
-            this.updateDataToolStripMenuItem.Name = "updateDataToolStripMenuItem";
-            this.updateDataToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
-            this.updateDataToolStripMenuItem.Text = "Update Data";
-            this.updateDataToolStripMenuItem.Click += new System.EventHandler(this.updateDataToolStripMenuItem_Click);
-            // 
             // progressBar1
             // 
             this.progressBar1.Location = new System.Drawing.Point(221, 33);
@@ -382,6 +384,13 @@
             this.progressBar1.Size = new System.Drawing.Size(332, 23);
             this.progressBar1.TabIndex = 28;
             this.progressBar1.Visible = false;
+            // 
+            // updatePartialDataToolStripMenuItem
+            // 
+            this.updatePartialDataToolStripMenuItem.Name = "updatePartialDataToolStripMenuItem";
+            this.updatePartialDataToolStripMenuItem.Size = new System.Drawing.Size(214, 26);
+            this.updatePartialDataToolStripMenuItem.Text = "Update Partial Data";
+            this.updatePartialDataToolStripMenuItem.Click += new System.EventHandler(this.updatePartialDataToolStripMenuItem_Click);
             // 
             // PriceMain
             // 
@@ -445,5 +454,6 @@
         private System.Windows.Forms.ToolStripMenuItem updateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem updateDataToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ToolStripMenuItem updatePartialDataToolStripMenuItem;
     }
 }

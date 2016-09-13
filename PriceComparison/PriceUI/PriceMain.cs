@@ -183,7 +183,9 @@ namespace PriceUI
             {
                 using (СartForm cartForm = new СartForm(Manager, false))
                 {
+                    this.Hide();
                     cartForm.ShowDialog();
+                    this.Show();
                 }
             }
             else
@@ -196,18 +198,39 @@ namespace PriceUI
         {
             using (СartForm cartForm = new СartForm(Manager, true))
             {
+                this.Hide();
                 cartForm.ShowDialog();
+                this.Show();
             }
         }
 
         private async void updateDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Data is loading,please wait");
-            progressBar1.Visible = true;
-            progressBar1.Style = ProgressBarStyle.Marquee;
-            await Task.Run(() => Manager.LoadData());
-            progressBar1.Visible = false;
-            MessageBox.Show("Data loading is finished");
+            SetLoadControls(true);
+            await Task.Run(() => Manager.LoadData(true));
+            SetLoadControls(false);
+            MessageBox.Show("Daily data updated");
+        }
+
+        private async void updatePartialDataToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Partial data is loading,please wait");
+            SetLoadControls(true);
+            await Task.Run(() => Manager.LoadData(false));
+            SetLoadControls(false);
+            MessageBox.Show("Partial data updated");
+        }
+        public void SetLoadControls(bool isLoadStart)
+        {
+            progressBar1.Visible = isLoadStart;
+            if (isLoadStart)
+            {
+                progressBar1.Style = ProgressBarStyle.Marquee;
+            }
+            updateDataToolStripMenuItem.Enabled = !isLoadStart;
+            viewCartToolStripMenuItem.Enabled = !isLoadStart;
+            loadCartToolStripMenuItem.Enabled = !isLoadStart;
         }
     }
 }

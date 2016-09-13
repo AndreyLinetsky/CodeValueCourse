@@ -36,6 +36,7 @@ namespace PriceUI
             chainsListBox.ValueMember = "Key";
             chainsListBox.SelectedItem = null;
             chainsListBox.SelectedIndexChanged += chainsListBox_SelectedIndexChanged;
+            locComboBox.DataSource = null;
             ResetCompOutput();
         }
 

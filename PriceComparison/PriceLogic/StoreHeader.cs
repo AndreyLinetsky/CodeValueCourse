@@ -15,10 +15,7 @@ namespace PriceLogic
             ChainName = chainName;
             StoreName = storeName;
         }
-        //public StoreHeader()
-        //{
 
-        //}
         public long ChainId { get; set; }
         public int StoreId { get; set; }
         public string ChainName { get; set; }

@@ -84,9 +84,9 @@
             // 
             this.storeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.storeComboBox.FormattingEnabled = true;
-            this.storeComboBox.Location = new System.Drawing.Point(92, 83);
+            this.storeComboBox.Location = new System.Drawing.Point(64, 83);
             this.storeComboBox.Name = "storeComboBox";
-            this.storeComboBox.Size = new System.Drawing.Size(178, 24);
+            this.storeComboBox.Size = new System.Drawing.Size(216, 24);
             this.storeComboBox.TabIndex = 29;
             // 
             // histBut

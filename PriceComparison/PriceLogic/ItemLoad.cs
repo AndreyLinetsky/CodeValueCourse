@@ -8,41 +8,65 @@ using System.IO;
 using System.Reflection;
 using PriceData;
 using System.Xml.Linq;
+using System.Diagnostics;
 
 namespace PriceLogic
 {
-    public class ItemLoad : ILoad
+    public class ItemLoad
     {
+        public ItemLoad()
+        {
+            Items = new List<Item>();
+        }
         public List<Item> Items;
 
-        public void DataLoad()
+        public bool DataLoad(bool isFullLoad)
         {
-            Items = new List<Item>();
-            DirectoryInfo storeDir = new DirectoryInfo("FullItems");
+            DirectoryInfo storeDir;
+            if (isFullLoad)
+            {
+                storeDir = new DirectoryInfo("FullItems");
+            }
+            else
+            {
+                storeDir = new DirectoryInfo("Items");
+            }
+
             if (storeDir.Exists)
             {
+                string fileName = string.Concat("Log", System.DateTime.Today.ToString("dd-MM-yy"), ".txt");
+                FileStream fileLog = new FileStream(fileName, FileMode.Append);
+                Trace.Listeners.Add(new TextWriterTraceListener(fileLog));
                 List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
                 foreach (var file in files)
                 {
-                    WriteData($"{storeDir.Name}/{file.Name}");
+                    try
+                    {
+                        WriteData($"{storeDir.Name}/{file.Name}");
+                    }
+                    catch(XmlException ex)
+                    {
+                        Trace.WriteLine($"{storeDir.Name}/{file.Name} - {ex.Message}");
+                    }
                 }
-                WriteToDb();
-            }
-        }
-        public void PartialDataLoad()
-        {
-            Items = new List<Item>();
-            DirectoryInfo storeDir = new DirectoryInfo("PartialItems");
-            if (storeDir.Exists)
-            {
-                List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
-                foreach (var file in files)
+                Trace.Flush();
+                fileLog.Close();
+                if (isFullLoad)
                 {
-                    WriteData($"{storeDir.Name}/{file.Name}");
+                    WriteToDb();
                 }
-                WriteToDbPartial();
+                else
+                {
+                    WriteToDbPartial();
+                }
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
+
         public void WriteData(string path)
         {
             var doc = XDocument.Load(path);
@@ -53,7 +77,7 @@ namespace PriceLogic
             {
                 var currItems = doc.Descendants("ItemCode")
                 .Select(ItemCode => ItemCode.Parent)
-                .Select(item => new Item() //fix xml chk
+                .Select(item => new Item() 
                 {
                     StoreID = storeId,
                     ChainID = chainId,
