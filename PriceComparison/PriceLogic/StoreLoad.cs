@@ -28,14 +28,14 @@ namespace PriceLogic
             ResetDb();
             foreach (var file in files)
             {
-                WriteData($"stores/{file.Name}");
+                WriteData($"{storeDir}/{file.Name}");
             }
             WriteToDb();
         }
         public void WriteData(string path)
         {
             var doc = XDocument.Load(path);
-
+            //fxi chk xml
             long chainId = long.Parse(doc.Root.Element("ChainId").Value);
             string chainName = doc.Root.Element("ChainName").Value;
             var currStores = doc.Descendants("StoreId")
@@ -134,8 +134,6 @@ namespace PriceLogic
         {
             using (var db = new PricingContext())
             {
-               // db.Configuration.AutoDetectChangesEnabled = false;
-               // db.Configuration.ValidateOnSaveEnabled = false;
                 db.Stores.AddRange(Stores);
                 db.SaveChanges();
             }

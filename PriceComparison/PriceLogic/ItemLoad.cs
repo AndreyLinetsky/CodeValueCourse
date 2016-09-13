@@ -19,23 +19,29 @@ namespace PriceLogic
         {
             Items = new List<Item>();
             DirectoryInfo storeDir = new DirectoryInfo("FullItems");
-            List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
-            foreach (var file in files)
+            if (storeDir.Exists)
             {
-                WriteData($"{storeDir.Name}/{file.Name}");
+                List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
+                foreach (var file in files)
+                {
+                    WriteData($"{storeDir.Name}/{file.Name}");
+                }
+                WriteToDb();
             }
-            WriteToDb();
         }
         public void PartialDataLoad()
         {
             Items = new List<Item>();
             DirectoryInfo storeDir = new DirectoryInfo("PartialItems");
-            List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
-            foreach (var file in files)
+            if (storeDir.Exists)
             {
-                WriteData($"{storeDir.Name}/{file.Name}");
+                List<FileInfo> files = storeDir.GetFiles("*.xml").ToList<FileInfo>();
+                foreach (var file in files)
+                {
+                    WriteData($"{storeDir.Name}/{file.Name}");
+                }
+                WriteToDbPartial();
             }
-            WriteToDbPartial();
         }
         public void WriteData(string path)
         {
@@ -47,7 +53,7 @@ namespace PriceLogic
             {
                 var currItems = doc.Descendants("ItemCode")
                 .Select(ItemCode => ItemCode.Parent)
-                .Select(item => new Item()
+                .Select(item => new Item() //fix xml chk
                 {
                     StoreID = storeId,
                     ChainID = chainId,
@@ -76,10 +82,6 @@ namespace PriceLogic
             {
                 foreach (var item in Items)
                 {
-                    if(item.ItemCode == 633824913432)
-                    {
-
-                    }
                     Item currItem = db.Items.Find(item.StoreID, item.ChainID, item.ItemCode, item.ItemType);
                     if (currItem != null)
                     {
