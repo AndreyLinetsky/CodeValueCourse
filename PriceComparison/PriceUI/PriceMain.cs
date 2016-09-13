@@ -243,6 +243,7 @@ namespace PriceUI
                 progressBar1.Style = ProgressBarStyle.Marquee;
             }
             updateDataToolStripMenuItem.Enabled = !isLoadStart;
+            updatePartialDataToolStripMenuItem.Enabled = !isLoadStart;
             viewCartToolStripMenuItem.Enabled = !isLoadStart;
             loadCartToolStripMenuItem.Enabled = !isLoadStart;
         }

@@ -25,7 +25,6 @@ namespace PriceLogic
             StoreQuery = new StoreQuery();
             HistItemQuery = new HistItemQuery();
             userCart = new Cart();
-            SetupDb();
         }
 
         public AccountQuery AccQuery { get; set; }
@@ -35,20 +34,7 @@ namespace PriceLogic
         public Cart userCart { get; set; }
         public List<UpdatedCart> UpdatedCarts { get; set; }
         public string User { get; set; }
-        public void SetupDb()
-        {
-            using (var db = new PricingContext())
-            {
-                if (!db.Database.Exists())
-                {
-                    Database.SetInitializer(new CreateDatabaseIfNotExists<PricingContext>());
-                }
-                else
-                {
-                    Database.SetInitializer(new DropCreateDatabaseIfModelChanges<PricingContext>());
-                }
-            }
-        }
+
         public bool LoadData(bool isFullUpdate)
         {
             ItemLoad it = new ItemLoad();
