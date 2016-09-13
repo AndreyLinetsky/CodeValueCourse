@@ -351,11 +351,11 @@ namespace PriceUI
                 }
                 catch (FormatException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show($"Load Cart - {ex.Message}");
                 }
                 catch (OverflowException ex)
                 {
-                    MessageBox.Show(ex.Message);
+                    MessageBox.Show($"Load Cart - {ex.Message}");
                 }
             }
         }

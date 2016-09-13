@@ -49,15 +49,18 @@ namespace PriceLogic
                 }
             }
         }
-        public void LoadData(bool isFullUpdate)
+        public bool LoadData(bool isFullUpdate)
         {
             ItemLoad it = new ItemLoad();
             if (isFullUpdate)
             {
                 StoreLoad str = new StoreLoad();
-                str.DataLoad();
+                if (!str.DataLoad())
+                {
+                    return false;
+                }
             }
-            it.DataLoad(isFullUpdate);
+            return it.DataLoad(isFullUpdate);
         }
         public bool Register(string user, string password)
         {

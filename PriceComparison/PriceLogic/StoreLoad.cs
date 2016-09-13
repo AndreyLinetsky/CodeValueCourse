@@ -36,9 +36,13 @@ namespace PriceLogic
                 {
                     try
                     {
-                        WriteData($"{storeDir}/{file.Name}");
+                        ReadData($"{storeDir}/{file.Name}");
                     }
-                    catch (XmlException ex)
+                    catch (FormatException ex)
+                    {
+                        Trace.WriteLine($"{storeDir.Name}/{file.Name} - {ex.Message}");
+                    }
+                    catch (OverflowException ex)
                     {
                         Trace.WriteLine($"{storeDir.Name}/{file.Name} - {ex.Message}");
                     }
@@ -53,7 +57,7 @@ namespace PriceLogic
                 return false;
             }
         }
-        public void WriteData(string path)
+        public void ReadData(string path)
         {
             var doc = XDocument.Load(path);
             long chainId = long.Parse(doc.Root.Element("ChainId").Value);

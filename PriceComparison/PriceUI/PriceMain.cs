@@ -208,18 +208,32 @@ namespace PriceUI
         {
             MessageBox.Show("Data is loading,please wait");
             SetLoadControls(true);
-            await Task.Run(() => Manager.LoadData(true));
+            bool dirExists = await Task.Run(() => Manager.LoadData(true));
             SetLoadControls(false);
-            MessageBox.Show("Daily data updated");
+            if (dirExists)
+            {
+                MessageBox.Show("Daily data updated");
+            }
+            else
+            {
+                MessageBox.Show("Error! Pleast check input folders");
+            }
         }
 
         private async void updatePartialDataToolStripMenuItem_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Partial data is loading,please wait");
             SetLoadControls(true);
-            await Task.Run(() => Manager.LoadData(false));
+            bool dirExists = await Task.Run(() => Manager.LoadData(false));
             SetLoadControls(false);
-            MessageBox.Show("Partial data updated");
+            if (dirExists)
+            {
+                MessageBox.Show("Partial data updated");
+            }
+            else
+            {
+                MessageBox.Show("Error! Pleast check input folders");
+            }
         }
         public void SetLoadControls(bool isLoadStart)
         {
