@@ -12,7 +12,7 @@ using System.Diagnostics;
 
 namespace PriceLogic
 {
-    public class ItemLoad
+    public class ItemLoad : ILoad
     {
         public ItemLoad()
         {

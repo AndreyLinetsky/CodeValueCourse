@@ -14,7 +14,7 @@ using System.Diagnostics;
 
 namespace PriceLogic
 {
-    public class StoreLoad
+    public class StoreLoad : ILoad
     {
         public StoreLoad()
         {
